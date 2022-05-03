@@ -1,0 +1,9 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.where44444.cleanbook",
+    "sha256_cert_fingerprints":
+    ["43:35:B9:72:43:91:DF:51:23:28:BA:CB:88:EF:BD:68:15:A5:61:9B:BB:13:CB:06:30:7A:74:0F:CD:E0:9A:EB"]
+  }
+}]

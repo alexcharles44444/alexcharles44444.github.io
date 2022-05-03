@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clean Assistant Subscriptions</title>
+    <link rel="stylesheet" href="stripe.css" />
+</head>
+
+<body>
+    <header>
+        <a href="stripe.html" rel="home"><img style="max-width: 70%; width: 400px;" src="./res/logo_cut_dark.png"></a>
+    </header>
+
+    <div id="start_buttons" style="display: none;">
+        <br><br><br><br><br><br><br><br>
+        <button onclick="signIn();" style="width: 500px; height: 50px; margin: auto;">Sign In</button>
+        <br><br>
+        <button onclick="newAccount();" style="width: 500px; height: 50px; margin: auto;">New Account</button>
+    </div>
+    <section id="firebaseui-auth-container" style="display: none;">
+        <div class="clickable" id="account_back_arrow" onclick="accountBack();"><img class="icon_black_to_blue2"
+                src="res/arrow_back2.png" width="50" height="50"></div>
+        <div id="loader">Loading &hellip;</div>
+    </section>
+    <main>
+        <button type="button" id="signout" style="width: 150px; margin-top: -60px;">
+            Sign out
+        </button>
+        <section id="my-subscription">
+            <h2>My subscription</h2>
+            <p></p>
+            <button style="width: 500px; height: 50px;" id="billing-portal-button">Access customer portal</button>
+            <br>
+            <a style="text-decoration: none;" href="./Code/cleanassistant.html" target="_blank"><button
+                    style="width: 500px; height: 50px;">Go To Clean Assistant</button></a>
+        </section>
+        <div id="subscribe">
+            <h2>Subscribe</h2>
+            <!-- <div class="test-card-notice">
+                Use any of the
+                <a href="https://stripe.com/docs/testing#cards" target="_blank" rel="noopener noreferrer">Stripe test
+                    cards</a>
+                for this demo, e.g.
+                <div class="card-number">
+                    4242<span></span>4242<span></span>4242<span></span>4242
+                </div>
+            </div> -->
+            <section class="products"></section>
+        </div>
+        <br><br>
+        <div class="loader" id="loader0" style="width: 80px; height: 80px; margin: auto;"></div>
+    </main>
+
+    <footer>
+        <!-- <p>
+            Made with ❤️ and ☕️ by Stripe & Firebase | View
+            <a href="https://github.com/stripe-samples/firebase-subscription-payments" target="_blank"
+                rel="noopener noreferrer">source</a>
+        </p> -->
+    </footer>
+
+    <template id="product">
+        <div class="product">
+            <img src="" alt="" />
+            <h2>name</h2>
+            <p class="description">description</p>
+            <form class="product-form">
+                <!-- <label for="price">Choose pricing plan</label> -->
+                <select id="price" name="price"></select>
+                <div id="price_div"></div>
+                <button type="submit" style="width: 200px;">Subscribe</button>
+            </form>
+        </div>
+    </template>
+
+    <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
+
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-functions.js"></script>
+
+    <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-analytics.js"></script>
+
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.5/firebase-firestore.js"></script>
+
+    <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
+
+    <!-- Add Stripe.js -->
+    <script src="https://js.stripe.com/v3/"></script>
+
+    <!-- Application Code -->
+    <script src="stripe.js"></script>
+</body>
+
+</html>
