@@ -49,9 +49,19 @@
   <!-- End printable/non printable viewss -->
 
   <div id="google_play_store_div" style="display: none;">
-    <h2 style="text-align: center;">Download the Clean Assistant app for faster browsing and clock in/out functionality</h2>
-    <img onclick="open_google_play_store();" class="clickable" style="width: 100%; display: block;" src="res/get_on_google_play.png">
-    <button onclick="close_google_play_div();" style="display: block; height: 50px; width: 100%;">No Thanks</button>
+    <h2 style="text-align: center;">Download the Clean Assistant app for faster browsing and clock in/out functionality
+    </h2>
+    <img onclick="open_google_play_store();" class="clickable" style="width: 100%; display: block;"
+      src="res/get_on_google_play.png">
+    <button onclick="close_store_div();" style="display: block; height: 50px; width: 100%;">No Thanks</button>
+  </div>
+
+  <div id="app_store_div" style="display: none;">
+    <h2 style="text-align: center;">Download the Clean Assistant app for faster browsing and clock in/out functionality
+    </h2>
+    <img onclick="open_app_store();" class="clickable" style="width: 100%; display: block;"
+      src="res/app-store-logo-apple.png">
+    <button onclick="close_store_div();" style="display: block; height: 50px; width: 100%;">No Thanks</button>
   </div>
 
   <div id="dont_Print">
@@ -163,21 +173,32 @@
     <script>
       var userAgent = navigator.userAgent.toLowerCase();
       var Android = userAgent.indexOf("android") > -1;
-      if (true) {
+      var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+      if (Android) {
         document.getElementById("dont_Print").style.display = "none";
         document.getElementById("google_play_store_div").style.display = "";
-      } else {
+      } else if (iOS) {
+        document.getElementById("dont_Print").style.display = "";
+        document.getElementById("app_store_div").style.display = "none";
+      }
+      else {
         document.getElementById("dont_Print").style.display = "";
         document.getElementById("google_play_store_div").style.display = "none";
+        document.getElementById("app_store_div").style.display = "none";
       }
 
-      function open_google_play_store(){
+      function open_google_play_store() {
         window.open("https://play.google.com/store/apps/details?id=com.where44444.cleanbook", '_self');
       }
 
-      function close_google_play_div(){
+      function open_app_store() {
+        window.open("https://apps.apple.com/us/app/cleanassistant/id1558722026", '_self');
+      }
+
+      function close_store_div() {
         document.getElementById("dont_Print").style.display = "";
         document.getElementById("google_play_store_div").style.display = "none";
+        document.getElementById("app_store_div").style.display = "none";
       }
 
       String.prototype.equals = function (str2) {
