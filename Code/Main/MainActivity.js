@@ -56,10 +56,11 @@ class MainActivity extends AppCompatActivity {
     static netTaskGetSingleUser = 8;
     static netTaskGetTasks = 9;
     static netTaskGetTasksOccurence = 10;
-    static netTaskSize = 11;
+    static netTaskGetCompanyData = 11;
+    static netTaskSize = 12;
     //Must be same size as netTaskSize!
-    static firebaseReffsInProgress = [false, false, false, false, false, false, false, false, false, false, false];
-    static firebaseReffsFirstLoad = [false, false, false, false, false, false, false, false, false, false, false];
+    static firebaseReffsInProgress = [false, false, false, false, false, false, false, false, false, false, false, false];
+    static firebaseReffsFirstLoad = [false, false, false, false, false, false, false, false, false, false, false, false];
     static firebaseReffInProgress = false;
     static requestCodeLocationDelete = 0;
     static requestCodePersonDelete = 1;
@@ -94,6 +95,7 @@ class MainActivity extends AppCompatActivity {
     static NOTIFICATION_EXPIRATION_TIME = TimeUnit.DAYS.toMillis(7);
     static DB_PATH_COMPANIES = "companies";
     static DB_PATH_COMPANIES_DATA = "data";
+    static DB_PATH_COMPANIES_DATA_NAME = "name";
     static DB_PATH_USERS = "users";
     static DB_PATH_USERS_PASSWORD = "password";
     static DB_PATH_ASSET_PEOPLE = "people";

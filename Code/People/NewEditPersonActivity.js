@@ -166,6 +166,8 @@ class NewEditPersonActivity extends W4Activity {
 
             if (!a.newPerson) {
                 if (a.selectedPerson.getW4id().equals(MainActivity.currentUser.getCompanyid())) { //If person is the owner
+                    a.findViewById("CompanyNameLabel").setVisibility(View.VISIBLE);
+                    a.findViewById("CompanyName").setVisibility(View.VISIBLE);
                     a.findViewById("Edit_Person_Type_Label").setVisibility(View.GONE);
                     a.findViewById("Edit_Person_Type_Spinner").setVisibility(View.GONE);
                     a.findViewById("Owner_No_Permissions_Text").setVisibility(View.VISIBLE);
@@ -182,6 +184,7 @@ class NewEditPersonActivity extends W4Activity {
                     a.findViewById("Delete_Edit_Person").setVisibility(View.GONE);
                 }
 
+                a.findViewById("CompanyName").setText(MainActivity.companyData.getName());
                 a.findViewById("Edit_Person_FirstName").setText(a.selectedPerson.getFirst_name());
                 a.findViewById("Edit_Person_LastName").setText(a.selectedPerson.getLast_name());
                 a.findViewById("Edit_Person_Phone").setText(a.selectedPerson.getPhone());
@@ -255,6 +258,7 @@ class NewEditPersonActivity extends W4Activity {
                 var phone = a.findViewById("Edit_Person_Phone").getText();
                 var password = a.findViewById("Edit_Person_Password").getText();
                 var password2 = a.findViewById("Edit_Person_Password2").getText();
+                var companyName = a.findViewById("CompanyName").getText();
 
                 if (!a.newPerson) {
                     if (password.equals("")) {
@@ -364,6 +368,10 @@ class NewEditPersonActivity extends W4Activity {
                         W4_Funcs.getPersonPasswordFromUID(a.selectedPerson.getW4id(), function (oldPassword) {
                             a.editFireBaseUser(newPerson, oldPassword, password, readPermissions, writePermissions);
                         });
+                    if (MainActivity.currentUser.getW4id().equals(MainActivity.currentUser.getCompanyid())) {
+                        var reffCompanyName = firebase.database().ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_COMPANIES_DATA).child(MainActivity.DB_PATH_COMPANIES_DATA_NAME);
+                        W4_Funcs.writeToDB(reffCompanyName, companyName, "Updated company name from " + MainActivity.companyData.getName() + " to " + companyName);
+                    }
                 }
             });
 

@@ -29,6 +29,9 @@ class FireBaseListeners {
     static reffSupplyItems = null;
     static firstGetSupplyItemsListener = true;
     static viewSupplyItemListActivity = null;
+    static reffCompanyData = null;
+    static reffCompanyDataListener = null;
+    static firstGetCompanyDataListener = true;
     static employeeStatusListActivity = null;
     static viewTemplateListActivity = null;
     static reffData = null;
@@ -46,6 +49,7 @@ class FireBaseListeners {
         FireBaseListeners.fireBaseListener_getMessages();
         FireBaseListeners.fireBaseListener_getTasks();
         FireBaseListeners.fireBaseListener_getTasksOccurence();
+        FireBaseListeners.fireBaseListener_getCompanyData();
     }
 
     static fireBaseListener_getPeople(companyID) {
@@ -433,6 +437,27 @@ class FireBaseListeners {
         });
     }
 
+    static fireBaseListener_getCompanyData() {
+        if (FireBaseListeners.reffCompanyData != null)
+            FireBaseListeners.reffCompanyData.off();
+
+        HomeActivity.setFirebaseReferenceInProgress(MainActivity.netTaskGetCompanyData, true);
+        FireBaseListeners.firstGetCompanyDataListener = true;
+        FireBaseListeners.reffCompanyData = firebase.database().ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_COMPANIES_DATA);
+        FireBaseListeners.reffCompanyData.on('value', function (dataSnapshot) {
+            if (MainActivity.loggedIn) {
+                MainActivity.companyData = CompanyData.fromDS(dataSnapshot.val());
+                if (HomeActivity.homeActivity != null) {
+                    HomeActivity.homeActivity.getSupportActionBar().setTitle(MainActivity.companyData.getName());
+                }
+                if (FireBaseListeners.firstGetCompanyDataListener) {
+                    FireBaseListeners.firstGetCompanyDataListener = false;
+                    HomeActivity.setFirebaseReferenceInProgress(MainActivity.netTaskGetCompanyData, false);
+                }
+            }
+        });
+    }
+
     static processPeopleSnapshotData(dataSnapshot) {
         if (MainActivity.loggedIn) {
             var val = dataSnapshot.val(); //Ensures that MainActivity.currentPerson is set to the value of the credentials on the login page
@@ -514,7 +539,7 @@ class FireBaseListeners {
             if ((MainActivity.version_long != MainActivity.w4_DB_Data.getVersion_long() && MainActivity.version_long != MainActivity.w4_DB_Data.getTest_version_long())
                 // || (companyData != null && companyData.isBlacklisted())
                 // || (companyData != null && companyData.isTrialPeriod() && now.getMillis() >= companyData.getTrialEnd())
-            && firebase.auth() != null) {
+                && firebase.auth() != null) {
                 if (AppCompatActivity.activities.length > 1) {
                     HomeActivity.logOut();
                     var intent = new Intent(MainActivity.mainActivity, null);
