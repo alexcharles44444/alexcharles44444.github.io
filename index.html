@@ -48,6 +48,12 @@
   <div class="hide" id="snackbar" style="display: none; z-index: 7;"></div>
   <!-- End printable/non printable viewss -->
 
+  <div id="google_play_store_div" style="display: none;">
+    <h2 style="text-align: center;">Download the Clean Assistant app for faster browsing and clock in/out functionality</h2>
+    <img onclick="open_google_play_store();" class="clickable" style="width: 100%; display: block;" src="res/get_on_google_play.png">
+    <button onclick="close_google_play_div();" style="display: block; height: 50px; width: 100%;">No Thanks</button>
+  </div>
+
   <div id="dont_Print">
     <div class="loader" id="firstLoader" style="display: none; margin: auto;"></div>
     <div id="dialogbox_black_overlay"
@@ -155,6 +161,25 @@
     <div id="activities" style="margin-left: 260px; margin-top: 60px;">
     </div>
     <script>
+      var userAgent = navigator.userAgent.toLowerCase();
+      var Android = userAgent.indexOf("android") > -1;
+      if (true) {
+        document.getElementById("dont_Print").style.display = "none";
+        document.getElementById("google_play_store_div").style.display = "";
+      } else {
+        document.getElementById("dont_Print").style.display = "";
+        document.getElementById("google_play_store_div").style.display = "none";
+      }
+
+      function open_google_play_store(){
+        window.open("https://play.google.com/store/apps/details?id=com.where44444.cleanbook", '_self');
+      }
+
+      function close_google_play_div(){
+        document.getElementById("dont_Print").style.display = "";
+        document.getElementById("google_play_store_div").style.display = "none";
+      }
+
       String.prototype.equals = function (str2) {
         return this == str2;
       };
