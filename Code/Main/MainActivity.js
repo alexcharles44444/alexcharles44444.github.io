@@ -330,7 +330,13 @@ class MainActivity extends AppCompatActivity {
                     reffFirestore.get().then((dataSnapshot) => {
                         MainActivity.firestoreCustomer = FirestoreCustomer.fromDS(dataSnapshot.val());
                         if (MainActivity.firestoreCustomer != null && MainActivity.firestoreCustomer.status != null) { //Set up users profile in "users"
-                            MainActivity.mainActivity.completeSignIn3();
+                            if (MainActivity.firestoreCustomer.getMetadata().function_getMaxEmployeesInt() >= MainActivity.currentUser.getEmployeeNum())
+                                MainActivity.mainActivity.completeSignIn3();
+                            else {
+                                MainActivity.dialogBox(MainActivity.mainActivity, "⚠ Employee Limit Reached", "Your company's subscription only allows " + MainActivity.firestoreCustomer.getMetadata().getMax_employees() + " employees. You are number " + MainActivity.currentUser.getEmployeeNum());
+                                MainActivity.signInState = MainActivity.SIGNINSTATE_CANCELLED;
+                                MainActivity.mainActivity.setLoginLoading(false);
+                            }
                         }
                         else {
                             W4_Funcs.checkForFirestoreSubscription(firebase.auth().getUid(), function () {

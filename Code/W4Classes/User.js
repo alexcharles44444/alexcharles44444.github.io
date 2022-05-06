@@ -92,7 +92,7 @@ class User extends Asset {
     }
 
     getEmployeeNum() {
-        return employeeNum;
+        return this.employeeNum;
     }
 
     setEmployeeNum(employeeNum) {

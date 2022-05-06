@@ -445,6 +445,7 @@ class HomeActivity extends W4Activity {
 
     static initializeHomeScreen() {
         if (HomeActivity.homeActivity != null) {
+            document.getElementById("profile_menu_header").innerHTML = MainActivity.currentPerson.getFirst_name() + " " + MainActivity.currentPerson.getLast_name();
             // HomeActivity.homeActivity.getSupportActionBar().setTitle(MainActivity.currentPerson.getFirst_name() + " " + MainActivity.currentPerson.getLast_name());
             HomeActivity.homeActivity.setButtonsInvisible();
             if (MainActivity.currentPerson.canSeeEmployeeStatuses()) {

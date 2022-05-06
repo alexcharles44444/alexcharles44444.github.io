@@ -10,8 +10,8 @@ class FirestoreMetadata {
         return new FirestoreMetadata(max_employees);
     }
 
-    getMax_Employees() {
-        return this.status;
+    getMax_employees() {
+        return this.max_employees;
     }
 
     setMax_Employees(max_employees) {
