@@ -91,6 +91,7 @@ class NewEditPersonActivity extends W4Activity {
 
         if (a.newPerson) {
             a.getSupportActionBar().setTitle("New Person");
+            a.findViewById("EmailNote").setVisibility(View.VISIBLE);
             a.findViewById("New_Person_Email").setVisibility(View.VISIBLE);
             a.findViewById("Delete_Edit_Person").setVisibility(View.GONE);
             a.findViewById("Edit_Person_Password_Title").setText("Password");
@@ -122,147 +123,155 @@ class NewEditPersonActivity extends W4Activity {
         }
 
         var func = function (readPermissions, writePermissions) {
-            a.setEditPersonLoading(false);
-            if (!a.newPerson && a.selectedPerson == null) {
-                MainActivity.w4Toast(this, MainActivity.missingAsset, Toast.LENGTH_LONG);
-                a.finish();
-                return;
-            }
-
-            var spinner = a.findViewById("Edit_Person_Type_Spinner");
-            var spinnerArrayAdapter = new ArrayAdapter(
-                this, R.layout.spinner_item, Asset.person_types_array
-            );
-            spinner.setAdapter(spinnerArrayAdapter);
-
-            spinner.addEventListener("change", function () {
-                var position = spinner.getSelectedItemPosition();
-                switch (position) {
-                    case Person.EMPLOYEE:
-                        a.setUIPermissions(Asset.rPermissionsEmployee, Asset.wPermissionsEmployee);
-                        break;
-                    case Person.SUPERVISOR:
-                        a.setUIPermissions(Asset.rPermissionsSupervisor, Asset.wPermissionsSupervisor);
-                        break;
-                    case Person.MANAGER:
-                        a.setUIPermissions(Asset.rPermissionsManager, Asset.wPermissionsManager);
-                        break;
-                    case Person.CLIENT:
-                        a.setUIPermissions(Asset.rPermissionsClient, Asset.wPermissionsClient);
-                        break;
-                    case Person.OWNER:
-                        a.setUIPermissions(Asset.rPermissionsOwner, Asset.wPermissionsOwner);
-                        break;
-                }
-                MainActivity.dialogBox(a, "Permissions set!", "This persons permissions have been changed to the preset for " + Asset.person_types_array[position] + ". You can modify them further by pressing the 'Permissions' button");
-                for (var i = 0; i < a.read_switches.length; ++i) {
-                    NewEditPersonActivity.processEditBoxChecking(a.eles, a.read_switches[i].ele);
-                }
-            });
-
-            if (!a.newPerson) {
-                a.findViewById("Edit_Person_Type_Spinner").setSelection(a.selectedPerson.getType());
-            }
-
-            if (!a.newPerson) {
-                if (a.selectedPerson.getW4id().equals(MainActivity.currentUser.getCompanyid())) { //If person is the owner
-                    a.findViewById("CompanyNameLabel").setVisibility(View.VISIBLE);
-                    a.findViewById("CompanyName").setVisibility(View.VISIBLE);
-                    a.findViewById("Edit_Person_Type_Label").setVisibility(View.GONE);
-                    a.findViewById("Edit_Person_Type_Spinner").setVisibility(View.GONE);
-                    a.findViewById("Owner_No_Permissions_Text").setVisibility(View.VISIBLE);
-                    a.findViewById("Edit_Permissions_Label").setVisibility(View.GONE);
-                    a.findViewById("Edit_Person_Permissions_Div").setVisibility(View.GONE);
-                    a.findViewById("Delete_Edit_Person").setVisibility(View.GONE);
-                } else if (a.selectedPerson.getW4id().equals(MainActivity.currentPerson.getW4id())) { //If person is editing themselves
-                    a.findViewById("Edit_Person_Type_Label").setVisibility(View.GONE);
-                    a.findViewById("Edit_Person_Type_Spinner").setVisibility(View.GONE);
-                    a.findViewById("Edit_Person_RequiresGPS_CheckBox").setVisibility(View.GONE);
-                    a.findViewById("Self_No_Permissions_Text").setVisibility(View.VISIBLE);
-                    a.findViewById("Edit_Permissions_Label").setVisibility(View.GONE);
-                    a.findViewById("Edit_Person_Permissions_Div").setVisibility(View.GONE);
-                    a.findViewById("Delete_Edit_Person").setVisibility(View.GONE);
+            if (readPermissions != null && writePermissions != null) {
+                a.setEditPersonLoading(false);
+                if (!a.newPerson && a.selectedPerson == null) {
+                    MainActivity.w4Toast(this, MainActivity.missingAsset, Toast.LENGTH_LONG);
+                    a.finish();
+                    return;
                 }
 
-                a.findViewById("CompanyName").setText(MainActivity.companyData.getName());
-                a.findViewById("Edit_Person_FirstName").setText(a.selectedPerson.getFirst_name());
-                a.findViewById("Edit_Person_LastName").setText(a.selectedPerson.getLast_name());
-                a.findViewById("Edit_Person_Phone").setText(a.selectedPerson.getPhone());
-                a.findViewById("Edit_Person_Email").setText(a.selectedPerson.getEmail());
-                a.findViewById("Edit_Person_RequiresGPS_CheckBox").setChecked(a.selectedPerson.isRequiringGPSClockIn());
+                var spinner = a.findViewById("Edit_Person_Type_Spinner");
+                var spinnerArrayAdapter = new ArrayAdapter(
+                    this, R.layout.spinner_item, Asset.person_types_array
+                );
+                spinner.setAdapter(spinnerArrayAdapter);
 
-                //TODO get write and read permissions from users/
-                //Set UI From READ Permissions---------------------------------------------------------------------------------------------------------------------------------------
-                for (var i = 0; i < a.read_switches.length; ++i) {
-                    if (readPermissions[i * 2] || readPermissions[i * 2 + 1]) {
-                        a.read_switches[i].setChecked(true);
-                        if (readPermissions[i * 2]) {
-                            a.radios_all[i].setChecked(true);
-                        } else {
-                            a.radios_assigned[i].setChecked(true);
-                        }
+                spinner.addEventListener("change", function () {
+                    var position = spinner.getSelectedItemPosition();
+                    switch (position) {
+                        case Person.EMPLOYEE:
+                            a.setUIPermissions(Asset.rPermissionsEmployee, Asset.wPermissionsEmployee);
+                            break;
+                        case Person.SUPERVISOR:
+                            a.setUIPermissions(Asset.rPermissionsSupervisor, Asset.wPermissionsSupervisor);
+                            break;
+                        case Person.MANAGER:
+                            a.setUIPermissions(Asset.rPermissionsManager, Asset.wPermissionsManager);
+                            break;
+                        case Person.CLIENT:
+                            a.setUIPermissions(Asset.rPermissionsClient, Asset.wPermissionsClient);
+                            break;
+                        case Person.OWNER:
+                            a.setUIPermissions(Asset.rPermissionsOwner, Asset.wPermissionsOwner);
+                            break;
                     }
-                }
-
-                //Set UI From WRITE Permissions---------------------------------------------------------------------------------------------------------------------------------------
-                for (var i = 0; i < a.write_switches.length; ++i) {
-                    if (writePermissions[i * 2] || writePermissions[i * 2 + 1]) {
-                        a.write_switches[i].setChecked(true);
-                        if (writePermissions[i * 2]) {
-                            a.radios_all[i].setChecked(true);
-                        } else {
-                            a.radios_assigned[i].setChecked(true);
-                        }
+                    MainActivity.dialogBox(a, "Permissions set!", "This persons permissions have been changed to the preset for " + Asset.person_types_array[position] + ". You can modify them further by pressing the 'Permissions' button");
+                    for (var i = 0; i < a.read_switches.length; ++i) {
+                        NewEditPersonActivity.processEditBoxChecking(a.eles, a.read_switches[i].ele);
                     }
-                }
-            }
-
-            for (var i = 0; i < a.read_switches.length; ++i)
-                NewEditPersonActivity.processEditBoxChecking(a.eles, a.read_switches[i].ele);
-            var button2 = a.findViewById("Edit_Show_Password");
-            button2.addEventListener("click", function () {
-                if ((a.findViewById("Edit_Person_Password")).getInputType() == (InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
-                    (a.findViewById("Edit_Person_Password")).setInputType(InputType.TYPE_CLASS_TEXT);
-                } else {
-                    (a.findViewById("Edit_Person_Password")).setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                }
-            });
-            button2 = a.findViewById("Edit_Show_Password2");
-            button2.addEventListener("click", function () {
-                if ((a.findViewById("Edit_Person_Password2")).getInputType() == (InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
-                    (a.findViewById("Edit_Person_Password2")).setInputType(InputType.TYPE_CLASS_TEXT);
-                } else {
-                    (a.findViewById("Edit_Person_Password2")).setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                }
-            });
-            var button = a.findViewById("Edit_Person_None_Permissions_Button");
-            button.addEventListener("click", function () {
-                a.setUIPermissions(Asset.permissionsNone, Asset.permissionsNone);
-                for (var i = 0; i < a.read_switches.length; ++i)
-                    NewEditPersonActivity.processEditBoxChecking(a.eles, a.read_switches[i].ele);
-            });
-            button = a.findViewById("Edit_Person_All_Permissions_Button");
-            button.addEventListener("click", function () {
-                a.setUIPermissions(Asset.permissionsAll, Asset.permissionsAll);
-                for (var i = 0; i < a.read_switches.length; ++i)
-                    NewEditPersonActivity.processEditBoxChecking(a.eles, a.read_switches[i].ele);
-            });
-            button = a.findViewById("Cancel_Edit");
-            button.addEventListener("click", function () {
-                a.finish();
-            });
-            button = a.findViewById("Accept_Edit");
-            button.addEventListener("click", function () {
-                var firstName = a.findViewById("Edit_Person_FirstName").getText();
-                var lastName = a.findViewById("Edit_Person_LastName").getText();
-                var phone = a.findViewById("Edit_Person_Phone").getText();
-                var password = a.findViewById("Edit_Person_Password").getText();
-                var password2 = a.findViewById("Edit_Person_Password2").getText();
-                var companyName = a.findViewById("CompanyName").getText();
+                });
 
                 if (!a.newPerson) {
-                    if (password.equals("")) {
-                        // password = a.selectedPerson.getPassword();
+                    a.findViewById("Edit_Person_Type_Spinner").setSelection(a.selectedPerson.getType());
+                }
+
+                if (!a.newPerson) {
+                    if (a.selectedPerson.getW4id().equals(MainActivity.currentUser.getCompanyid())) { //If person is the owner
+                        a.findViewById("CompanyNameLabel").setVisibility(View.VISIBLE);
+                        a.findViewById("CompanyName").setVisibility(View.VISIBLE);
+                        a.findViewById("Edit_Person_Type_Label").setVisibility(View.GONE);
+                        a.findViewById("Edit_Person_Type_Spinner").setVisibility(View.GONE);
+                        a.findViewById("Owner_No_Permissions_Text").setVisibility(View.VISIBLE);
+                        a.findViewById("Edit_Permissions_Label").setVisibility(View.GONE);
+                        a.findViewById("Edit_Person_Permissions_Div").setVisibility(View.GONE);
+                        a.findViewById("Delete_Edit_Person").setVisibility(View.GONE);
+                    } else if (a.selectedPerson.getW4id().equals(MainActivity.currentPerson.getW4id())) { //If person is editing themselves
+                        a.findViewById("Edit_Person_Type_Label").setVisibility(View.GONE);
+                        a.findViewById("Edit_Person_Type_Spinner").setVisibility(View.GONE);
+                        a.findViewById("Edit_Person_RequiresGPS_CheckBox").setVisibility(View.GONE);
+                        a.findViewById("Self_No_Permissions_Text").setVisibility(View.VISIBLE);
+                        a.findViewById("Edit_Permissions_Label").setVisibility(View.GONE);
+                        a.findViewById("Edit_Person_Permissions_Div").setVisibility(View.GONE);
+                        a.findViewById("Delete_Edit_Person").setVisibility(View.GONE);
+                    }
+
+                    a.findViewById("CompanyName").setText(MainActivity.companyData.getName());
+                    a.findViewById("Edit_Person_FirstName").setText(a.selectedPerson.getFirst_name());
+                    a.findViewById("Edit_Person_LastName").setText(a.selectedPerson.getLast_name());
+                    a.findViewById("Edit_Person_Phone").setText(a.selectedPerson.getPhone());
+                    a.findViewById("Edit_Person_Email").setText(a.selectedPerson.getEmail());
+                    a.findViewById("Edit_Person_RequiresGPS_CheckBox").setChecked(a.selectedPerson.isRequiringGPSClockIn());
+
+                    //TODO get write and read permissions from users/
+                    //Set UI From READ Permissions---------------------------------------------------------------------------------------------------------------------------------------
+                    for (var i = 0; i < a.read_switches.length; ++i) {
+                        if (readPermissions[i * 2] || readPermissions[i * 2 + 1]) {
+                            a.read_switches[i].setChecked(true);
+                            if (readPermissions[i * 2]) {
+                                a.radios_all[i].setChecked(true);
+                            } else {
+                                a.radios_assigned[i].setChecked(true);
+                            }
+                        }
+                    }
+
+                    //Set UI From WRITE Permissions---------------------------------------------------------------------------------------------------------------------------------------
+                    for (var i = 0; i < a.write_switches.length; ++i) {
+                        if (writePermissions[i * 2] || writePermissions[i * 2 + 1]) {
+                            a.write_switches[i].setChecked(true);
+                            if (writePermissions[i * 2]) {
+                                a.radios_all[i].setChecked(true);
+                            } else {
+                                a.radios_assigned[i].setChecked(true);
+                            }
+                        }
+                    }
+                }
+
+                for (var i = 0; i < a.read_switches.length; ++i)
+                    NewEditPersonActivity.processEditBoxChecking(a.eles, a.read_switches[i].ele);
+                var button2 = a.findViewById("Edit_Show_Password");
+                button2.addEventListener("click", function () {
+                    if ((a.findViewById("Edit_Person_Password")).getInputType() == (InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
+                        (a.findViewById("Edit_Person_Password")).setInputType(InputType.TYPE_CLASS_TEXT);
+                    } else {
+                        (a.findViewById("Edit_Person_Password")).setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    }
+                });
+                button2 = a.findViewById("Edit_Show_Password2");
+                button2.addEventListener("click", function () {
+                    if ((a.findViewById("Edit_Person_Password2")).getInputType() == (InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
+                        (a.findViewById("Edit_Person_Password2")).setInputType(InputType.TYPE_CLASS_TEXT);
+                    } else {
+                        (a.findViewById("Edit_Person_Password2")).setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    }
+                });
+                var button = a.findViewById("Edit_Person_None_Permissions_Button");
+                button.addEventListener("click", function () {
+                    a.setUIPermissions(Asset.permissionsNone, Asset.permissionsNone);
+                    for (var i = 0; i < a.read_switches.length; ++i)
+                        NewEditPersonActivity.processEditBoxChecking(a.eles, a.read_switches[i].ele);
+                });
+                button = a.findViewById("Edit_Person_All_Permissions_Button");
+                button.addEventListener("click", function () {
+                    a.setUIPermissions(Asset.permissionsAll, Asset.permissionsAll);
+                    for (var i = 0; i < a.read_switches.length; ++i)
+                        NewEditPersonActivity.processEditBoxChecking(a.eles, a.read_switches[i].ele);
+                });
+                button = a.findViewById("Cancel_Edit");
+                button.addEventListener("click", function () {
+                    a.finish();
+                });
+                button = a.findViewById("Accept_Edit");
+                button.addEventListener("click", function () {
+                    var firstName = a.findViewById("Edit_Person_FirstName").getText();
+                    var lastName = a.findViewById("Edit_Person_LastName").getText();
+                    var phone = a.findViewById("Edit_Person_Phone").getText();
+                    var password = a.findViewById("Edit_Person_Password").getText();
+                    var password2 = a.findViewById("Edit_Person_Password2").getText();
+                    var companyName = a.findViewById("CompanyName").getText();
+
+                    if (!a.newPerson) {
+                        if (password.equals("")) {
+                            // password = a.selectedPerson.getPassword();
+                        }
+                        else {
+                            if (!password.equals(password2)) {
+                                MainActivity.w4Toast(a, "Passwords must match!", Toast.LENGTH_LONG);
+                                return;
+                            }
+                        }
                     }
                     else {
                         if (!password.equals(password2)) {
@@ -270,145 +279,182 @@ class NewEditPersonActivity extends W4Activity {
                             return;
                         }
                     }
-                }
-                else {
-                    if (!password.equals(password2)) {
-                        MainActivity.w4Toast(a, "Passwords must match!", Toast.LENGTH_LONG);
-                        return;
+
+                    var type = a.findViewById("Edit_Person_Type_Spinner").getSelectedItemPosition();
+                    var requiresGPS = a.findViewById("Edit_Person_RequiresGPS_CheckBox").isChecked();
+
+                    var new_email = null;
+                    if (a.newPerson) {
+                        new_email = a.findViewById("New_Person_Email").getText().replace(/ /g, "").toLowerCase();
                     }
-                }
 
-                var type = a.findViewById("Edit_Person_Type_Spinner").getSelectedItemPosition();
-                var requiresGPS = a.findViewById("Edit_Person_RequiresGPS_CheckBox").isChecked();
+                    var readPermissions = [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ];
+                    var writePermissions = [
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        false
+                    ];
 
-                var new_email = null;
-                if (a.newPerson) {
-                    new_email = a.findViewById("New_Person_Email").getText().replace(/ /g, "").toLowerCase();
-                }
+                    for (var i = 0; i < a.read_switches.length; ++i) {
+                        if (a.read_switches[i].isChecked())
+                            if (a.radios_all[i].isChecked())
+                                readPermissions[i * 2] = true;
+                            else
+                                readPermissions[i * 2 + 1] = true;
+                    }
+                    for (var i = 0; i < a.write_switches.length; ++i) {
+                        if (a.write_switches[i].isChecked())
+                            if (a.radios_all[i].isChecked())
+                                writePermissions[i * 2] = true;
+                            else
+                                writePermissions[i * 2 + 1] = true;
+                    }
 
-                var readPermissions = [
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false
-                ];
-                var writePermissions = [
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false,
-                    false
-                ];
-
-                for (var i = 0; i < a.read_switches.length; ++i) {
-                    if (a.read_switches[i].isChecked())
-                        if (a.radios_all[i].isChecked())
-                            readPermissions[i * 2] = true;
-                        else
-                            readPermissions[i * 2 + 1] = true;
-                }
-                for (var i = 0; i < a.write_switches.length; ++i) {
-                    if (a.write_switches[i].isChecked())
-                        if (a.radios_all[i].isChecked())
-                            writePermissions[i * 2] = true;
-                        else
-                            writePermissions[i * 2 + 1] = true;
-                }
-
-                if (a.newPerson) {
-                    if (W4_Funcs.isValidEmail(new_email)) {
-                        if (a.findViewById("Edit_Person_Password").getText().length >= 6) {
-                            a.setEditPersonLoading(true);
-                            //TODO Write read/write permissions to users/
-                            var person = new Person("", firstName, lastName, phone, new_email, type, requiresGPS, false, MainActivity.theCompany.getPersonList().length);
-                            a.createNewFireBaseUser(person, password, readPermissions, writePermissions);
+                    if (a.newPerson) {
+                        if (W4_Funcs.isValidEmail(new_email)) {
+                            if (a.findViewById("Edit_Person_Password").getText().length >= 6) {
+                                a.setEditPersonLoading(true);
+                                //TODO Write read/write permissions to users/
+                                var person = new Person("", firstName, lastName, phone, new_email, type, requiresGPS, false, MainActivity.theCompany.getPersonList().length);
+                                a.createNewFireBaseUser(person, password, readPermissions, writePermissions);
+                            }
+                            else {
+                                MainActivity.w4Toast(this, "Password must be at least 6 characters long", Toast.LENGTH_LONG);
+                            }
                         }
                         else {
-                            MainActivity.w4Toast(this, "Password must be at least 6 characters long", Toast.LENGTH_LONG);
+                            MainActivity.w4Toast(this, "E-mail address is invalid", Toast.LENGTH_LONG);
                         }
                     }
                     else {
-                        MainActivity.w4Toast(this, "E-mail address is invalid", Toast.LENGTH_LONG);
+                        a.setEditPersonLoading(true);
+                        //TODO Write read/write permissions to users/
+                        var newPerson = new Person(a.selectedPerson.getW4id(), firstName, lastName, phone, a.selectedPerson.getEmail(), type, requiresGPS, a.selectedPerson.isClockedIn(), a.selectedPerson.getEmployeeNum());
+                        if (password.equals(""))
+                            a.editFireBaseUser(newPerson, "", "", readPermissions, writePermissions);
+                        else
+                            W4_Funcs.getPersonPasswordFromUID(a.selectedPerson.getW4id(), function (oldPassword) {
+                                if (oldPassword != null) {
+                                    a.editFireBaseUser(newPerson, oldPassword, password, readPermissions, writePermissions);
+                                } else {
+                                    MainActivity.dialogBox(a, "Error", "Cannot retrieve password, contact Clean Assistant Support at alexcharles44444@gmail.com");
+                                }
+                            });
+                        if (MainActivity.currentUser.getW4id().equals(MainActivity.currentUser.getCompanyid())) {
+                            var reffCompanyName = firebase.database().ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_COMPANIES_DATA).child(MainActivity.DB_PATH_COMPANIES_DATA_NAME);
+                            W4_Funcs.writeToDB(reffCompanyName, companyName, "Updated company name from " + MainActivity.companyData.getName() + " to " + companyName);
+                        }
                     }
-                }
-                else {
-                    a.setEditPersonLoading(true);
-                    //TODO Write read/write permissions to users/
-                    var newPerson = new Person(a.selectedPerson.getW4id(), firstName, lastName, phone, a.selectedPerson.getEmail(), type, requiresGPS, a.selectedPerson.isClockedIn(), a.selectedPerson.getEmployeeNum());
-                    if (password.equals(""))
-                        a.editFireBaseUser(newPerson, "", "", readPermissions, writePermissions);
+                });
+
+                var button = a.findViewById("Delete_Edit_Person");
+                button.addEventListener("click", function () {
+                    var intent = new Intent(this, new ConfirmActivity());
+                    intent.putExtra("description", "Are you sure you want to delete this Person? All associated Shifts will remove this Person. All associated Time Punches and Task Sheet Instances will also be deleted.");
+                    a.startActivityForResult(intent, MainActivity.requestCodePersonDelete);
+                });
+
+                button = a.findViewById("Edit_Person_Permissions_Button");
+                button.addEventListener("click", function () {
+                    if (a.findViewById("Edit_Person_Permissions_Div").getVisibility() == View.VISIBLE)
+                        a.findViewById("Edit_Person_Permissions_Div").setVisibility(View.GONE);
                     else
-                        W4_Funcs.getPersonPasswordFromUID(a.selectedPerson.getW4id(), function (oldPassword) {
-                            a.editFireBaseUser(newPerson, oldPassword, password, readPermissions, writePermissions);
-                        });
-                    if (MainActivity.currentUser.getW4id().equals(MainActivity.currentUser.getCompanyid())) {
-                        var reffCompanyName = firebase.database().ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_COMPANIES_DATA).child(MainActivity.DB_PATH_COMPANIES_DATA_NAME);
-                        W4_Funcs.writeToDB(reffCompanyName, companyName, "Updated company name from " + MainActivity.companyData.getName() + " to " + companyName);
-                    }
-                }
-            });
+                        a.findViewById("Edit_Person_Permissions_Div").setVisibility(View.VISIBLE);
+                });
 
-            var button = a.findViewById("Delete_Edit_Person");
-            button.addEventListener("click", function () {
-                var intent = new Intent(this, new ConfirmActivity());
-                intent.putExtra("description", "Are you sure you want to delete this Person? All associated Shifts will remove this Person. All associated Time Punches and Task Sheet Instances will also be deleted.");
-                a.startActivityForResult(intent, MainActivity.requestCodePersonDelete);
-            });
+                (a.findViewById("View_Permissions_Help")).addEventListener("click", function () {
+                    // if (a.findViewById("Edit_Person_Permissions_Text").getVisibility() == View.GONE)
+                    //     a.findViewById("Edit_Person_Permissions_Text").setVisibility(View.VISIBLE);
+                    // else
+                    //     a.findViewById("Edit_Person_Permissions_Text").setVisibility(View.GONE);
 
-            button = a.findViewById("Edit_Person_Permissions_Button");
-            button.addEventListener("click", function () {
-                if (a.findViewById("Edit_Person_Permissions_Div").getVisibility() == View.VISIBLE)
-                    a.findViewById("Edit_Person_Permissions_Div").setVisibility(View.GONE);
-                else
-                    a.findViewById("Edit_Person_Permissions_Div").setVisibility(View.VISIBLE);
-            });
-
-            (a.findViewById("View_Permissions_Help")).addEventListener("click", function () {
-                if (a.findViewById("Edit_Person_Permissions_Text").getVisibility() == View.GONE)
-                    a.findViewById("Edit_Person_Permissions_Text").setVisibility(View.VISIBLE);
-                else
+                    var intent = new Intent(a, new ViewTextActivity());
+                    intent.putExtra("title", "Permissions Help");
+                    intent.putExtra("text", "<br><br>Person "
+                        + "Types<br>Owners, Managers, and Supervisors will receive notifications about Employee "
+                        + "activities.<br><br>READ<br>This "
+                        + "person can view the designated asset<br><br>WRITE<br>This person can change the designated "
+                        + "asset<br><br>ALL<br>This "
+                        + "person has permissions for all assets<br><br>Assigned Locations<br>If this person is assigned to a Shift "
+                        + "at "
+                        + "a "
+                        + "certain Location, they will see that Location.<br><br>Assigned Messages<br>If this person is assigned to "
+                        + "a "
+                        + "Shift "
+                        + "at a certain Location, they will see Messages for that Location.<br><br>Assigned People<br>If this "
+                        + "Person is "
+                        + "assigned to a Shift at a certain Location, they will see all People that have a Shift at the same "
+                        + "Location.<br><br>Assigned Shifts<br>This person can only see their own Shifts.<br><br>Assigned Time "
+                        + "Punches<br>This "
+                        + "person can only see their own Time Punches.<br><br>Assigned Inspections<br>If this Person is assigned to "
+                        + "a "
+                        + "Shift "
+                        + "at a certain Location, they will see Inspection Plans and Completed Inspections at that "
+                        + "Location.<br><br>Assigned Supplies<br>If this Person is assigned to a Shift at a certain Location, they "
+                        + "will "
+                        + "see "
+                        + "Supplies assigned to that Location.<br><br>Assigned SDS<br>If this Person is assigned to a Shift at a "
+                        + "certain "
+                        + "Location, they will see SDS Sheets for Supplies assigned to that Location.<br><br>Assigned Tasks<br>If "
+                        + "this "
+                        + "Person "
+                        + "is assigned to a Shift, they will see Task Templates assigned to that Shift. They will only see "
+                        + "Completed "
+                        + "and In Progress Tasks that they initiated. ");
+                    a.startActivity(intent);
                     a.findViewById("Edit_Person_Permissions_Text").setVisibility(View.GONE);
-            });
-            for (var i = 0; i < a.read_switches.length; ++i) {
-                a.read_switches[i].addEventListener("click", function (event) {
-                    NewEditPersonActivity.processEditBoxChecking(a.eles, event.target);
                 });
-                a.write_switches[i].addEventListener("click", function (event) {
-                    NewEditPersonActivity.processEditBoxChecking(a.eles, event.target);
-                });
-                a.radios_assigned[i].addEventListener("click", function (event) {
-                    NewEditPersonActivity.processEditBoxChecking(a.eles, event.target);
-                });
-                a.radios_all[i].addEventListener("click", function (event) {
-                    NewEditPersonActivity.processEditBoxChecking(a.eles, event.target);
-                });
+                for (var i = 0; i < a.read_switches.length; ++i) {
+                    a.read_switches[i].addEventListener("click", function (event) {
+                        NewEditPersonActivity.processEditBoxChecking(a.eles, event.target);
+                    });
+                    a.write_switches[i].addEventListener("click", function (event) {
+                        NewEditPersonActivity.processEditBoxChecking(a.eles, event.target);
+                    });
+                    a.radios_assigned[i].addEventListener("click", function (event) {
+                        NewEditPersonActivity.processEditBoxChecking(a.eles, event.target);
+                    });
+                    a.radios_all[i].addEventListener("click", function (event) {
+                        NewEditPersonActivity.processEditBoxChecking(a.eles, event.target);
+                    });
+                }
+            }
+            else {
+                MainActivity.dialogBox(NewEditPersonActivity.this, "Error", "Cannot retrieve permissions, contact Clean Assistant Support at alexcharles44444@gmail.com");
             }
         }
 
@@ -434,38 +480,43 @@ class NewEditPersonActivity extends W4Activity {
                     Deletions.deletePersonFromShifts(a.selectedPerson.getW4id());
                     Deletions.deleteTaskSheetOccurences(null, a.selectedPerson.getW4id());
                     W4_Funcs.getPersonPasswordFromUID(a.selectedPerson.getW4id(), function (password0) {
-                        var reffUser = firebase.database().ref().child(MainActivity.DB_PATH_USERS).child(a.selectedPerson.getW4id());
-                        W4_Funcs.deleteFromDB(reffUser, "");
-                        firebase.auth().signInWithEmailAndPassword(a.selectedPerson.getEmail(), password0)
-                            .then((userCredential) => {
-                                console.log("signInWithEmail:success " + firebase.auth().getUid());
-                                firebase.auth().currentUser.delete().then(() => {
-                                    console.log("User account deleted.");
-                                    firebase.auth().setPersistence(MainActivity.persistenceVar).then(function () {
-                                        return firebase.auth().signInWithEmailAndPassword(MainActivity.current_email, MainActivity.current_password) //Log back into main account
-                                            .then((userCredential) => {
-                                                console.log("signInWithEmail:success " + firebase.auth().getUid());
-                                                MainActivity.w4Toast(this, "Successfully deleted Person", Toast.LENGTH_LONG);
-                                                HomeActivity.logOut();
-                                                MainActivity.overrideAutoLogin = true;
-                                                var intent = new Intent(AppCompatActivity.getApplicationContext(), null);
-                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                a.startActivity(intent);
-                                            }).catch((error) => {
-                                                console.log("signInWithEmail:failure|" + error.code + "|" + error.message);
-                                                MainActivity.w4Toast(this, "Could not authenticate your credentials", Toast.LENGTH_LONG);
-                                                System.exit(2);
-                                            });
+                        if (password0 != null) {
+                            var reffUser = firebase.database().ref().child(MainActivity.DB_PATH_USERS).child(a.selectedPerson.getW4id());
+                            W4_Funcs.deleteFromDB(reffUser, "");
+                            firebase.auth().signInWithEmailAndPassword(a.selectedPerson.getEmail(), password0)
+                                .then((userCredential) => {
+                                    console.log("signInWithEmail:success " + firebase.auth().getUid());
+                                    firebase.auth().currentUser.delete().then(() => {
+                                        console.log("User account deleted.");
+                                        firebase.auth().setPersistence(MainActivity.persistenceVar).then(function () {
+                                            return firebase.auth().signInWithEmailAndPassword(MainActivity.current_email, MainActivity.current_password) //Log back into main account
+                                                .then((userCredential) => {
+                                                    console.log("signInWithEmail:success " + firebase.auth().getUid());
+                                                    MainActivity.w4Toast(this, "Successfully deleted Person", Toast.LENGTH_LONG);
+                                                    HomeActivity.logOut();
+                                                    MainActivity.overrideAutoLogin = true;
+                                                    var intent = new Intent(AppCompatActivity.getApplicationContext(), null);
+                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                    a.startActivity(intent);
+                                                }).catch((error) => {
+                                                    console.log("signInWithEmail:failure|" + error.code + "|" + error.message);
+                                                    MainActivity.w4Toast(this, "Could not authenticate your credentials", Toast.LENGTH_LONG);
+                                                    System.exit(2);
+                                                });
+                                        });
+                                    }).catch((error) => {
+                                        console.log("signInWithEmail:failure|" + error.code + "|" + error.message);
+                                        System.exit(3);
                                     });
                                 }).catch((error) => {
                                     console.log("signInWithEmail:failure|" + error.code + "|" + error.message);
-                                    System.exit(3);
+                                    MainActivity.w4Toast(this, "Could not authenticate your credentials", Toast.LENGTH_LONG);
+                                    System.exit(4);
                                 });
-                            }).catch((error) => {
-                                console.log("signInWithEmail:failure|" + error.code + "|" + error.message);
-                                MainActivity.w4Toast(this, "Could not authenticate your credentials", Toast.LENGTH_LONG);
-                                System.exit(4);
-                            });
+                        }
+                        else {
+                            MainActivity.dialogBox(a, "Error", "Cannot retrieve password, contact Clean Assistant Support at alexcharles44444@gmail.com");
+                        }
                     });
                 }
             }
@@ -610,11 +661,11 @@ class NewEditPersonActivity extends W4Activity {
         firebase.auth().createUserWithEmailAndPassword(person.getEmail(), password) //Creating a new person also signs into that account, make sure to sign back into original account
             .then((userCredential) => {
                 var uid = firebase.auth().getUid();
+                person.setW4id(uid);
                 var employeeNum = MainActivity.theCompany.getPersonList().length; //Accounts for not counting owner in number
                 var user = new User(person.getW4id(), MainActivity.currentUser.getCompanyid(), person.getEmail(), password, readPermissions, writePermissions, employeeNum);
                 var reffUser = firebase.database().ref().child(MainActivity.DB_PATH_USERS).child(uid);
                 W4_Funcs.writeToDB(reffUser, user, "Added new person user data to users " + uid);
-                person.setW4id(uid);
                 var reffPerson = firebase.database().ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_ASSET_PEOPLE).child(uid);
                 W4_Funcs.writeToDB(reffPerson, person, "New Person " + person.getFirst_name() + " " + person.getLast_name());
 

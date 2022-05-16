@@ -71,53 +71,58 @@ class ViewPersonActivity extends W4Activity {
         }
 
         W4_Funcs.getPersonPermissionsFromUID(a.selectedPerson.getW4id(), function (readPermissions, writePermissions) {
-            a.findViewById("View_Person_Type_Text").setText(Asset.person_types_array[a.selectedPerson.getType()]);
-            a.findViewById("View_Person_FirstName").setText(a.selectedPerson.getFirst_name());
-            a.findViewById("View_Person_LastName").setText(a.selectedPerson.getLast_name());
-            a.findViewById("View_Person_Phone").setText(a.selectedPerson.getPhone());
-            a.findViewById("View_Person_Email").setText(a.selectedPerson.getEmail());
-            a.findViewById("View_Person_RequiresGPS_CheckBox").setChecked(a.selectedPerson.isRequiringGPSClockIn());
+            if (readPermissions != null && writePermissions != null) {
+                a.findViewById("View_Person_Type_Text").setText(Asset.person_types_array[a.selectedPerson.getType()]);
+                a.findViewById("View_Person_FirstName").setText(a.selectedPerson.getFirst_name());
+                a.findViewById("View_Person_LastName").setText(a.selectedPerson.getLast_name());
+                a.findViewById("View_Person_Phone").setText(a.selectedPerson.getPhone());
+                a.findViewById("View_Person_Email").setText(a.selectedPerson.getEmail());
+                a.findViewById("View_Person_RequiresGPS_CheckBox").setChecked(a.selectedPerson.isRequiringGPSClockIn());
 
-            //TODO get write and read permissions from users/
-            //Set UI From READ Permissions---------------------------------------------------------------------------------------------------------------------------------------
-            for (var i = 0; i < a.read_switches.length; ++i) {
-                if (readPermissions[i * 2] || readPermissions[i * 2 + 1]) {
-                    a.read_switches[i].setChecked(true);
-                    if (readPermissions[i * 2]) {
-                        a.radios_all[i].setChecked(true);
-                    } else {
-                        a.radios_assigned[i].setChecked(true);
+                //TODO get write and read permissions from users/
+                //Set UI From READ Permissions---------------------------------------------------------------------------------------------------------------------------------------
+                for (var i = 0; i < a.read_switches.length; ++i) {
+                    if (readPermissions[i * 2] || readPermissions[i * 2 + 1]) {
+                        a.read_switches[i].setChecked(true);
+                        if (readPermissions[i * 2]) {
+                            a.radios_all[i].setChecked(true);
+                        } else {
+                            a.radios_assigned[i].setChecked(true);
+                        }
                     }
                 }
-            }
 
-            //Set UI From WRITE Permissions---------------------------------------------------------------------------------------------------------------------------------------
-            for (var i = 0; i < a.write_switches.length; ++i) {
-                if (writePermissions[i * 2] || writePermissions[i * 2 + 1]) {
-                    a.write_switches[i].setChecked(true);
-                    if (writePermissions[i * 2]) {
-                        a.radios_all[i].setChecked(true);
-                    } else {
-                        a.radios_assigned[i].setChecked(true);
+                //Set UI From WRITE Permissions---------------------------------------------------------------------------------------------------------------------------------------
+                for (var i = 0; i < a.write_switches.length; ++i) {
+                    if (writePermissions[i * 2] || writePermissions[i * 2 + 1]) {
+                        a.write_switches[i].setChecked(true);
+                        if (writePermissions[i * 2]) {
+                            a.radios_all[i].setChecked(true);
+                        } else {
+                            a.radios_assigned[i].setChecked(true);
+                        }
                     }
                 }
-            }
-            for (var i = 0; i < a.read_switches.length; ++i)
-                a.processViewBoxChecking(a.read_switches[i], a.write_switches[i], a.radio_groups[i]);
-            var button = a.findViewById("View_Person_Permissions_Button");
-            button.addEventListener("click", function () {
-                if (a.findViewById("View_Person_Permissions_Div").getVisibility() == View.VISIBLE)
-                    a.findViewById("View_Person_Permissions_Div").setVisibility(View.GONE);
-                else
-                    a.findViewById("View_Person_Permissions_Div").setVisibility(View.VISIBLE);
-            });
+                for (var i = 0; i < a.read_switches.length; ++i)
+                    a.processViewBoxChecking(a.read_switches[i], a.write_switches[i], a.radio_groups[i]);
+                var button = a.findViewById("View_Person_Permissions_Button");
+                button.addEventListener("click", function () {
+                    if (a.findViewById("View_Person_Permissions_Div").getVisibility() == View.VISIBLE)
+                        a.findViewById("View_Person_Permissions_Div").setVisibility(View.GONE);
+                    else
+                        a.findViewById("View_Person_Permissions_Div").setVisibility(View.VISIBLE);
+                });
 
-            a.findViewById("View_Permissions_Help").addEventListener("click", function () {
-                if (a.findViewById("View_Person_Permissions_Text").getVisibility() == View.GONE)
-                    a.findViewById("View_Person_Permissions_Text").setVisibility(View.VISIBLE);
-                else
-                    a.findViewById("View_Person_Permissions_Text").setVisibility(View.GONE);
-            });
+                a.findViewById("View_Permissions_Help").addEventListener("click", function () {
+                    if (a.findViewById("View_Person_Permissions_Text").getVisibility() == View.GONE)
+                        a.findViewById("View_Person_Permissions_Text").setVisibility(View.VISIBLE);
+                    else
+                        a.findViewById("View_Person_Permissions_Text").setVisibility(View.GONE);
+                });
+            }
+            else {
+                MainActivity.dialogBox(NewEditPersonActivity.this, "Error", "Cannot retrieve permissions, contact Clean Assistant Support at alexcharles44444@gmail.com");
+            }
         });
     }
 

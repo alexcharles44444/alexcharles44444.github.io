@@ -241,6 +241,7 @@ class MainActivity extends AppCompatActivity {
                                     MainActivity.mainActivity.findViewById("Login_Email").setTextIsSelectable(true);
                                     MainActivity.signInState = MainActivity.SIGNINSTATE_CANCELLED;
                                     MainActivity.mainActivity.setLoginLoading(false);
+                                    MainActivity.dialogBox(MainActivity.mainActivity, "Error", "Cannot retrieve password, contact Clean Assistant Support at alexcharles44444@gmail.com");
                                 }
                             });
                         }
