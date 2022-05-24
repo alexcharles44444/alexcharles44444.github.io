@@ -1,5 +1,12 @@
 class ViewSupplyItemLocationsListActivity extends W4Activity {
 
+    static viewSupplyItemLocationsListActivity = null;
+
+    onDestroy() {
+        super.onDestroy();
+        ViewSupplyItemLocationsListActivity.viewSupplyItemLocationsListActivity = null;
+    }
+
     onResume() {
         super.onResume();
         this.updateList();
@@ -12,6 +19,7 @@ class ViewSupplyItemLocationsListActivity extends W4Activity {
             return;
         a.getSupportActionBar().setTitle("View Supplies Locations");
         a.setContentView(R.layout.activity_view_supply_item_locations_list);
+        ViewSupplyItemLocationsListActivity.viewSupplyItemLocationsListActivity = this;
 
         a.findViewById("TemplatesButton").addEventListener("click", function () {
             var intent = new Intent(this, new ViewTemplateListActivity());

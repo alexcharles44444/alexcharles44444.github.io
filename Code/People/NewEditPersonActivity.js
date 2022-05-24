@@ -176,6 +176,21 @@ class NewEditPersonActivity extends W4Activity {
                         a.findViewById("Edit_Permissions_Label").setVisibility(View.GONE);
                         a.findViewById("Edit_Person_Permissions_Div").setVisibility(View.GONE);
                         a.findViewById("Delete_Edit_Person").setVisibility(View.GONE);
+                        var button = a.findViewById("Manage_Subscription");
+                        button.setVisibility(View.VISIBLE);
+                        button.ele.style.display = "block";
+                        button.ele.onclick = async function () {
+                            document.getElementById("Manage_Subscription").style.display = "none";
+                            document.getElementById("loader_manage_subscription2").style.display = "block";
+                            const functionRef = firebase
+                                .app()
+                                .functions("us-central1")
+                                .httpsCallable("ext-firestore-stripe-payments-createPortalLink");
+                            const { data } = await functionRef({ returnUrl: window.location.origin });
+                            document.getElementById("Manage_Subscription").style.display = "block";
+                            document.getElementById("loader_manage_subscription2").style.display = "none";
+                            window.open(data.url, '_self');
+                        };
                     } else if (a.selectedPerson.getW4id().equals(MainActivity.currentPerson.getW4id())) { //If person is editing themselves
                         a.findViewById("Edit_Person_Type_Label").setVisibility(View.GONE);
                         a.findViewById("Edit_Person_Type_Spinner").setVisibility(View.GONE);
@@ -546,7 +561,7 @@ class NewEditPersonActivity extends W4Activity {
                         firebase.auth().currentUser.updatePassword(newPassword)
                             .then(() => {
                                 console.log("User account changed password.");
-                                var passwordReff = firebase.database().ref().child(DB_PATH_USERS).child(FirebaseAuth.getInstance().getUid()).child(DB_PATH_USERS_PASSWORD);
+                                var passwordReff = firebase.database().ref().child(MainActivity.DB_PATH_USERS).child(firebase.auth().getUid()).child(MainActivity.DB_PATH_USERS_PASSWORD);
                                 W4_Funcs.writeToDB(passwordReff, newPassword, "");
                                 if (newPerson2.getW4id().equals(MainActivity.currentPersonID))
                                     MainActivity.current_password = newPassword;
@@ -595,6 +610,7 @@ class NewEditPersonActivity extends W4Activity {
             a.findViewById("Accept_Edit").setVisibility(View.GONE);
             a.findViewById("Delete_Edit_Person").setVisibility(View.GONE);
             a.findViewById("Edit_Person_Progress").setVisibility(View.VISIBLE);
+            a.findViewById("Edit_Person_Progress2").setVisibility(View.VISIBLE);
         } else {
             (a.findViewById("Edit_Person_FirstName")).setInputType(InputType.TYPE_CLASS_TEXT);
             (a.findViewById("Edit_Person_LastName")).setInputType(InputType.TYPE_CLASS_TEXT);
@@ -605,6 +621,7 @@ class NewEditPersonActivity extends W4Activity {
             if (!a.newPerson)
                 a.findViewById("Delete_Edit_Person").setVisibility(View.VISIBLE);
             a.findViewById("Edit_Person_Progress").setVisibility(View.GONE);
+            a.findViewById("Edit_Person_Progress2").setVisibility(View.GONE);
         }
     }
 

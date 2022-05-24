@@ -2356,10 +2356,10 @@ class W4_Funcs {
     }
 
     static getPersonPermissionsFromUID(uid, function0) {
-        var reffUser = firebase.database().ref().child(MainActivity.DB_PATH_USERS).child(uid).child("readPermissions");
+        var reffUser = firebase.database().ref().child(MainActivity.DB_PATH_USERS).child(uid).child(MainActivity.DB_PATH_USERS_READ_PERMISSIONS);
         reffUser.get().then((dataSnapshot) => {
             var readPermissions = dataSnapshot.val();
-            reffUser = firebase.database().ref().child(MainActivity.DB_PATH_USERS).child(uid).child("writePermissions");
+            reffUser = firebase.database().ref().child(MainActivity.DB_PATH_USERS).child(uid).child(MainActivity.DB_PATH_USERS_WRITE_PERMISSIONS);
             reffUser.get().then((dataSnapshot) => {
                 var writePermissions = dataSnapshot.val();
                 function0(readPermissions, writePermissions);

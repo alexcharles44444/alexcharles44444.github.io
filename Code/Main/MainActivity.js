@@ -117,6 +117,8 @@ class MainActivity extends AppCompatActivity {
     static DB_PATH_FIRESTORE_CUSTOMERS = "customers";
     static DB_PATH_TASKS_ENABLED = "tasksEnabled";
     static DB_PATH_EMPLOYEENUM = "employeeNum";
+    static DB_PATH_USERS_READ_PERMISSIONS = "readPermissions";
+    static DB_PATH_USERS_WRITE_PERMISSIONS = "writePermissions";
     static overrideAutoLogin = false;
     static metersToFeet = 3.28084;
     // static INTENT_CLASS_PATH = "com.where44444.cleanbook";

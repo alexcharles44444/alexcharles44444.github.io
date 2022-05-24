@@ -212,6 +212,10 @@ class FireBaseListeners {
                     FireBaseListeners.viewTemplateListActivity.updateList();
                 }
 
+                if(ViewSupplyItemLocationsListActivity.viewSupplyItemLocationsListActivity != null){
+                    ViewSupplyItemLocationsListActivity.viewSupplyItemLocationsListActivity.updateList(); 
+                }
+
                 if (FireBaseListeners.firstGetSupplyItemsListener) {
                     FireBaseListeners.firstGetSupplyItemsListener = false;
                     HomeActivity.setFirebaseReferenceInProgress(MainActivity.netTaskGetSupplyItems, false);

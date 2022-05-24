@@ -142,49 +142,40 @@ class NewEditCompanyActivity extends W4Activity {
     }
 
     createNewFireBaseUser(person2, password) {
-        var a = this;
-        var subject = "Your Owner Account For Clean Assistant Has Been Created";
-        var message =
-            "Download the app for your device:<br>" +
-            "Android<br>" +
-            "https://play.google.com/store/apps/details?id=com.where44444.cleanbook<br><br>" +
-            "iOS<br>" +
-            "https://apps.apple.com/us/app/cleanassistant/id1558722026<br><br>" +
-            "E-mail: <b>" + person2.getEmail() + "</b><br>" +
-            "Password: <b>" + password + "</b><br><br>" +
-            "Please change your password as soon as possible in the app! Tap your profile icon at the top right and type your password in<br>" +
-            "both fields then press accept.";
-        MainActivity.emailOBJ = new EmailOBJ(subject, message, person2.getEmail());
-        //This next block sometimes doesn't run the addOnCompleteListener, or it fails to add the person to cleanassistant database when it does run
-        var person = person2;
-        firebase.auth().createUserWithEmailAndPassword(person.getEmail(), password) //Creating a new person also signs into that account, make sure to sign back into original account
-            .then((userCredential) => {
-                // Sign in success, update UI with the signed-in user's information
-                var uid = firebase.auth().getUid();
-                person.setW4id(uid);
-                if (a.newCompany)
-                    a.companyData.setW4id(uid);
-                var reffAdminData = firebase.database().ref().child(MainActivity.DB_PATH_COMPANIES).child(a.companyData.getW4id()).child(MainActivity.DB_PATH_COMPANIES_DATA);
-                W4_Funcs.writeToDB(reffAdminData, a.companyData, "Added new company data to admin data " + a.companyData.getName());
-                var user = new User(uid, uid, person.getEmail(), password, W4_Funcs.getOwnerPermissions(), W4_Funcs.getOwnerPermissions(), 0);
-                var reffUser = firebase.database().ref().child(MainActivity.DB_PATH_USERS).child(uid);
-                W4_Funcs.writeToDB(reffUser, user, "Added new company user data to users " + uid);
-                console.log("createUserWithEmail:success " + uid);
-                HomeActivity.logOut();
-                MainActivity.overrideAutoLogin = true;
-                var intent = new Intent(AppCompatActivity.getApplicationContext(), null);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                a.startActivity(intent);
-                MainActivity.w4Toast(this, "Successfully added new Company", Toast.LENGTH_LONG);
-            }).catch((error) => {
-                // If sign in fails, display a message to the user.
-                a.setLoading(false);
-                MainActivity.w4Toast(this, error.message, Toast.LENGTH_LONG);
-                console.log("createUserWithEmail:failure, current mauth " + firebase.auth().currentUser.uid + "|" + error.code + "|" + error.message);
-                W4_Funcs.deleteFromDB(reffEmail, "Deleted email from failure to re-sign-in on new company creation");
-                W4_Funcs.deleteFromDB(reffAdminData, "Deleted company admin data from failure to re-sign-in on new company creation");
-                MainActivity.emailOBJ = null;
-            });
+        // var a = this;
+        // var subject = "Your Owner Account For Clean Assistant Has Been Created";
+        // var message =
+        // MainActivity.emailOBJ = new EmailOBJ(subject, message, person2.getEmail());
+        // //This next block sometimes doesn't run the addOnCompleteListener, or it fails to add the person to cleanassistant database when it does run
+        // var person = person2;
+        // firebase.auth().createUserWithEmailAndPassword(person.getEmail(), password) //Creating a new person also signs into that account, make sure to sign back into original account
+        //     .then((userCredential) => {
+        //         // Sign in success, update UI with the signed-in user's information
+        //         var uid = firebase.auth().getUid();
+        //         person.setW4id(uid);
+        //         if (a.newCompany)
+        //             a.companyData.setW4id(uid);
+        //         var reffAdminData = firebase.database().ref().child(MainActivity.DB_PATH_COMPANIES).child(a.companyData.getW4id()).child(MainActivity.DB_PATH_COMPANIES_DATA);
+        //         W4_Funcs.writeToDB(reffAdminData, a.companyData, "Added new company data to admin data " + a.companyData.getName());
+        //         var user = new User(uid, uid, person.getEmail(), password, W4_Funcs.getOwnerPermissions(), W4_Funcs.getOwnerPermissions(), 0);
+        //         var reffUser = firebase.database().ref().child(MainActivity.DB_PATH_USERS).child(uid);
+        //         W4_Funcs.writeToDB(reffUser, user, "Added new company user data to users " + uid);
+        //         console.log("createUserWithEmail:success " + uid);
+        //         HomeActivity.logOut();
+        //         MainActivity.overrideAutoLogin = true;
+        //         var intent = new Intent(AppCompatActivity.getApplicationContext(), null);
+        //         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        //         a.startActivity(intent);
+        //         MainActivity.w4Toast(this, "Successfully added new Company", Toast.LENGTH_LONG);
+        //     }).catch((error) => {
+        //         // If sign in fails, display a message to the user.
+        //         a.setLoading(false);
+        //         MainActivity.w4Toast(this, error.message, Toast.LENGTH_LONG);
+        //         console.log("createUserWithEmail:failure, current mauth " + firebase.auth().currentUser.uid + "|" + error.code + "|" + error.message);
+        //         W4_Funcs.deleteFromDB(reffEmail, "Deleted email from failure to re-sign-in on new company creation");
+        //         W4_Funcs.deleteFromDB(reffAdminData, "Deleted company admin data from failure to re-sign-in on new company creation");
+        //         MainActivity.emailOBJ = null;
+        //     });
     }
 
     setLoading(isLoading) {
