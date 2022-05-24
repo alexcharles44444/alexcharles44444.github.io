@@ -146,6 +146,7 @@ class MainActivity extends AppCompatActivity {
         MainActivity.mainActivity = this;
         a.setLoginLoading(false);
         a.findViewById("version_main").setText("v. " + MainActivity.version);
+        a.findViewById("StaySignedInCheckbox").setChecked(MainActivity.persistenceVar == firebase.auth.Auth.Persistence.LOCAL);
 
         a.findViewById("Login_Email").addEventListener("keyup", function (event) {
             if (checkEnterPress(event)) {
@@ -233,7 +234,7 @@ class MainActivity extends AppCompatActivity {
                             MainActivity.mainActivity.setLoginLoading(true);
                             W4_Funcs.getPersonPasswordFromUID(firebase.auth().getUid(), function (password0) {
                                 if (password0 != null) {
-                                    MainActivity.mainActivity.findViewById("StaySignedInCheckbox").setChecked(true);
+                                    MainActivity.mainActivity.findViewById("StaySignedInCheckbox").setChecked(true); //Only runs on first start up, not when signing in again from editing people
                                     MainActivity.mainActivity.findViewById("Login_Email").setValue(user.email);
                                     MainActivity.mainActivity.findViewById("Login_Password").setValue(password0);
                                     //sign in, set email and password fields
@@ -432,7 +433,7 @@ class MainActivity extends AppCompatActivity {
     onActivityResult(requestCode, resultCode, data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == MainActivity.requestCode_LOGOUT && resultCode == AppCompatActivity.RESULT_OK) {
-            this.findViewById("StaySignedInCheckbox").setChecked(false);
+            // this.findViewById("StaySignedInCheckbox").setChecked(false);
             this.findViewById("Login_Password").setValue("");
             // MainActivity.w4SaveState.setStaySignedIn(this.findViewById("StaySignedInCheckbox").isChecked());
             MainActivity.saveState(1);

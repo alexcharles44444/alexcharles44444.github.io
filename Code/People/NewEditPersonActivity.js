@@ -451,7 +451,6 @@ class NewEditPersonActivity extends W4Activity {
                         + "Completed "
                         + "and In Progress Tasks that they initiated. ");
                     a.startActivity(intent);
-                    a.findViewById("Edit_Person_Permissions_Text").setVisibility(View.GONE);
                 });
                 for (var i = 0; i < a.read_switches.length; ++i) {
                     a.read_switches[i].addEventListener("click", function (event) {
