@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-US">
 <title>Clean Assistant</title>
-
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta charset="UTF-8">
@@ -29,6 +28,33 @@
 </head>
 
 <body>
+  <div id="TEST_WARNING"
+    style="display: none; position: fixed; top: 0px; font-size: 10pt; color: red; z-index: 10000000;">TESTING
+    MODE</div>
+  <button id="TEST_CONTINUE_BUTTON" onclick="test_continue();"
+    style="display: none; position: fixed; top: 50px; font-size: 25pt; color: red; z-index: 10000000;">CONTINUE</button>
+  <!-- The Modal -->
+  <div id="myModal" class="no_selection"
+    style="display: none; cursor: move; position: fixed; z-index: 102; padding-top: 100px; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.9);"
+    onwheel="mouseWheelFunc(event)">
+
+    <!-- Modal Content (The Image) -->
+    <img class="modal-content" id="img01" class="no_selection" ondragstart="return false;" ondrop="return false;"
+      style="display: none; z-index: 103; margin: 5% auto; position: fixed; top: -20px; width: 80%; left: 0px; right: 0px; cursor: move;"
+      onwheel="mouseWheelFunc(event)">
+
+    <!-- The Close Button -->
+    <span id="closeButton" class="no_selection hoverOpacity"
+      style="z-index: 104; cursor: pointer; position: fixed; top: 15px; right: 35px; color: #f1f1f1; font-size: 100px; font-weight: bold; transition: 0.3s;">&times;</span>
+    <span id="zoomInButton" class="no_selection hoverOpacity" onclick="zoomIn();"
+      style="z-index: 104; cursor: pointer; position: fixed; top: 175px; right: 30px; color: #f1f1f1; font-size: 100px; font-weight: bold; transition: 0.3s;">&plus;</span>
+    <span id="zoomOutButton" class="no_selection hoverOpacity" onclick="zoomOut();"
+      style="z-index: 104; cursor: pointer; position: fixed; top: 275px; right: 33px; color: #f1f1f1; font-size: 100px; font-weight: bold; transition: 0.3s;">&minus;</span>
+  </div>
+
+
+
+
   <div id="do_Print" style="display: none;">
     <div class="clickable no_selection no-print" id="print_back_arrow" style="position: absolute; left: 5px; top: 5px;"
       onclick="W4_Funcs.printBackArrowPressed();"><img class="icon_black_to_blue2" src="./res/arrow_back2.png"
@@ -85,14 +111,14 @@
           style="display: flex; flex-direction: row-reverse; background-color: #FFFFFF; position: fixed; top: 0px; left: 0px; width: 100%; height: 40px; padding-top: 10px; padding-bottom: 10px; border-bottom: solid 1px #F2F2F2; z-index: 4;">
           <div id="profile_initials_div">
             <div id="profile_circle_initials" class="clickable"
-              style="position: absolute; font-weight: 900; text-align: center; width: 40px; height: 40px; line-height: 40px; margin-right: 10px;">
+              style="color: black; position: absolute; font-weight: 900; text-align: center; width: 40px; height: 40px; line-height: 40px; margin-right: 10px;">
             </div>
             <img src="./res/icon_circle.png" height=40 width=40 style="margin-right: 10px;">
           </div>
           <div style="margin-right: 20px;" id="profile_menu" style="display: none;">
             <table style="background-color: white; border: 0px solid lightgray; box-shadow: 0px 0px 5px grey;">
               <tr>
-                <th style="height: 40px; padding: 10px;" id="profile_menu_header"></th>
+                <th style="color: black; height: 40px; padding: 10px;" id="profile_menu_header"></th>
               </tr>
               <tr>
                 <td style="height: 40px; padding: 10px;" class="clickable white_menu_option" id="profile_menu_profile">
@@ -125,7 +151,8 @@
           </div>
           <div class="clickable" id="activity_back_arrow" style="position: absolute; left: 270px; top: 5px;"><img
               class="icon_black_to_blue2" src="./res/arrow_back2.png" width="50" height="50"></div>
-          <div id="support_bar" style="position: absolute; left: 350px; top: 15px; font-size: 20px;"></div>
+          <div id="support_bar" style="color: black; position: absolute; left: 350px; top: 15px; font-size: 20px;">
+          </div>
         </div>
       </div>
       <!--END Headerbar-->
@@ -135,21 +162,21 @@
         <div id="sidebar"
           style="background-color: #1B1D2A; position: fixed; top: 0px; left: 0px; width: 260px; height: 100%; z-index: 5;">
           <h2 id="sidebar_header"
-            style="text-align: center; font-size: 30px; margin-top: 10px; padding-bottom: 20px; border-bottom: solid 1px #2AAF6D;">
+            style="color: white; text-align: center; font-size: 30px; margin-top: 10px; padding-bottom: 20px; border-bottom: solid 1px #2AAF6D;">
             Clean Assistant</h2>
           <div class="clickable sidebar_item" id="sidebar_button_home" style="opacity: 0.9;"><img
               src="./res/icon_home.png" style="position: relative; top: 10px; scale: 0.8;"><span
-              id="sidebar_item_text_0" style="font-size: 15px;">Home</span></div>
+              id="sidebar_item_text_0" style="color: white; font-size: 15px;">Home</span></div>
           <!--UPDATE THESE IDS WHEN NEW BUTTONS ADDED-->
           <!-- <div class="clickable sidebar_item" style="opacity: 0.9;"><img src="./res/icon_dashboard.png"
             style="position: relative; top: 10px; scale: 0.8;"><span id="sidebar_item_text_1"
             style="font-size: 15px;">Dashboard</span></div> -->
           <div class="clickable sidebar_item" id="sidebar_button_userprofile" style="opacity: 0.9;"><img
               src="./res/icon_userprofile.png" style="position: relative; top: 10px; scale: 0.8;"><span
-              id="sidebar_item_text_1" style="font-size: 15px;">User Profile</span></div>
+              id="sidebar_item_text_1" style="color: white; font-size: 15px;">User Profile</span></div>
           <div class="clickable sidebar_item" id="sidebar_button_manage_subscription" style="opacity: 0.9;"><img
               src="./res/icon_payments.png" style="position: relative; top: 10px; scale: 0.8;"><span
-              id="sidebar_item_text_2" style="font-size: 15px;">Manage Subscription</span></div>
+              id="sidebar_item_text_2" style="color: white; font-size: 15px;">Manage Subscription</span></div>
           <div class="loader" id="loader_manage_subscription"
             style="display: none; width: 10px; height: 10px; margin-left: 20px;"></div>
         </div>
@@ -157,7 +184,7 @@
           style="position: fixed; bottom: 60px; left: 0px; width: 260px; height: 60px; border-top: solid 1px #2AAF6D; z-index: 6;">
           <div id="sidebar_logout_button" class="clickable sidebar_item" style="opacity: 0.9;"><img
               src="./res/icon_logout.png" style="position: relative; top: 10px; scale: 0.8;"><span
-              id="sidebar_item_text_3" style="font-size: 20px;">Logout</span></div>
+              id="sidebar_item_text_3" style="color: white; font-size: 20px;">Logout</span></div>
         </div>
         <div id="sidebar_toggle_button" onclick="setSidebar();" class="clickable sidebar_item2"
           style="opacity: 0.9; background-color: #272935; position: fixed; bottom: 0px; left: 0px; width: 260px; z-index: 6;">
@@ -180,7 +207,7 @@
       } else if (iOS) {
         document.getElementById("dont_Print").style.display = "none";
         document.getElementById("app_store_div").style.display = "";
-        
+
       }
       else {
         document.getElementById("dont_Print").style.display = "";
@@ -348,13 +375,16 @@
     <script type="text/javascript" src="Code/W4Classes/SpinnerSortItem.js"></script>
     <script type="text/javascript" src="Code/W4Classes/User.js"></script>
     <script type="text/javascript" src="Code/W4Classes/W4AlarmManager.js"></script>
+    <script type="text/javascript" src="Code/W4Classes/W4CallbackManager.js"></script>
     <script type="text/javascript" src="Code/W4Classes/W4Data.js"></script>
     <script type="text/javascript" src="Code/W4Classes/W4DateTime.js"></script>
     <script type="text/javascript" src="Code/W4Classes/W4FirebaseStorageObject.js"></script>
     <script type="text/javascript" src="Code/W4Classes/W4_DBLog.js"></script>
+    <script type="text/javascript" src="cleanbook_tests.js"></script>
     <script>
       var KEY_ENTER = "Enter";
       var KEY_NUMPADENTER = "NumpadEnter"
+      var KEY_ESCAPE = "Escape"
       var _key_enter_just_pressed = false;
 
       document.addEventListener("keyup", function (event) {
@@ -366,6 +396,39 @@
             }
           }
           _key_enter_just_pressed = false;
+        }
+        if (event.code == KEY_ESCAPE) {
+          if (document.getElementById("myModal").style.display != "none") {
+            document.getElementById("closeButton").click();
+          } else if (document.getElementById("activity_back_arrow").style.display != "none") {
+            document.getElementById("activity_back_arrow").click();
+          }
+        }
+      });
+
+      var mousedown = false;
+      var mouseCoords = new Object();
+      var currentTranslate = new Object();
+      document.addEventListener("mousedown", function (event) {
+        mousedown = true;
+        mouseCoords.x = event.clientX;
+        mouseCoords.y = event.clientY;
+      });
+
+      document.addEventListener("mouseup", function (event) {
+        mousedown = false;
+      });
+
+      document.addEventListener("mousemove", function (event) {
+        if (mousedown) {
+          var img = document.getElementById("img01");
+          if (img != null) {
+            currentTranslate.x += (event.clientX - mouseCoords.x) / imgzoom;
+            currentTranslate.y += (event.clientY - mouseCoords.y) / imgzoom;
+            setImgTransform();
+            mouseCoords.x = event.clientX;
+            mouseCoords.y = event.clientY;
+          }
         }
       });
 
@@ -379,6 +442,36 @@
 
       function checkEnterPress(event) {
         return (event.code == (KEY_ENTER) || event.code == (KEY_NUMPADENTER)) && document.getElementById("dialogbox").className.equals("hide");
+      }
+
+      var imgzoom = 1;
+      function mouseWheelFunc(event) {
+        var img = document.getElementById("img01");
+        if (img != null) {
+          imgzoom *= 1 + (event.deltaY * -0.001);
+          if (imgzoom < .1)
+            imgzoom = .1;
+          setImgTransform();
+          event.preventDefault();
+        }
+      }
+
+      function zoomIn() {
+        imgzoom *= 1.2;
+        setImgTransform();
+      }
+
+      function zoomOut() {
+        imgzoom *= .8
+        if (imgzoom < .1)
+          imgzoom = .1;
+        setImgTransform();
+      }
+
+      function setImgTransform() {
+        var img = document.getElementById("img01");
+        if (img != null)
+          img.style.transform = "scale(" + imgzoom + ") translate(" + currentTranslate.x + "px, " + currentTranslate.y + "px)";
       }
 
       var sidebar_open = false;

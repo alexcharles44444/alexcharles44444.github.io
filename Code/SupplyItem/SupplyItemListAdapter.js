@@ -32,9 +32,9 @@ class SupplyItemListAdapter extends ArrayAdapter {
         var button = view.findViewById("SupplyItemButton");
         var supplyItem = a.supplyItemList[position];
         var text = supplyItem.getName();
-        var location = Asset.getAssetbyId(MainActivity.theCompany.getLocationList(), supplyItem.getLocationID());
-        if (location != null)
-            text += " at " + location.getName();
+        // var location = Asset.getAssetbyId(MainActivity.theCompany.getLocationList(), supplyItem.getLocationID());
+        // if (location != null)
+        //     text += " at " + location.getName();
         button.setText(text);
         var requestNotification = view.findViewById("Request_Notification");
         var requestNotificationText = view.findViewById("Request_Notification_Text");

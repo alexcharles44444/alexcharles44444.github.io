@@ -351,9 +351,30 @@ class NewEditShiftActivity extends W4Activity {
             a.redecorateRepeatSummaryCalendar();
         });
 
+        a.findViewById("prevYear").addEventListener("click", function () {
+            a.currentDate = W4_Funcs.addYears(a.currentDate, -1);
+            W4_Funcs.w4SetMaterialCalendarDate(calendar_view, a.currentDate);
+            a.setYearButtons(a.currentDate);
+        });
+
+        a.findViewById("nextYear").addEventListener("click", function () {
+            a.currentDate = W4_Funcs.addYears(a.currentDate, 1);
+            W4_Funcs.w4SetMaterialCalendarDate(calendar_view, a.currentDate);
+            a.setYearButtons(a.currentDate);
+        });
+
         a.updateEdit_RepeatSummaryText();
         a.updateEditStartEndTime();
         a.setRepeatEveryUnitLabel();
+    }
+
+    setYearButtons(dt) {
+        var a = this;
+        if (a.destroyed == null) {
+            a.findViewById("prevYearText").setText("< " + (dt.getYear() - 1));
+            a.findViewById("nextYearText").setText((dt.getYear() + 1) + " >");
+            a.currentDate = dt;
+        }
     }
 
     redecorateRepeatSummaryCalendar() {
@@ -362,6 +383,7 @@ class NewEditShiftActivity extends W4Activity {
 
         var title = calendar_ele.children[0].children[0].children[1].innerHTML;
         var dt = W4_Funcs.getDateTimeFromCalendarTitle(title);
+        this.setYearButtons(dt);
         var firstDayOfWeek = dt.getDayOfWeek();
         for (var i = 0; i < firstDayOfWeek; ++i) {
             dt = W4_Funcs.getPrevDay(dt);
@@ -378,6 +400,7 @@ class NewEditShiftActivity extends W4Activity {
             }
             dt = W4_Funcs.getNextDay(dt);
         }
+        W4_Funcs.setCalendarEleMonthButtons(calendar_ele);
     }
 
     setStartDateButton(dateTime) {

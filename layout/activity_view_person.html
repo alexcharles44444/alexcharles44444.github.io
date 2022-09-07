@@ -1,35 +1,44 @@
 <div class="standardDivWidth">
     <br><br><br>
-    <div style='display: flex; flex-direction: row;'>
-        <div class="labelMarginTop labelSize" style="flex-grow: 1; flex-basis: 0;">First Name</div>
-        <div class="labelMarginTop labelSize" style="flex-grow: 1; flex-basis: 0;">Last Name</div>
-    </div>
+    <div class="W4Divider"></div>
 
     <div style='display: flex; flex-direction: row;'>
-        <div id="View_Person_FirstName" style='flex-grow: 1; flex-basis: 0;'></div>
-        <div id="View_Person_LastName" style='flex-grow: 1; flex-basis: 0;'></div>
+        <div class="W4ViewLabel" style="flex-grow: 1; flex-basis: 0;">First Name</div>
+        <div class="W4ViewLabel" style="flex-grow: 1; flex-basis: 0;">Last Name</div>
+    </div>
+    <div style='display: flex; flex-direction: row;'>
+        <div class="W4ViewText" id="View_Person_FirstName" style='flex-grow: 1; flex-basis: 0;'></div>
+        <div class="W4ViewText" id="View_Person_LastName" style='flex-grow: 1; flex-basis: 0;'></div>
     </div>
 
-    <div class="labelMarginTop labelSize">Phone</div>
+    <div class="W4Divider"></div>
 
-    <div id="View_Person_Phone"></div>
+    <div class="W4ViewLabel">Phone</div>
+    <div class="W4ViewText" id="View_Person_Phone"></div>
 
-    <div class="labelMarginTop labelSize">E-mail</div>
+    <div class="W4Divider"></div>
 
-    <div id="View_Person_Email" style='height: 30px;'></div>
+    <div class="W4ViewLabel">E-mail</div>
+    <div class="W4ViewText" id="View_Person_Email" style='height: 30px;'></div>
 
-    <div class="labelMarginTop labelSize" id="View_Person_Type_Label">Type</div>
-    <div id="View_Person_Type_Text"></div>
-    <br>
-    <input disabled type="checkbox" class="labelMarginTop" id="View_Person_RequiresGPS_CheckBox" disabled>
-    <span style="font-size: 14px;"> Required to be within GPS boundary of shift location to clock in/out</span>
+    <div class="W4Divider"></div>
+
+    <div class="W4ViewLabel" id="View_Person_Type_Label">Type</div>
+    <div class="W4ViewText" id="View_Person_Type_Text"></div>
+
+    <div class="W4Divider"></div>
+
+    <input disabled type="checkbox" id="View_Person_RequiresGPS_CheckBox" disabled>
+    <span class="W4ViewText" style="font-size: 14px;"> Required to be within GPS boundary of shift location to clock
+        in/out</span>
+
+    <div class="W4Divider"></div>
 
     <div id="Edit_Permissions_Label" style='display: flex; flex-direction: row;'>
 
         <button id="View_Person_Permissions_Button" class="buttonHeight"
-            style='width: 300px; margin-right: 10px; margin-bottom: 10px;'>Permissions</button>
-
-        <button id="View_Permissions_Help" class="buttonHeight" style='margin-bottom: 10px; width: 100px;'>?</button>
+            style='flex-grow: 0.8; margin-right: 10px; margin-bottom: 10px;'>Permissions</button>
+        <button id="View_Permissions_Help" class="buttonHeight" style='flex-grow: 0.2; margin-bottom: 10px;'>?</button>
     </div>
 
     <div id="View_Person_Permissions_Text" style='display: none;'>
@@ -72,7 +81,8 @@
     </div>
 
     <div id="View_Person_Permissions_Div" style='display: none;'>
-        <table>
+        <table style="width: 100%; text-align: center;">
+            <tr><td colspan="2"><div class="W4Divider"></div></td></tr>
             <tr id="Edit_Locations">
                 <td id="View_Person_Permissions_Label_Locations">Locations</td>
                 <td>
@@ -92,7 +102,7 @@
                     </div>
                 </td>
             </tr>
-
+            <tr><td colspan="2"><div class="W4Divider"></div></td></tr>
             <tr id="Edit_Messages">
                 <td id="View_Person_Permissions_Label_Messages">Messages</td>
                 <td>
@@ -111,12 +121,9 @@
                     </div>
                 </td>
             </tr>
-
+            <tr><td colspan="2"><div class="W4Divider"></div></td></tr>
             <tr id="Edit_People">
-
                 <td id="View_Person_Permissions_Label_People">People</td>
-
-
                 <td>
                     <input disabled type="checkbox" id="View_Person_Read_People"><span
                         style='font-size: 14px;'>Read</span>
@@ -130,15 +137,11 @@
                             id="View_Person_All_People"><span style='font-size: 14px;'>All</span>
                     </div>
                 </td>
-
             </tr>
-
+            <tr><td colspan="2"><div class="W4Divider"></div></td></tr>
             <tr id="Edit_Shifts">
-
                 <td id="View_Person_Permissions_Label_Shifts">Shifts</td>
-
                 <td>
-
                     <input disabled type="checkbox" id="View_Person_Read_Shifts"><span
                         style='font-size: 14px;'>Read</span>
 
@@ -156,13 +159,10 @@
 
                 </td>
             </tr>
-
+            <tr><td colspan="2"><div class="W4Divider"></div></td></tr>
             <tr id="Edit_Punches">
-
                 <td id="View_Person_Permissions_Label_Punches">Time Punches</td>
-
                 <td>
-
                     <input disabled type="checkbox" id="View_Person_Read_TimePunches"><span
                         style='font-size: 14px;'>Read</span>
 
@@ -184,7 +184,7 @@
 
                 </td>
             </tr>
-
+            <tr><td colspan="2"><div class="W4Divider"></div></td></tr>
             <tr id="Edit_Inspections">
 
                 <td id="View_Person_Permissions_Label_Inspections">Inspections</td>
@@ -206,14 +206,10 @@
                     </div>
                 </td>
             </tr>
-
+            <tr><td colspan="2"><div class="W4Divider"></div></td></tr>
             <tr id="Edit_Supplies">
-
                 <td id="View_Person_Permissions_Label_Supplies">Supplies</td>
-
-
                 <td>
-
                     <input disabled type="checkbox" id="View_Person_Read_Supplies"><span
                         style='font-size: 14px;'>Read</span>
 
@@ -230,14 +226,11 @@
                         <input disabled type="radio" name="View_Person_Radio_Group_Supplies"
                             id="View_Person_All_Supplies"><span style='font-size: 14px;'>All</span>
                     </div>
-
                 </td>
             </tr>
-
+            <tr><td colspan="2"><div class="W4Divider"></div></td></tr>
             <tr id="Edit_SDS">
-
                 <td id="View_Person_Permissions_Label_SDS">SDS</td>
-
                 <td>
                     <input disabled type="checkbox" id="View_Person_Read_SDS"><span style='font-size: 14px;'>Read</span>
                     <input disabled type="checkbox" id="View_Person_Write_SDS"><span
@@ -253,9 +246,8 @@
 
                 </td>
             </tr>
-
+            <tr><td colspan="2"><div class="W4Divider"></div></td></tr>
             <tr id="Edit_Tasks">
-
                 <td id="View_Person_Permissions_Label_Tasks">Tasks</td>
 
                 <td>
@@ -276,6 +268,7 @@
                     </div>
                 </td>
             </tr>
+            <tr><td colspan="2"><div class="W4Divider"></div></td></tr>
         </table>
     </div>
 </div>

@@ -47,10 +47,10 @@ class MessageBubbleListAdapter extends ArrayAdapter {
 
         var text = "";
         if (person != null) {
-            text += "<b>" + W4_Funcs.getHTMLSafeText(person.getFirst_name() + " " + person.getLast_name()) + "</b><br>";
+            text += "<span style='font-size: 18px; opacity: 0.8;'>" + W4_Funcs.getHTMLSafeText(person.getFirst_name() + " " + person.getLast_name()) + "</span><br>";
         }
         var dt = new W4DateTime(message.getTime());
-        text += W4_Funcs.getHTMLSafeText(message.getW4text()) + "<br><span style='color: gray; text-align: right;'>" + W4_Funcs.getFriendlyNumbersDayText(dt, "/", false) + " " + W4_Funcs.getTimeText(dt) + "</span>";
+        text += "<span style='opacity: 0.8;'>" + W4_Funcs.getHTMLSafeText(message.getW4text()) + "</span><br><span style='color: black; font-size: 14px; text-align: right; opacity: 0.6;'>" + W4_Funcs.getFriendlyNumbersDayText(dt, "/", false) + " " + W4_Funcs.getTimeText(dt) + "</span>";
         var div = view.findViewById("bubble");
         div.setText(text);
 

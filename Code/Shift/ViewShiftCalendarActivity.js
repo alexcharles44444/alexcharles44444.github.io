@@ -9,6 +9,13 @@ class ViewShiftCalendarActivity extends W4Activity {
         FireBaseListeners.viewShiftCalendarActivity = null;
     }
 
+    onResume() {
+        super.onResume();
+        if (this.initialStart == null) {
+            this.initialStart = true;
+            window.scroll(window.scrollX, 0);
+        }
+    }
 
     onCreate() {
         var a = this;
@@ -56,7 +63,6 @@ class ViewShiftCalendarActivity extends W4Activity {
             ViewShiftCalendarActivity.selectedCalendarDay = W4_Funcs.dateTimeToCalendarDay(dateTime);
             a.updateCalendarScheduleView();
         });
-
     }
 
     setStartDateButton(dateTime) {
@@ -71,8 +77,8 @@ class ViewShiftCalendarActivity extends W4Activity {
      * @param activity
      * @return
      */
-    static textViewColor = "black";
-    static buttonColor = "#38F094";
+    static textViewColor = "#878787";
+    static buttonColor = "white";
     static getCalendarSlotView(context, activity, dayAndHour, shifts, shiftOccurTypes) {
         var hour = dayAndHour.getHourOfDay();
         var timeText = "";

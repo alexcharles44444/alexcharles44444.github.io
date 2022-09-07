@@ -30,19 +30,21 @@ class ViewNotificationsListActivity extends W4Activity {
                 var w4Notification = MainActivity.w4Notifications[i];
                 var inflater = LayoutInflater.from(this);
                 var notification_view = inflater.inflate(R.layout.notification_view, null, true);
-                var content = "<span style='color: black;'>" + w4Notification.title + "</span><br><br>" + w4Notification.text;
+                var content = "<span style='color: #878787; font-size: 10pt'>" + w4Notification.title + "</span><br><span style='color: #494949; font-size: 12pt'>" + w4Notification.text + "</span>";
                 var button = notification_view.findViewById("Button");
                 button.setText(content);
                 button.ele.w4Notification = w4Notification;
+                button.ele.children[0].w4Notification = w4Notification;
                 button.addEventListener("click", function (event) {
                     var w4Notification = event.target.w4Notification;
-                    if (w4Notification.pendingIntent != null) {
+                    if (w4Notification != null && w4Notification.pendingIntent != null) {
                         a.startActivity(w4Notification.pendingIntent);
                     }
                 });
                 var xButton = notification_view.findViewById("XButton");
                 // xButton.ele.w4Notification = w4Notification;
                 xButton.ele.i1 = i1;
+                xButton.ele.children[0].i1 = i1;
                 xButton.addEventListener("click", function (event) {
                     // var w4Notification = event.target.w4Notification;
                     var i1 = event.target.i1;

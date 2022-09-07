@@ -1,31 +1,62 @@
 class Deletions {
 
-    static deletePersonFromShifts(personID) {
+    static deletePersonFromShifts(personID, func) {
         var list = W4_Funcs.copyAssetReferences(MainActivity.theCompany.getShiftList()); //Ensures that list we're deleting from isn't modified as firebase deletes references
+
+        let shifts_Caller = new W4CallbackManager(0, func, false);
+        let func0 = function () {
+            shifts_Caller.call();
+        };
+        let numCalls = 0;
+
         for (let asset of list) {
             var shift = asset;
             if (shift.getPersonIDList() != null && shift.getPersonIDList().includes(personID)) {
                 var index = shift.getPersonIDList().indexOf(personID);
                 shift.getPersonIDList().splice(index, 1);
                 var reffShift = firebase.database().ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_ASSET_SHIFTS).child(shift.getW4id());
-                W4_Funcs.writeToDB(reffShift, shift, "Person removed from shift |Person:" + W4_DBLog.getPersonStringForLog(personID) + "|Shift:" + shift.getName() + "|Location" + W4_DBLog.getLocationStringForLog(shift.getLocationID()) + "|");
+                W4_Funcs.writeToDB(reffShift, shift, "Person removed from shift |Person:" + W4_DBLog.getPersonStringForLog(personID) + "|Shift:" + shift.getName() + "|Location" + W4_DBLog.getLocationStringForLog(shift.getLocationID()) + "|", func0);
+                ++numCalls;
             }
+        }
+        if (shifts_Caller.numCalls == numCalls) {
+            if (func != null)
+                func();
+        } else {
+            shifts_Caller.numCallsTarget = numCalls;
+            shifts_Caller.finalCallOnFinish = true;
         }
     }
 
-    static deleteTimePunches_withPerson(personID) {
+    static deleteTimePunches_withPerson(personID, func) {
         var list = W4_Funcs.copyAssetReferences(MainActivity.theCompany.getTimePunchList()); //Ensures that list we're deleting from isn't modified as firebase deletes references
         var deletedIDs = [];
+
+        let timePunches_Caller = new W4CallbackManager(0, func, false);
+        let func0 = function () {
+            timePunches_Caller.call();
+        };
+
+        let numCalls = 0;
         for (let asset of list) {
             var timePunch = asset;
             if (timePunch.getPersonID().equals(personID)) {
                 if (!deletedIDs.includes(timePunch.getW4id()))
                     deletedIDs.push(timePunch.getW4id());
                 var reffTimePunch = firebase.database().ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_ASSET_TIME_PUNCHES).child(timePunch.getW4id());
-                W4_Funcs.deleteFromDB(reffTimePunch, "Deleted time punch from deleting person |Person:" + W4_DBLog.getPersonStringForLog(timePunch.getPersonID()) + "|Location:" + W4_DBLog.getLocationStringForLog(timePunch.getLocationID()) + "|");
+                W4_Funcs.deleteFromDB(reffTimePunch, "Deleted time punch from deleting person |Person:" + W4_DBLog.getPersonStringForLog(timePunch.getPersonID()) + "|Location:" + W4_DBLog.getLocationStringForLog(timePunch.getLocationID()) + "|", func0);
+                ++numCalls;
             }
         }
-        W4_Funcs.setPersonClockInStatusFromTimePunches(personID, null, deletedIDs);
+        if (timePunches_Caller.numCalls == numCalls) {
+            if (func != null)
+                func();
+        } else {
+            timePunches_Caller.numCallsTarget = numCalls;
+            timePunches_Caller.finalCallOnFinish = true;
+        }
+        //Don't call because it recreates the person after deleting them
+        // W4_Funcs.setPersonClockInStatusFromTimePunches(personID, null, deletedIDs);
     }
 
     static deleteTimePunches_withLocation(locationID) {
@@ -122,24 +153,37 @@ class Deletions {
         }
     }
 
-    static deleteTaskSheetOccurences(shiftIDs, personID) {
+    static deleteTaskSheetOccurences(shiftIDs, personID, func) {
         var tasks1 = W4_Funcs.copyAssetReferences(MainActivity.theCompany.getTaskSheetInProgressList()); //Ensures that list we're deleting from isn't modified as firebase deletes references
         var tasks2 = W4_Funcs.copyAssetReferences(MainActivity.theCompany.getTaskSheetCompletedList());
         tasks1 = tasks1.concat(tasks2);
-
+        let tasks_Caller = new W4CallbackManager(0, func, false);
+        let func0 = function () {
+            tasks_Caller.call();
+        };
+        let numCalls = 0;
         for (let asset of tasks1) {
             var taskSheetOccurence = asset;
             if (shiftIDs != null) {
                 if (shiftIDs.includes(taskSheetOccurence.getShiftID())) {
                     var reffTaskOccurence = firebase.database().ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_ASSET_TASKS_OCCURENCE).child(taskSheetOccurence.getW4id());
-                    W4_Funcs.deleteFromDB(reffTaskOccurence, "Deleted task sheet occurence from shift " + taskSheetOccurence.getName() + "|Location:" + W4_DBLog.getLocationStringForLog(taskSheetOccurence.getLocationID()) + "|Shift:" + W4_DBLog.getShiftStringForLog(taskSheetOccurence.getShiftID()) + "|Person:" + W4_DBLog.getPersonStringForLog(taskSheetOccurence.getPersonID()) + "|");
+                    W4_Funcs.deleteFromDB(reffTaskOccurence, "Deleted task sheet occurence from shift " + taskSheetOccurence.getName() + "|Location:" + W4_DBLog.getLocationStringForLog(taskSheetOccurence.getLocationID()) + "|Shift:" + W4_DBLog.getShiftStringForLog(taskSheetOccurence.getShiftID()) + "|Person:" + W4_DBLog.getPersonStringForLog(taskSheetOccurence.getPersonID()) + "|", func0);
+                    ++numCalls;
                 }
             } else if (personID != null) {
                 if (taskSheetOccurence.getPersonID().equals(personID)) {
                     var reffTaskOccurence = firebase.database().ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_ASSET_TASKS_OCCURENCE).child(taskSheetOccurence.getW4id());
-                    W4_Funcs.deleteFromDB(reffTaskOccurence, "Deleted task sheet occurence from person " + taskSheetOccurence.getName() + "|Location:" + W4_DBLog.getLocationStringForLog(taskSheetOccurence.getLocationID()) + "|Shift:" + W4_DBLog.getShiftStringForLog(taskSheetOccurence.getShiftID()) + "|Person:" + W4_DBLog.getPersonStringForLog(taskSheetOccurence.getPersonID()) + "|");
+                    W4_Funcs.deleteFromDB(reffTaskOccurence, "Deleted task sheet occurence from person " + taskSheetOccurence.getName() + "|Location:" + W4_DBLog.getLocationStringForLog(taskSheetOccurence.getLocationID()) + "|Shift:" + W4_DBLog.getShiftStringForLog(taskSheetOccurence.getShiftID()) + "|Person:" + W4_DBLog.getPersonStringForLog(taskSheetOccurence.getPersonID()) + "|", func0);
+                    ++numCalls;
                 }
             }
+        }
+        if (tasks_Caller.numCalls == numCalls) {
+            if (func != null)
+                func();
+        } else {
+            tasks_Caller.numCallsTarget = numCalls;
+            tasks_Caller.finalCallOnFinish = true;
         }
     }
 
@@ -158,7 +202,6 @@ class Deletions {
         var reffSupplyItem = firebase.database().ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_ASSET_SUPPLY_ITEMS).child(supplyItem.getW4id());
         W4_Funcs.deleteFromDB(reffSupplyItem, "Deleted supply item " + supplyItem.getName() + "|Location:" + W4_DBLog.getLocationStringForLog(supplyItem.getLocationID()) + "|");
         var listRef = MainActivity.firebaseStorage.ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_ASSET_SDS).child(supplyItem.getW4id());
-        console.log(supplyItem.getW4id());
         listRef.listAll()
             .then((res) => {
                 res.items.forEach((itemRef) => {

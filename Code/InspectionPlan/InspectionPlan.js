@@ -141,7 +141,7 @@ class InspectionPlan extends Asset {
 
 
     method_searchString() {
-        return this.name + " " + locationSavedName;
+        return this.name + " " + this.locationSavedName;
     }
 
 

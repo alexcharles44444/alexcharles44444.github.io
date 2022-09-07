@@ -1,7 +1,16 @@
 class ViewSDSLocationsListActivity extends W4Activity {
 
+    onResume() {
+        super.onResume();
+        if (this.autoentry)
+            this.finish();
+        else
+            this.updateList();
+    }
+
     onCreate() {
         var a = this;
+        this.autoentry = false;
         super.onCreate();
         if (!MainActivity.loggedIn)
             return;
@@ -20,8 +29,6 @@ class ViewSDSLocationsListActivity extends W4Activity {
         a.search_edittext.addEventListener('keyup', function () {
             a.updateList();
         });
-
-        a.updateList();
     }
 
 
@@ -33,6 +40,12 @@ class ViewSDSLocationsListActivity extends W4Activity {
             list = Asset.getSearchedAssets(W4_Funcs.getPermittedLocationList_ForX(Asset.PERMISSION_ALL_SDS), searchText);
         } else {
             list = W4_Funcs.getPermittedLocationList_ForX(Asset.PERMISSION_ALL_SDS);
+            if (list.length == 1) {
+                this.autoentry = true;
+                let intent = new Intent(this, new ViewSDSListActivity());
+                intent.putExtra("location_id", list[0].getW4id());
+                this.startActivity(intent);
+            }
         }
         var locationListAdapter = new LocationListAdapter(this, list, Asset.PERMISSION_ALL_SDS);
         this.findViewById("LocationsList").setAdapter(locationListAdapter);

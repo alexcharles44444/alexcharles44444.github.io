@@ -114,10 +114,14 @@ class ViewPersonActivity extends W4Activity {
                 });
 
                 a.findViewById("View_Permissions_Help").addEventListener("click", function () {
-                    if (a.findViewById("View_Person_Permissions_Text").getVisibility() == View.GONE)
-                        a.findViewById("View_Person_Permissions_Text").setVisibility(View.VISIBLE);
-                    else
-                        a.findViewById("View_Person_Permissions_Text").setVisibility(View.GONE);
+                    // if (a.findViewById("View_Person_Permissions_Text").getVisibility() == View.GONE)
+                    //     a.findViewById("View_Person_Permissions_Text").setVisibility(View.VISIBLE);
+                    // else
+                    //     a.findViewById("View_Person_Permissions_Text").setVisibility(View.GONE);
+                    let intent = new Intent(a, new ViewTextActivity());
+                    intent.putExtra("title", a.findViewById("View_Person_Permissions_Text0").getText());
+                    intent.putExtra("text", a.findViewById("View_Person_Permissions_Text1").getText());
+                    a.startActivity(intent);
                 });
             }
             else {

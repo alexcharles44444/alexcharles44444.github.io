@@ -18,6 +18,10 @@ class ViewTemplateListActivity extends W4Activity {
         a.viewActivity = a.getIntent().getStringExtra("viewActivity");
         a.returnAsset = a.getIntent().getBooleanExtra("returnAsset", false);
         a.isSDS = a.getIntent().getBooleanExtra("isSDS", false);
+
+        if (a.isSDS)
+            a.findViewById("SDSTemplateHelp").setVisibility(View.VISIBLE);
+
         var fbutton = a.findViewById("AddTemplateButton");
         if (MainActivity.currentUser.getWritePermissions()[a.assetType] || MainActivity.currentUser.getWritePermissions()[a.assetType + 1]) {
             a.findViewById("AddTemplateButton").setVisibility(View.VISIBLE);

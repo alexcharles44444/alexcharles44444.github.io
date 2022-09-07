@@ -8,6 +8,7 @@ class CalendarActivity extends W4Activity {
         a.getSupportActionBar().hide(); //Hide bar at top with App Name on it
         a.setContentView(R.layout.activity_calendar);
 
+
         var events = [];
         var settings = {}; //Disable highlighting today
         var calendar = a.findViewById('Calendar');
@@ -22,18 +23,20 @@ class CalendarActivity extends W4Activity {
             var dayList = calendar.ele.children[0].children[2];
             var title = calendar.ele.children[0].children[0].children[1].innerHTML;
             var dt = W4_Funcs.getDateTimeFromCalendarTitle(title);
+            a.setYearButtons(dt);
             var firstDayOfWeek = dt.getDayOfWeek();
             for (var i = 0; i < firstDayOfWeek; ++i) {
                 dt = W4_Funcs.getPrevDay(dt);
             }
 
             for (var i = 0; i < dayList.children.length; ++i) {
-                var node = dayList.children[i];
-                var nodeP = node.children[0];
+                var nodeP = dayList.children[i];
+                var nodeP0 = nodeP.children[0];
                 if (!W4_Funcs.doesClassListInclude(nodeP.classList, "clickable")) {
                     nodeP.classList.add("clickable");
                     nodeP.classList.add("calendarDayHover");
                     nodeP.dt = dt.getMillis();
+                    nodeP0.dt = dt.getMillis();
                     nodeP.addEventListener("click", function (event) {
                         var dt = new W4DateTime(event.target.dt);
                         a.getIntent().putExtra("dYear", dt.getYear());
@@ -43,16 +46,17 @@ class CalendarActivity extends W4Activity {
                         a.finish();
                     });
                     if (W4_Funcs.isSameDay(calendarDay, dt)) {
-                        node.style.backgroundColor = "#FF006E";
-                        node.style.color = "white";
+                        nodeP.style.backgroundColor = "#FF006E";
+                        nodeP.style.color = "white";
                     }
                     else {
-                        node.style.backgroundColor = "";
-                        node.style.color = "";
+                        nodeP.style.backgroundColor = "";
+                        nodeP.style.color = "";
                     }
                 }
                 dt = W4_Funcs.getNextDay(dt);
             }
+            W4_Funcs.setCalendarEleMonthButtons(calendar.ele);
         };
 
         calendar.addEventListener("click", function () {
@@ -62,6 +66,17 @@ class CalendarActivity extends W4Activity {
 
         W4_Funcs.w4SetMaterialCalendarDate(calendar, calendarDay);
 
+        a.findViewById("prevYear").addEventListener("click", function () {
+            a.currentDate = W4_Funcs.addYears(a.currentDate, -1);
+            W4_Funcs.w4SetMaterialCalendarDate(calendar, a.currentDate);
+            a.setYearButtons(a.currentDate);
+        });
+
+        a.findViewById("nextYear").addEventListener("click", function () {
+            a.currentDate = W4_Funcs.addYears(a.currentDate, 1);
+            W4_Funcs.w4SetMaterialCalendarDate(calendar, a.currentDate);
+            a.setYearButtons(a.currentDate);
+        });
 
         //     calendar.addDecorator(new DayViewDecorator() {
 
@@ -87,5 +102,14 @@ class CalendarActivity extends W4Activity {
         //         a.finish();
         //     }
         // });
+    }
+
+    setYearButtons(dt) {
+        var a = this;
+        if (a.destroyed == null) {
+            a.findViewById("prevYearText").setText("< " + (dt.getYear() - 1));
+            a.findViewById("nextYearText").setText((dt.getYear() + 1) + " >");
+            a.currentDate = dt;
+        }
     }
 }

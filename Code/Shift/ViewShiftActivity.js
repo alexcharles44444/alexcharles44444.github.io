@@ -9,7 +9,7 @@ class ViewShiftActivity extends W4Activity {
         this.setContentView(R.layout.activity_view_shift_time);
 
         var events = [];
-        var settings = { };
+        var settings = {};
         var calendar_view = this.findViewById("View_ShiftTime_Calendar_RepeatSummary");
         caleandar(calendar_view.ele, events, settings);
 
@@ -99,8 +99,29 @@ class ViewShiftActivity extends W4Activity {
             a.redecorateRepeatSummaryCalendar();
         });
 
+        a.findViewById("prevYear").addEventListener("click", function () {
+            a.currentDate = W4_Funcs.addYears(a.currentDate, -1);
+            W4_Funcs.w4SetMaterialCalendarDate(calendar_view, a.currentDate);
+            a.setYearButtons(a.currentDate);
+        });
+
+        a.findViewById("nextYear").addEventListener("click", function () {
+            a.currentDate = W4_Funcs.addYears(a.currentDate, 1);
+            W4_Funcs.w4SetMaterialCalendarDate(calendar_view, a.currentDate);
+            a.setYearButtons(a.currentDate);
+        });
+
         this.updateViewRepeatSummaryText();
         this.updateViewStartEndTime();
+    }
+
+    setYearButtons(dt) {
+        var a = this;
+        if (a.destroyed == null) {
+            a.findViewById("prevYearText").setText("< " + (dt.getYear() - 1));
+            a.findViewById("nextYearText").setText((dt.getYear() + 1) + " >");
+            a.currentDate = dt;
+        }
     }
 
     updateViewStartEndTime() {
@@ -218,6 +239,7 @@ class ViewShiftActivity extends W4Activity {
         var dayList = calendar_ele.children[0].children[2];
         var title = calendar_ele.children[0].children[0].children[1].innerHTML;
         var dt = W4_Funcs.getDateTimeFromCalendarTitle(title);
+        this.setYearButtons(dt);
         var firstDayOfWeek = dt.getDayOfWeek();
         for (var i = 0; i < firstDayOfWeek; ++i) {
             dt = W4_Funcs.getPrevDay(dt);
@@ -234,10 +256,11 @@ class ViewShiftActivity extends W4Activity {
             }
             dt = W4_Funcs.getNextDay(dt);
         }
+        W4_Funcs.setCalendarEleMonthButtons(calendar_ele);
     }
 
     static getAddedShiftPersonView(context, activity, name0, personID) {
-        var textViewPerson = new View(W4_Funcs.createElementFromHTML("<div style='width: 100%; text-align: center;'></div>"), activity);
+        var textViewPerson = new View(W4_Funcs.createElementFromHTML("<div class='W4ViewText' style='width: 100%; text-align: center;'></div>"), activity);
         textViewPerson.setText(name0);
         return textViewPerson;
     }

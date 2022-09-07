@@ -474,10 +474,10 @@ class Asset {
 
     static getSearchedAssets(list, standardSearchString) {
         let match;
-        var regexp = new RegExp(standardSearchString, "g");
         var list2 = [];
         for (var i = 0; i < list.length; ++i) {
             var textToSearch = W4_Funcs.standardizeString(list[i].method_searchString());
+            var regexp = new RegExp(standardSearchString, "g");
             if ((match = regexp.exec(textToSearch)) != null) {
                 list2.push(list[i]);
             }

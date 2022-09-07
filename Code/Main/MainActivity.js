@@ -16,7 +16,6 @@ class MainActivity extends AppCompatActivity {
     static current_email = null;
     static current_password = null;
     static override_current_email = null;
-    static override_current_password = null;
     static currentPerson = null;
     static currentPersonID = "";
     static currentUser = null;
@@ -217,7 +216,7 @@ class MainActivity extends AppCompatActivity {
         if (MainActivity.overrideAutoLogin) {
             MainActivity.overrideAutoLogin = false;
             this.findViewById("Login_Email").setValue(MainActivity.override_current_email);
-            this.findViewById("Login_Password").setValue(MainActivity.override_current_password);
+            this.findViewById("Login_Password").setValue(MainActivity.current_password);
             this.signIn();
         } else {
             if (!MainActivity.authListenerAdded) {
@@ -227,7 +226,7 @@ class MainActivity extends AppCompatActivity {
                     var first = MainActivity.firstStartUpWeb;
                     MainActivity.firstStartUpWeb = false;
                     if (user) {
-                        console.log("AUTH STATE CHANGED | AUTH LOGGED IN|" + user.uid);
+                        // console.log("AUTH STATE CHANGED | AUTH LOGGED IN|" + user.uid);
                         MainActivity.loggedIn = true;
                         if (first) {
                             MainActivity.signInState = MainActivity.SIGNINSTATE_LOADING;
@@ -249,7 +248,7 @@ class MainActivity extends AppCompatActivity {
                             });
                         }
                     } else {
-                        console.log("AUTH STATE CHANGED | Current User NULL");
+                        // console.log("AUTH STATE CHANGED | Current User NULL");
                     }
                 });
             }
@@ -266,7 +265,6 @@ class MainActivity extends AppCompatActivity {
         MainActivity.current_email = this.findViewById("Login_Email").getText().toLowerCase();
         MainActivity.current_password = this.findViewById("Login_Password").getText();
         MainActivity.override_current_email = MainActivity.current_email;
-        MainActivity.override_current_password = MainActivity.current_password;
         MainActivity.signInState = MainActivity.SIGNINSTATE_LOADING;
         this.setLoginLoading(true);
         const reffData = firebase.database().ref().child(MainActivity.DB_PATH_DATA);
@@ -282,7 +280,7 @@ class MainActivity extends AppCompatActivity {
                 }
             }
         }).catch((error) => {
-            console.log("Failed to read version");
+            // console.log("Failed to read version");
             console.error(error);
             MainActivity.signInState = MainActivity.SIGNINSTATE_CANCELLED;
             this.setLoginLoading(false);
@@ -300,7 +298,7 @@ class MainActivity extends AppCompatActivity {
                                 MainActivity.mainActivity.completeSignIn2();
                             } else {
                                 firebase.auth().currentUser.sendEmailVerification();
-                                MainActivity.dialogBox(MainActivity.mainActivity, "⚠ Further Action Required", "An e-mail has been sent to this address. Please click the link in the email to verify your identity before logging in.");
+                                MainActivity.dialogBox(MainActivity.mainActivity, "⚠ Further Action Required", "An e-mail has been sent to this address. Please click the link in the email to verify your identity before logging in. You may need to check your spam folder.");
                                 MainActivity.mainActivity.findViewById("Login_Email").setTextIsSelectable(true);
                                 MainActivity.signInState = MainActivity.SIGNINSTATE_CANCELLED;
                                 MainActivity.mainActivity.setLoginLoading(false);
@@ -310,7 +308,7 @@ class MainActivity extends AppCompatActivity {
                     .catch((error) => {
                         var errorCode = error.code;
                         var errorMessage = error.message;
-                        console.log("signInWithEmail:failure|" + errorCode + "|" + errorMessage);
+                        // console.log("signInWithEmail:failure|" + errorCode + "|" + errorMessage);
                         MainActivity.w4Toast(MainActivity.mainActivity, errorMessage, Toast.LENGTH_LONG);
                         MainActivity.signInState = MainActivity.SIGNINSTATE_CANCELLED;
                         MainActivity.mainActivity.setLoginLoading(false);
@@ -323,73 +321,82 @@ class MainActivity extends AppCompatActivity {
         }
     }
 
+    static reffUserMain = null;
+
     completeSignIn2() {
         MainActivity.saveState(0);
-        var reffUser = firebase.database().ref().child(MainActivity.DB_PATH_USERS).child(firebase.auth().getUid());
-        reffUser.get().then((dataSnapshot) => {
-            if (MainActivity.signInState == MainActivity.SIGNINSTATE_LOADING) {
+        if (MainActivity.reffUserMain != null)
+            MainActivity.reffUserMain.off();
+
+        MainActivity.reffUserMain = firebase.database().ref().child(MainActivity.DB_PATH_USERS).child(firebase.auth().getUid());
+        MainActivity.reffUserMain.on('value', function (dataSnapshot) {
+            if (dataSnapshot.exists()) {
                 MainActivity.currentUser = User.fromDS(dataSnapshot.val());
-                if (MainActivity.currentUser != null && MainActivity.currentUser.getCompanyid() != null) { //If user data already exists in "users"
-                    var reffFirestore = firebase.database().ref().child(MainActivity.DB_PATH_FIRESTORE).child(MainActivity.DB_PATH_FIRESTORE_CUSTOMERS).child(MainActivity.currentUser.getCompanyid());
-                    reffFirestore.get().then((dataSnapshot) => {
-                        MainActivity.firestoreCustomer = FirestoreCustomer.fromDS(dataSnapshot.val());
-                        if (MainActivity.firestoreCustomer != null && MainActivity.firestoreCustomer.status != null) { //Set up users profile in "users"
-                            if (MainActivity.firestoreCustomer.getMetadata().function_getMaxEmployeesInt() >= MainActivity.currentUser.getEmployeeNum())
-                                MainActivity.mainActivity.completeSignIn3();
-                            else {
-                                MainActivity.dialogBox(MainActivity.mainActivity, "⚠ Employee Limit Reached", "Your company's subscription only allows " + MainActivity.firestoreCustomer.getMetadata().getMax_employees() + " employees. You are number " + MainActivity.currentUser.getEmployeeNum());
-                                MainActivity.signInState = MainActivity.SIGNINSTATE_CANCELLED;
-                                MainActivity.mainActivity.setLoginLoading(false);
+                if (MainActivity.signInState == MainActivity.SIGNINSTATE_LOADING) {
+                    if (MainActivity.currentUser != null && MainActivity.currentUser.getCompanyid() != null) { //If user data already exists in "users"
+                        var reffFirestore = firebase.database().ref().child(MainActivity.DB_PATH_FIRESTORE).child(MainActivity.DB_PATH_FIRESTORE_CUSTOMERS).child(MainActivity.currentUser.getCompanyid());
+                        reffFirestore.get().then((dataSnapshot) => {
+                            MainActivity.firestoreCustomer = FirestoreCustomer.fromDS(dataSnapshot.val());
+                            if (MainActivity.firestoreCustomer != null && MainActivity.firestoreCustomer.status != null) { //Set up users profile in "users"
+                                if (MainActivity.firestoreCustomer.getMetadata().function_getMaxEmployeesInt() >= MainActivity.currentUser.getEmployeeNum())
+                                    MainActivity.mainActivity.completeSignIn3();
+                                else {
+                                    MainActivity.dialogBox(MainActivity.mainActivity, "⚠ Employee Limit Reached", "Your company's subscription only allows " + MainActivity.firestoreCustomer.getMetadata().getMax_employees() + " employees. You are number " + MainActivity.currentUser.getEmployeeNum());
+                                    MainActivity.signInState = MainActivity.SIGNINSTATE_CANCELLED;
+                                    MainActivity.mainActivity.setLoginLoading(false);
+                                }
                             }
-                        }
-                        else {
+                            else {
+                                W4_Funcs.checkForFirestoreSubscription(firebase.auth().getUid(), function () {
+                                    MainActivity.signInState = MainActivity.SIGNINSTATE_CANCELLED;
+                                    MainActivity.mainActivity.setLoginLoading(false);
+                                });
+                            }
+                        }).catch((error) => {
                             W4_Funcs.checkForFirestoreSubscription(firebase.auth().getUid(), function () {
+                                // console.log("Failed to load subscriptions");
+                                console.error(error);
                                 MainActivity.signInState = MainActivity.SIGNINSTATE_CANCELLED;
                                 MainActivity.mainActivity.setLoginLoading(false);
                             });
-                        }
-                    }).catch((error) => {
-                        W4_Funcs.checkForFirestoreSubscription(firebase.auth().getUid(), function () {
-                            console.log("Failed to load subscriptions");
-                            console.error(error);
-                            MainActivity.signInState = MainActivity.SIGNINSTATE_CANCELLED;
-                            MainActivity.mainActivity.setLoginLoading(false);
                         });
-                    });
+                    }
+                    else { //Need to check here if user has a subscription in firestore to see if it's the owner's first time signing in
+                        var reffFirestore = firebase.database().ref().child(MainActivity.DB_PATH_FIRESTORE).child(MainActivity.DB_PATH_FIRESTORE_CUSTOMERS).child(firebase.auth().getUid());
+                        reffFirestore.get().then((dataSnapshot) => {
+                            MainActivity.firestoreCustomer = FirestoreCustomer.fromDS(dataSnapshot.val());
+                            if (MainActivity.firestoreCustomer != null && MainActivity.firestoreCustomer.status != null) { //Set up users profile in "users"
+                                var uid = firebase.auth().getUid();
+                                MainActivity.currentUser = new User(uid, uid, MainActivity.current_email, MainActivity.current_password, W4_Funcs.getOwnerPermissions(), W4_Funcs.getOwnerPermissions(), 0);
+                                var ref = firebase.database().ref().child(MainActivity.DB_PATH_USERS).child(firebase.auth().getUid());
+                                W4_Funcs.writeToDB(ref, MainActivity.currentUser);
+                                MainActivity.mainActivity.completeSignIn3();
+                            }
+                            else {
+                                W4_Funcs.checkForFirestoreSubscription(firebase.auth().getUid(), function () {
+                                    MainActivity.signInState = MainActivity.SIGNINSTATE_CANCELLED;
+                                    MainActivity.mainActivity.setLoginLoading(false);
+                                });
+                            }
+                        }).catch((error) => {
+                            W4_Funcs.checkForFirestoreSubscription(firebase.auth().getUid(), function () {
+                                // console.log("Failed to load subscriptions");
+                                console.error(error);
+                                MainActivity.signInState = MainActivity.SIGNINSTATE_CANCELLED;
+                                MainActivity.mainActivity.setLoginLoading(false);
+                            });
+                        });
+                    }
                 }
-                else { //Need to check here if user has a subscription in firestore to see if it's the owner's first time signing in
-                    var reffFirestore = firebase.database().ref().child(MainActivity.DB_PATH_FIRESTORE).child(MainActivity.DB_PATH_FIRESTORE_CUSTOMERS).child(firebase.auth().getUid());
-                    reffFirestore.get().then((dataSnapshot) => {
-                        MainActivity.firestoreCustomer = FirestoreCustomer.fromDS(dataSnapshot.val());
-                        if (MainActivity.firestoreCustomer != null && MainActivity.firestoreCustomer.status != null) { //Set up users profile in "users"
-                            var uid = firebase.auth().getUid();
-                            MainActivity.currentUser = new User(uid, uid, MainActivity.current_email, MainActivity.current_password, W4_Funcs.getOwnerPermissions(), W4_Funcs.getOwnerPermissions(), 0);
-                            var ref = firebase.database().ref().child(MainActivity.DB_PATH_USERS).child(firebase.auth().getUid());
-                            W4_Funcs.writeToDB(ref, MainActivity.currentUser);
-                            MainActivity.mainActivity.completeSignIn3();
-                        }
-                        else {
-                            W4_Funcs.checkForFirestoreSubscription(firebase.auth().getUid(), function () {
-                                MainActivity.signInState = MainActivity.SIGNINSTATE_CANCELLED;
-                                MainActivity.mainActivity.setLoginLoading(false);
-                            });
-                        }
-                    }).catch((error) => {
-                        W4_Funcs.checkForFirestoreSubscription(firebase.auth().getUid(), function () {
-                            console.log("Failed to load subscriptions");
-                            console.error(error);
-                            MainActivity.signInState = MainActivity.SIGNINSTATE_CANCELLED;
-                            MainActivity.mainActivity.setLoginLoading(false);
-                        });
-                    });
+            } else {
+                if (MainActivity.mainActivity != null) {
+                    // MainActivity.w4Toast(MainActivity.mainActivity, "Failed to load user data", Toast.LENGTH_LONG);
+                    // console.log("Failed to load users");
+                    console.error(error);
+                    MainActivity.signInState = MainActivity.SIGNINSTATE_CANCELLED;
+                    MainActivity.mainActivity.setLoginLoading(false);
                 }
             }
-        }).catch((error) => {
-            MainActivity.w4Toast(MainActivity.mainActivity, "Failed to load user data", Toast.LENGTH_LONG);
-            console.log("Failed to load users");
-            console.error(error);
-            MainActivity.signInState = MainActivity.SIGNINSTATE_CANCELLED;
-            MainActivity.mainActivity.setLoginLoading(false);
         });
     }
 

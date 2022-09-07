@@ -12,7 +12,6 @@ class NewEditTaskActivity extends W4Activity {
     //     var this.newTaskSheet = false;
     //     var this.isTemplate = false;
 
-
     onOptionsItemSelected(item) {
         switch (item.getItemId()) {
             case "home":
@@ -104,6 +103,9 @@ class NewEditTaskActivity extends W4Activity {
             a.selectedShift = Asset.getAssetbyId(MainActivity.theCompany.getShiftList(), shiftID);
             a.dateTimeStart = new W4DateTime(a.selectedShift.getStartTime());
             a.dateTimeEnd = a.dateTimeStart;
+        } else {
+            a.dateTimeStart = new W4DateTime();
+            a.dateTimeEnd = new W4DateTime();
         }
         var button = a.findViewById("Import_Template");
         button.addEventListener("click", function () {
@@ -206,6 +208,9 @@ class NewEditTaskActivity extends W4Activity {
                 return;
             }
             var taskSheet = new TaskSheet("", taskSheetName, shift.getLocationID(), shiftID, task_names, subTask_List_Names, durations, repeatAmount, repeatUnit, endUnit, repeatEndOccurences, repeatEndDate, weeklyRepeatDays, monthlyRepeatType, a.isTemplate);
+            if (a.isTemplate)
+                taskSheet.setShiftID("");
+
             var reffTask;
             if (a.newTaskSheet)
                 reffTask = firebase.database().ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_ASSET_TASKS).push();
@@ -360,6 +365,7 @@ class NewEditTaskActivity extends W4Activity {
                     break;
             }
             a.settingsSetMenuVisibility(true, null);
+            a.selected_uncommon_view = null;
         });
         var imageButton = view1.findViewById("ID_TASK_SETTINGS_BUTTON");
         imageButton.addEventListener("click", function () {
@@ -554,7 +560,27 @@ class NewEditTaskActivity extends W4Activity {
             a.startActivityForResult(intent, MainActivity.requestCodeCalendar);
         });
 
+        view1.findViewById("prevYear").addEventListener("click", function () {
+            view1.currentDate = W4_Funcs.addYears(view1.currentDate, -1);
+            W4_Funcs.w4SetMaterialCalendarDate(calendar_view, view1.currentDate);
+            a.setYearButtons(view1, view1.currentDate);
+        });
+
+        view1.findViewById("nextYear").addEventListener("click", function () {
+            view1.currentDate = W4_Funcs.addYears(view1.currentDate, 1);
+            W4_Funcs.w4SetMaterialCalendarDate(calendar_view, view1.currentDate);
+            a.setYearButtons(view1, view1.currentDate);
+        });
         return view1;
+    }
+
+    setYearButtons(view1, dt) {
+        var a = this;
+        if (a.destroyed == null) {
+            view1.findViewById("prevYearText").setText("< " + (dt.getYear() - 1));
+            view1.findViewById("nextYearText").setText((dt.getYear() + 1) + " >");
+            view1.currentDate = dt;
+        }
     }
 
     getSubtaskView(context, name0) {
@@ -749,6 +775,7 @@ class NewEditTaskActivity extends W4Activity {
 
         var title = calendar_ele.children[0].children[0].children[1].innerHTML;
         var dt = W4_Funcs.getDateTimeFromCalendarTitle(title);
+        this.setYearButtons(view, dt);
         var firstDayOfWeek = dt.getDayOfWeek();
         for (var i = 0; i < firstDayOfWeek; ++i) {
             dt = W4_Funcs.getPrevDay(dt);
@@ -765,6 +792,7 @@ class NewEditTaskActivity extends W4Activity {
             }
             dt = W4_Funcs.getNextDay(dt);
         }
+        W4_Funcs.setCalendarEleMonthButtons(calendar_ele);
     }
 
     updateRDStruct(view, dateTimeStart, dateTimeEnd) {

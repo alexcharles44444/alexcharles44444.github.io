@@ -96,6 +96,7 @@ class AppCompatActivity {
 
     finish() {
         this.onDestroy();
+        this.destroyed = true;
         var index = 0;
         for (var i = 0; i < AppCompatActivity.activities.length; ++i) {
             if (AppCompatActivity.activities[i].id == this.id) {
@@ -119,8 +120,8 @@ class AppCompatActivity {
 
         if (index > 0) {
             document.getElementById("activity_" + AppCompatActivity.activities[index - 1].id).style.display = "";
-            AppCompatActivity.activities[index - 1].onResume();
             AppCompatActivity.activities[index - 1].supportActionBar.setInnerHTMLTitle();
+            AppCompatActivity.activities[index - 1].onResume();
         }
 
         if (this.intent.requestCode != null && AppCompatActivity.activities.length > 0) {

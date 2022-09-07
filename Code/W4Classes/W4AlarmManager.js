@@ -18,7 +18,7 @@ class W4AlarmManager {
 
     static onReceive(context, intent) {
         //Check for upcoming shifts
-        console.log("Alarm Ran");
+        // console.log("Alarm Ran");
         if (MainActivity.mainActivity.loggedIn && MainActivity.allDatabaseDownloaded) {
             //            if(MainActivity.mainActivity != null && MainActivity.mainActivity.mBoundService != null){
             //                MainActivity.mainActivity.mBoundService.requestPersonLocationForDB(MainActivity.mainActivity);

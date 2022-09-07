@@ -37,7 +37,7 @@ class EmployeeStatusActivity extends W4Activity {
             var timePunchDT = new W4DateTime(latestPunch.getTime());
             if (!latestPunch.getClockIn()) {
                 boolStatus = false;
-                clockedText += "<br>" + MainActivity.RED_CIRCLE + " Clocked Out " + W4_Funcs.getTimeText(timePunchDT) + " " + W4_Funcs.getFriendlyDayText(timePunchDT);
+                clockedText += MainActivity.RED_CIRCLE + " Clocked Out " + W4_Funcs.getTimeText(timePunchDT) + " " + W4_Funcs.getFriendlyDayText(timePunchDT);
             }
             else {
                 var shiftStartTime = new W4DateTime(selectedShift.getStartTime());
@@ -49,10 +49,10 @@ class EmployeeStatusActivity extends W4Activity {
                     var lastDiff = Math.abs(latestPunch.getTime() - shiftEndYesterday.getMillis());
                     if (lastDiff < nowDiff) {
                         boolStatus = false;
-                        clockedText += "<br>" + MainActivity.RED_CIRCLE + " Last Clock In was " + W4_Funcs.getTimeText(timePunchDT) + " " + W4_Funcs.getFriendlyDayText(timePunchDT);
+                        clockedText += MainActivity.RED_CIRCLE + " Last Clock In was " + W4_Funcs.getTimeText(timePunchDT) + " " + W4_Funcs.getFriendlyDayText(timePunchDT);
                     } else {
                         boolStatus = true;
-                        clockedText += "<br>" + MainActivity.BLUE_CIRCLE + " Clocked In " + W4_Funcs.getTimeText(timePunchDT) + " " + W4_Funcs.getFriendlyDayText(timePunchDT);
+                        clockedText += MainActivity.BLUE_CIRCLE + " Clocked In " + W4_Funcs.getTimeText(timePunchDT) + " " + W4_Funcs.getFriendlyDayText(timePunchDT);
                     }
                 } else {
                     var startMinutes = shiftStartTime.getHourOfDay() * 60 + shiftStartTime.getMinuteOfHour();
@@ -76,17 +76,17 @@ class EmployeeStatusActivity extends W4Activity {
                     }
                     if (lastDiff < nowDiff) {
                         boolStatus = false;
-                        clockedText += "<br>" + MainActivity.RED_CIRCLE + " Last Clock In was " + W4_Funcs.getTimeText(timePunchDT) + " " + W4_Funcs.getFriendlyDayText(timePunchDT);
+                        clockedText += MainActivity.RED_CIRCLE + " Last Clock In was " + W4_Funcs.getTimeText(timePunchDT) + " " + W4_Funcs.getFriendlyDayText(timePunchDT);
                     } else {
                         boolStatus = true;
-                        clockedText += "<br>" + MainActivity.BLUE_CIRCLE + " Clocked In " + W4_Funcs.getTimeText(timePunchDT) + " " + W4_Funcs.getFriendlyDayText(timePunchDT);
+                        clockedText += MainActivity.BLUE_CIRCLE + " Clocked In " + W4_Funcs.getTimeText(timePunchDT) + " " + W4_Funcs.getFriendlyDayText(timePunchDT);
                     }
                 }
             }
         }
         else {
             boolStatus = false;
-            clockedText += "<br>" + MainActivity.RED_CIRCLE + " Clocked Out<br>This person has no time punches for this shift";
+            clockedText += MainActivity.RED_CIRCLE + " Clocked Out<br>This person has no time punches for this shift";
         }
 
         return [boolStatus, clockedText];

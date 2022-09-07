@@ -212,8 +212,8 @@ class FireBaseListeners {
                     FireBaseListeners.viewTemplateListActivity.updateList();
                 }
 
-                if(ViewSupplyItemLocationsListActivity.viewSupplyItemLocationsListActivity != null){
-                    ViewSupplyItemLocationsListActivity.viewSupplyItemLocationsListActivity.updateList(); 
+                if (ViewSupplyItemLocationsListActivity.viewSupplyItemLocationsListActivity != null) {
+                    ViewSupplyItemLocationsListActivity.viewSupplyItemLocationsListActivity.updateList();
                 }
 
                 if (FireBaseListeners.firstGetSupplyItemsListener) {
@@ -350,6 +350,10 @@ class FireBaseListeners {
                     NotificationsManager.doMessageNotifications();
                     HomeActivity.initializeHomeScreen();
                 }
+
+                if (ViewMessageLocationsActivity.viewMessageLocationsActivity != null) {
+                    ViewMessageLocationsActivity.viewMessageLocationsActivity.updateList();
+                }
             }
         });
     }
@@ -477,13 +481,13 @@ class FireBaseListeners {
                 W4_Funcs.writeToDB(FireBaseListeners.reffPeople.child(MainActivity.currentPersonID), person, "Owner created first time " + MainActivity.currentPersonID);
 
                 MainActivity.currentPerson = person;
-                MainActivity.current_password = MainActivity.currentUser.getPassword();
-                console.log("Couldn't find " + firebase.auth().currentUser.email + " in company->people and set as Owner, Uid: " + MainActivity.currentPersonID);
+                // MainActivity.current_password = MainActivity.currentUser.getPassword();
+                // console.log("Couldn't find " + firebase.auth().currentUser.email + " in company->people and set as Owner, Uid: " + MainActivity.currentPersonID);
             } else {
                 var value = dataSnapshot.child(MainActivity.currentPersonID).val();
                 MainActivity.currentPerson = Person.fromDS(value);
-                MainActivity.current_password = MainActivity.currentUser.getPassword();
-                console.log("Set MainActivity.currentPerson to " + MainActivity.currentPerson.getFirst_name() + " " + MainActivity.currentPerson.getLast_name());
+                // MainActivity.current_password = MainActivity.currentUser.getPassword();
+                // console.log("Set MainActivity.currentPerson to " + MainActivity.currentPerson.getFirst_name() + " " + MainActivity.currentPerson.getLast_name());
             }
 
             MainActivity.theCompany.setPersonList([MainActivity.currentPerson]);

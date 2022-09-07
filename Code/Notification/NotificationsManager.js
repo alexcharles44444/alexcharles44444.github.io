@@ -189,7 +189,7 @@ class NotificationsManager {
                             var person = Asset.getAssetbyId(MainActivity.theCompany.getPersonList(), message.getPersonID());
                             var location = Asset.getAssetbyId(MainActivity.theCompany.getLocationList(), message.getLocationID());
                             var text = "";
-                            var title = "";
+                            var title = "Message from ";
                             if (person != null) {
                                 title += person.getFirst_name() + " " + person.getLast_name();
                             }
@@ -198,7 +198,7 @@ class NotificationsManager {
                                     title += " at ";
                                 title += location.getName();
                             }
-                            title += " messaged:";
+                            title += ":";
                             text += message.getW4text();
                             var location_id = "";
                             if (location != null) {

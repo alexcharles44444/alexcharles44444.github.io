@@ -30,13 +30,18 @@
 
         <tr>
             <td><input id="Edit_Location_Zip" placeholder="Zip/Postal Code"></td>
-            <td><input id="Edit_Location_Phone" placeholder="Phone Number"></td>
+            <td>
+                <img src="../res/ic_phone.png" width="30" height="30"
+                    style="position: relative; top: 10px; left: 10px;">
+                <input id="Edit_Location_Phone" placeholder="Phone Number"
+                    style="padding-left: 40px; margin-left: -30px;">
+            </td>
         </tr>
     </table>
 
     <div class="labelMarginTop labelSize" id="Edit_Location_Country_Label">Country</div>
 
-    <select id="Edit_Location_Country_Spinner" style='background-color: #F1F1F1'></select>
+    <select id="Edit_Location_Country_Spinner"></select>
     <div style='height: 20px;'></div>
     <div style='display: flex; flex-direction: row;'>
         <div style="padding-top: 10px;">GPS Clock In/Out Radius&nbsp;&nbsp;&nbsp;</div>
@@ -46,18 +51,18 @@
     </div>
 
     <div class="labelMarginTop labelSize">E-mail</div>
-
-    <input type="email" id="Edit_Location_Email" placeholder="E-mail" style="width: 100%;">
+    <div style="margin-top: -30px;">
+        <img src="../res/ic_email.png" width="30" height="30" style="position: relative; top: 40px; left: 10px;">
+        <input type="email" id="Edit_Location_Email" placeholder="E-mail" style="width: 100%; padding-left: 40px;">
+    </div>
 
     <div class="labelMarginTop labelSize">Security Info</div>
 
-    <textarea id="Edit_Location_Security" placeholder="Security Info"
-        style=' font-family: BalooChettan2-Regular; width: 100%;'></textarea>
+    <textarea id="Edit_Location_Security" placeholder="Security Info" style='width: 100%;'></textarea>
 
     <div class="labelMarginTop labelSize">Instructions</div>
 
-    <textarea id="Edit_Location_Instructions" placeholder="Instructions"
-        style='font-family: BalooChettan2-Regular; width: 100%;'></textarea>
+    <textarea id="Edit_Location_Instructions" placeholder="Instructions" style='width: 100%;'></textarea>
 
     <div style='height: 50px;'></div>
     <div style='display: flex; flex-direction: row;'>
@@ -69,7 +74,6 @@
 
     <div style='height: 50px;'></div>
 
-    <button id="Delete_Edit_Location" class="buttonHeight redButtonText redButton"
-        style='width: 100%;'>Delete</button>
+    <button id="Delete_Edit_Location" class="buttonHeight redButtonText redButton" style='width: 100%;'>Delete</button>
 
 </div>

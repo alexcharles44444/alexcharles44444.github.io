@@ -4,11 +4,16 @@ class ViewNewEditSDSActivity extends W4Activity {
     // var this.fileUri = null;
 
     static webview;
+    static imageview;
     static button_file_left;
     static button_file_right;
     static fileNav;
     // var this.W4FSOs = [];
     static currentURI; //Is set to -1 in w4OnCreate()
+
+
+    static FILETYPE_PDF = 1;
+    static FILETYPE_IMAGE = 2;
 
     // PdfRenderer pdfRenderer;
     // PdfRenderer.Page currentPage;
@@ -25,7 +30,12 @@ class ViewNewEditSDSActivity extends W4Activity {
         super.onCreate();
         if (!MainActivity.loggedIn)
             return;
-        a.getSupportActionBar().setTitle("View SDS Sheet");
+        a.selectedSDSSupplyItemID = a.getIntent().getStringExtra("id");
+        let supplyItem = Asset.getAssetbyId(MainActivity.theCompany.getSupplyItemList(), a.selectedSDSSupplyItemID);
+        let title = "";
+        if (supplyItem != null)
+            title = supplyItem.getName();
+        a.getSupportActionBar().setTitle(title);
         a.setContentView(R.layout.activity_view_new_edit_s_d_s);
         FireBaseListeners.viewNewEditSDSActivity = this;
         a.W4FSOs = [];
@@ -56,6 +66,7 @@ class ViewNewEditSDSActivity extends W4Activity {
             //     a.findViewById("Button_Add_Image").setVisibility(View.GONE);
             //     getPhotoInternetPermissionAndChoose(ViewNewEditSDSActivity.FILETYPE_IMAGE);
             // });
+
             var button1 = a.findViewById("Delete_SDS");
             button1.addEventListener("click", function () {
                 if (ViewNewEditSDSActivity.currentURI < a.W4FSOs.length) {
@@ -65,7 +76,6 @@ class ViewNewEditSDSActivity extends W4Activity {
                 }
             });
         }
-        a.selectedSDSSupplyItemID = a.getIntent().getStringExtra("id");
         ViewNewEditSDSActivity.button_file_left = a.findViewById("File_Left");
         ViewNewEditSDSActivity.button_file_right = a.findViewById("File_Right");
         ViewNewEditSDSActivity.fileNav = a.findViewById("FileNav");
@@ -78,6 +88,7 @@ class ViewNewEditSDSActivity extends W4Activity {
             a.traverseNavigation(1);
         });
         ViewNewEditSDSActivity.webview = a.findViewById("WebView");
+        ViewNewEditSDSActivity.imageview = a.findViewById("ImageView");
         // ViewNewEditSDSActivity.imageViewPdf = a.findViewById("ImageView");
         // var resetMatrix = ViewNewEditSDSActivity.imageViewPdf.getImageMatrix();
         // ViewNewEditSDSActivity.imageViewPdf.setOnTouchListener(this);
@@ -88,7 +99,7 @@ class ViewNewEditSDSActivity extends W4Activity {
 
         a.w4OnCreate();
 
-        ViewNewEditSDSActivity.webview.ele.style.height = (window.innerHeight - 170) + "px";
+        ViewNewEditSDSActivity.webview.ele.style.height = (window.innerHeight - 170) + "px"
     }
 
     w4OnCreate() {
@@ -181,7 +192,7 @@ class ViewNewEditSDSActivity extends W4Activity {
             var overrideRightButton = false;
             if (i < this.W4FSOs.length) {
                 ViewNewEditSDSActivity.webview.setVisibility(View.VISIBLE);
-                this.set_iFrame(this.W4FSOs[i].url);
+                this.set_iFrame(this.W4FSOs[i]);
                 if (this.W4FSOs.length > 1) {
                     ViewNewEditSDSActivity.fileNav.setVisibility(View.VISIBLE);
                     if (i == 0 && !overrideLeftButton) {
@@ -238,17 +249,17 @@ class ViewNewEditSDSActivity extends W4Activity {
         this.findViewById("Uploading_Progress").setVisibility(View.VISIBLE);
         MainActivity.w4Toast(this, "Uploading...", Toast.LENGTH_SHORT);
         var reff = firebase.database().ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_ASSET_SUPPLY_ITEMS).child(this.selectedSDSSupplyItemID).push();
-        console.log("Beginning file upload " + W4_Funcs.getExtension(this.fileUri.name));
+        // console.log("Beginning file upload " + W4_Funcs.getExtension(this.fileUri.name));
         var Ref = MainActivity.firebaseStorage.ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_ASSET_SDS).child(this.selectedSDSSupplyItemID).child(reff.key + "." + W4_Funcs.getExtension(this.fileUri.name));
         Ref.put(this.fileUri).then((snapshot) => {
             ++ViewNewEditSDSActivity.filesUploaded;
             if (ViewNewEditSDSActivity.filesUploaded == ViewNewEditSDSActivity.filesUploading && MainActivity.loggedIn) {
-                console.log("File(s) uploaded successfully");
+                // console.log("File(s) uploaded successfully");
                 MainActivity.w4Toast(this, "Upload Successful!", Toast.LENGTH_SHORT);
                 a.w4OnCreate();
             }
         }).catch((error) => {
-            console.log("File upload failed:|" + error.code + "|" + error.message);
+            console.error("File upload failed:|" + error.code + "|" + error.message);
             MainActivity.dialogBox(this, "File upload failed!" + error.message);
             this.findViewById("Uploading_Progress").setVisibility(View.GONE);
         });
@@ -270,7 +281,39 @@ class ViewNewEditSDSActivity extends W4Activity {
         FireBaseListeners.viewNewEditSDSActivity.findViewById("Button_Add_Image").setVisibility(View.GONE);
     }
 
-    set_iFrame(url) {
-        ViewNewEditSDSActivity.webview.ele.src = url;
+    set_iFrame(obj) {
+        ViewNewEditSDSActivity.webview.setVisibility(View.GONE);
+        ViewNewEditSDSActivity.imageview.setVisibility(View.GONE);
+        if (obj.type == ViewNewEditSDSActivity.FILETYPE_IMAGE) {
+            ViewNewEditSDSActivity.imageview.ele.src = obj.url;
+            ViewNewEditSDSActivity.imageview.setVisibility(View.VISIBLE);
+        }
+        else {
+            ViewNewEditSDSActivity.webview.ele.src = obj.url;
+            ViewNewEditSDSActivity.webview.setVisibility(View.VISIBLE);
+        }
+
+
+        var modal = document.getElementById("myModal");
+        var img = document.getElementById("ImageView");
+        var modalImg = document.getElementById("img01");
+        var closeButton = document.getElementById("closeButton");
+        img.onclick = function () {
+            modal.style.display = "block";
+            modalImg.style.display = "block";
+            modalImg.src = img.src;
+            imgzoom = 1;
+            currentTranslate.x = 0;
+            currentTranslate.y = 0;
+            setImgTransform();
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        var closeFunc = function () {
+            modal.style.display = "none";
+            modalImg.style.display = "none";
+        }
+        closeButton.onclick = closeFunc;
+        // modal.onclick = closeFunc;
     }
 }

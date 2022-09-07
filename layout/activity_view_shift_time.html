@@ -1,36 +1,50 @@
 <div class="standardDivWidth">
     <br><br><br>
     <div id="View_Shift">
-        <div class="labelMarginTop labelSize">Name</div>
+        <div class="W4Divider"></div>
 
-        <div id="View_ShiftTime_Name" class="nameSize"></div>
+        <div class="W4ViewLabel">Name</div>
+        <div class="W4ViewText" id="View_ShiftTime_Name" class="nameSize"></div>
 
-        <div class="labelMarginTop labelSize">Location</div>
+        <div class="W4Divider"></div>
 
-        <div id="View_ShiftTime_Location_Text"></div>
+        <div class="W4ViewLabel">Location</div>
+        <div class="W4ViewText" id="View_ShiftTime_Location_Text"></div>
 
-        <div class="labelMarginTop labelSize">Time</div>
+        <div class="W4Divider"></div>
 
-        <div id="View_ShiftTime_Start_Time"></div>
+        <div class="W4ViewLabel">Time</div>
+        <div class="W4ViewText" id="View_ShiftTime_Start_Time"></div>
+        <div class="W4ViewLabel">To</div>
+        <div class="W4ViewText" id="View_ShiftTime_End_Time"></div>
 
-        <div class="labelSize">To</div>
+        <div class="W4Divider"></div>
 
-        <div id="View_ShiftTime_End_Time"></div>
-
-        <div style='height: 20px;'></div>
         <div id="View_ShiftTime_RepeatDiv">
-            <div class="labelMarginTop labelSize">Summary</div>
+            <div class="W4ViewLabel">Summary</div>
+            <div class="W4ViewText" id="View_ShiftTime_RepeatSummary_Text"></div>
 
-            <div id="View_ShiftTime_RepeatSummary_Text"></div>
+            <div class="W4Divider"></div>
 
-            <div id="View_ShiftTime_Calendar_RepeatSummary" style="display: flex; justify-content: center;"></div>
+            <div style="display: flex; width: 100%; margin: auto; height: 50px;">
+                <button id="prevYear" style="flex-grow: 1; background: #0080FF;">
+                    <div style="color: white;" id="prevYearText"></div>
+                </button>
+                <button id="nextYear" style="margin-left: 10px; flex-grow: 1; background: #0080FF;">
+                    <div style="color: white;" id="nextYearText"></div>
+                </button>
+            </div>
+            <br>
+            <div id="View_ShiftTime_Calendar_RepeatSummary" class="no_selection"
+                style="display: flex; justify-content: center;"></div>
         </div>
 
-        <div id="View_ShiftTime_Permissions_Warning_Text" style=' display: none;'></div>
+        <div class="W4Divider"></div>
 
-        <div id="View_ShiftTime_Assigned_Text" style='text-align: center; '></div>
+        <div class="W4ViewText" id="View_ShiftTime_Permissions_Warning_Text" style=' display: none;'></div>
+        <div class="W4ViewLabel" id="View_ShiftTime_Assigned_Text" style='text-align: center; '></div>
+        <div class="W4ViewText" id="View_ShiftTime_Add_Person_List"></div>
 
-        <div id="View_ShiftTime_Add_Person_List">
-        </div>
+        <div class="W4Divider"></div>
     </div>
 </div>

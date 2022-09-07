@@ -156,7 +156,7 @@ class View {
     findViewById(id) {
         var ele = W4_Funcs.getElementInsideElement(this.ele, id)
         if (ele == null) {
-            console.log("Failed to find|" + id + "| in ele|" + this.ele.id + "|");
+            console.error("Failed to find|" + id + "| in ele|" + this.ele.id + "|");
             return null;
         }
         return new View(ele, this.activity);
@@ -232,5 +232,9 @@ class View {
 
     setTextSize(size) {
         this.ele.style.fontSize = size + "px";
+    }
+
+    setEnabled(bool) {
+        this.ele.disabled = !bool;
     }
 }

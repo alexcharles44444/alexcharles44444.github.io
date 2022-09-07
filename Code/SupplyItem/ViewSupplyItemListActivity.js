@@ -15,10 +15,15 @@ class ViewSupplyItemListActivity extends W4Activity {
         super.onCreate();
         if (!MainActivity.loggedIn)
             return;
-        a.getSupportActionBar().setTitle("View Supplies");
+        a.location_id = a.getIntent().getStringExtra("location_id");
+        var location = Asset.getAssetbyId(MainActivity.theCompany.getLocationList(), a.location_id);
+        let title = "";
+        if (location != null)
+            title = "Supplies at " + location.getName();
+
+        a.getSupportActionBar().setTitle(title);
         a.setContentView(R.layout.activity_view_supply_item_list);
         FireBaseListeners.viewSupplyItemListActivity = a;
-        a.location_id = a.getIntent().getStringExtra("location_id");
 
         a.findViewById("TemplatesButton").addEventListener("click", function () {
             var intent = new Intent(a, new ViewTemplateListActivity());
@@ -26,7 +31,6 @@ class ViewSupplyItemListActivity extends W4Activity {
             intent.putExtra("newEditActivity", new NewEditSupplyItemActivity());
             intent.putExtra("viewActivity", new ViewSupplyItemActivity());
             a.startActivity(intent);
-
         });
         var button = a.findViewById("AddSupplyItemButton");
         if (MainActivity.currentUser.getWritePermissions()[Asset.PERMISSION_ALL_SUPPLIES] || MainActivity.currentUser.getWritePermissions()[Asset.PERMISSION_ASSIGNED_SUPPLIES]) {

@@ -23,10 +23,10 @@ class LocationListAdapter extends ArrayAdapter {
                     var message = Asset.getAssetbyId(MainActivity.theCompany.getMessageList(), w4Notification.any_id);
                     if (message != null) {
                         if (this.newMessagesByLocationMap.has(message.getLocationID())) {
-                            this.newMessagesByLocationMap.set(message.getLocationID(), this.newMessagesByLocationMap.get(message.getLocationID()) + 1)
+                            this.newMessagesByLocationMap.set(message.getLocationID(), this.newMessagesByLocationMap.get(message.getLocationID()) + 1);
                         }
                         else {
-                            this.newMessagesByLocationMap.set(message.getLocationID(), 1)
+                            this.newMessagesByLocationMap.set(message.getLocationID(), 1);
                         }
 
                     }

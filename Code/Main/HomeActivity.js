@@ -47,6 +47,7 @@ class HomeActivity extends W4Activity {
 
         var actionView = this.findViewById("action_notification", true);
         actionView.addEventListener("click", function () {
+            // if (ViewNotificationsListActivity.viewNotificationsListActivity == null)
             if (MainActivity.loggedIn && MainActivity.allDatabaseDownloaded) {
                 if (MainActivity.w4Notifications.length > 0) {
                     var intent = new Intent(HomeActivity.homeActivity, new ViewNotificationsListActivity());
@@ -272,6 +273,7 @@ class HomeActivity extends W4Activity {
     }
 
     static messagesButtonClicked() {
+        // if (ViewMessageLocationsActivity.viewMessageLocationsActivity == null)
         if (W4_Funcs.isAssetReadable(Asset.PERMISSION_ALL_MESSAGES)) {
             if (W4_Funcs.getPermittedLocationList_ForX(Asset.PERMISSION_ALL_MESSAGES).length > 0) {
                 var intent = new Intent(HomeActivity.homeActivity, new ViewMessageLocationsActivity());
@@ -311,7 +313,6 @@ class HomeActivity extends W4Activity {
         MainActivity.lastTaskSheet = null;
         MainActivity.theCompany = new TheCompany("");
         MainActivity.current_email = null;
-        MainActivity.current_password = null;
         MainActivity.currentPerson = null;
         MainActivity.currentPersonID = "";
         HomeActivity.setAllFirebaseReffsInProgress(false);

@@ -2,7 +2,7 @@
     <br><br><br>
     <div id="SupplyItem">
         <div id="SupplyItem_Requester"
-            style='background-color: #FF0000FF; color: #FFFFFFFF;  display: none; font-size: 20px; padding-left: 20px; border-radius: 20px;'>
+            style='background-color: #B30101; color: #FFFFFFFF;  display: none; font-size: 20px; padding-left: 20px; border-radius: 20px; margin-bottom: 10px;'>
         </div>
 
         <button id="Import_Template" class="buttonHeight" style='width: 100%; margin-bottom: 10px;'>Import
@@ -28,8 +28,9 @@
             <tr>
                 <td>
                     <div style="display: flex; flex-direction: row;">
-                        <div id="Price_Label" style='font-size: 30px;'>$</div>
-                        <input id="SupplyItem_Price" placeholder="Price">
+                        <div id="Price_Label" style='font-size: 30px; position: relative; top: 0px; left: 10px;'>$
+                        </div>
+                        <input id="SupplyItem_Price" placeholder="Price" style="padding-left: 40px; margin-left: -20px;">
                     </div>
                 </td>
                 <td>
@@ -48,8 +49,7 @@
 
         <div class="labelMarginTop labelSize">Notes</div>
 
-        <textarea id="SupplyItem_Notes" placeholder="Notes"
-            style=' font-family: BalooChettan2-Regular; width: 100%;'></textarea>
+        <textarea id="SupplyItem_Notes" placeholder="Notes" style='width: 100%; margin-bottom: 10px;'></textarea>
 
         <div style='display: flex; flex-direction: row;'>
 

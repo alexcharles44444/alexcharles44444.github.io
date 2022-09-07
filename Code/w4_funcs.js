@@ -123,7 +123,7 @@ class W4_Funcs {
     static getDSTSafeDateTime0(dt, hourOfDay, minuteOfHour, secondOfMinute) {
         var dateTime = new W4DateTime(dt.getYear(), dt.getMonthOfYear(), dt.getDayOfMonth(), hourOfDay, minuteOfHour, secondOfMinute);
         if (isNaN(dateTime.date.getTime())) {
-            console.log("New DateTime caused exception!");
+            console.error("New DateTime caused exception!");
             return new W4DateTime(dt.getYear(), dt.getMonthOfYear(), dt.getDayOfMonth(), hourOfDay + 1, minuteOfHour, secondOfMinute);
         }
         return dateTime;
@@ -132,7 +132,7 @@ class W4_Funcs {
     static getDSTSafeDateTime1(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute) {
         var dateTime = new W4DateTime(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute);
         if (isNaN(dateTime.date.getTime())) { //Probably a missing time slot caused by daylight savings time
-            console.log("New DateTime caused exception! ");
+            console.error("New DateTime caused exception! ");
             return new W4DateTime(year, monthOfYear, dayOfMonth, hourOfDay + 1, minuteOfHour, secondOfMinute);
         }
         return dateTime;
@@ -1688,6 +1688,10 @@ class W4_Funcs {
                 person.setClockedIn(latest.getClockIn());
                 var reff = firebase.database().ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_ASSET_PEOPLE).child(person.getW4id());
                 W4_Funcs.writeToDB(reff, person, "");
+            } else { //Person has no time punches
+                person.setClockedIn(false);
+                let reff = firebase.database().ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_ASSET_PEOPLE).child(person.getW4id());
+                W4_Funcs.writeToDB(reff, person, "");
             }
         }
     }
@@ -1802,19 +1806,25 @@ class W4_Funcs {
         return map;
     }
 
-    static writeToDB(reff, object, log) {
+    static writeToDB(reff, object, log, func) {
         if (log == null)
             log = "";
-        reff.set(object);
+        if (func != null)
+            reff.set(object, func);
+        else
+            reff.set(object);
         if (!log.equals("")) {
             W4_DBLog.writeTo_DB_Log(log, reff.toString());
         }
     }
 
-    static deleteFromDB(reff, log) {
+    static deleteFromDB(reff, log, func) {
         if (log == null)
             log = "";
-        reff.remove();
+        if (func != null)
+            reff.remove(func);
+        else
+            reff.remove();
         if (!log.equals("")) {
             W4_DBLog.writeTo_DB_Log(log, reff.toString());
         }
@@ -1891,23 +1901,18 @@ class W4_Funcs {
             repeatEndTime = overrideEndDate;
         }
         if (shift.getRepeatAmount() == 0) {
-            console.log("Return 1");
             return startTime;
         }
         if (shift.getEndUnit() == Asset.ENDUNIT_OCCURENCES && shift.getRepeatEndOccurences() == 1) {
-            console.log("Return 2");
             return startTime;
         }
         if (shift.getEndUnit() == Asset.ENDUNIT_OCCURENCES && shift.getRepeatEndOccurences() == 0) {
-            console.log("Return 3");
             return startTime;
         }
         if (shift.getEndUnit() == Asset.ENDUNIT_NEVER && overrideEndDate == null) {
-            console.log("Return 4");
             return null;
         }
         if (shift.getEndUnit() == Asset.ENDUNIT_ONDATE && repeatEndTime.getMillis() <= startTime.getMillis()) {
-            console.log("Return 5");
             return startTime;
         }
         if (shift.getRepeatUnit() == Asset.REPEATUNIT_WEEKLY) {
@@ -1919,7 +1924,6 @@ class W4_Funcs {
                 }
             }
             if (!hasRepeatDay) {
-                console.log("Return 6");
                 return startTime;
             }
         }
@@ -1927,14 +1931,12 @@ class W4_Funcs {
         switch (shift.getRepeatUnit()) {
             case Asset.REPEATUNIT_DAILY:
                 if (shift.getEndUnit() == Asset.ENDUNIT_OCCURENCES && overrideEndDate == null) {
-                    console.log("Return 7");
                     return W4_Funcs.getAdjustedDaySameTime(startTime, (shift.getRepeatEndOccurences() - 1) * shift.getRepeatAmount());
                 }
                 else { //Asset.ENDUNIT_ONDATE:
                     var daysDiff = Math.abs(W4_Funcs.getDaysDiff(startTime, repeatEndTime));
                     var occurencesToDt = Math.floor(daysDiff / shift.getRepeatAmount());
                     var lastDay = W4_Funcs.getAdjustedDaySameTime(startTime, occurencesToDt * shift.getRepeatAmount());
-                    console.log("Return 8");
                     return lastDay;
                 }
             case Asset.REPEATUNIT_WEEKLY:
@@ -1946,7 +1948,6 @@ class W4_Funcs {
                         }
                     }
                     if (numWeeklyRepeatDays == 0) {
-                        console.log("Return 9");
                         return startTime;
                     }
                     var numOccurences = 0; //Includes start day
@@ -1967,7 +1968,6 @@ class W4_Funcs {
                             if (startTime.getDayOfWeek() % 7 == i || shift.getWeeklyRepeatDays()[i]) {
                                 numOccurencesThatWeekFound += 1;
                                 if (numOccurencesThatWeekFound == shift.getRepeatEndOccurences()) {
-                                    console.log("Return 10");
                                     return W4_Funcs.getAdjustedDaySameTime(startTime, daysDiff);
                                 }
                             }
@@ -1988,7 +1988,6 @@ class W4_Funcs {
                         }
                         var daysDiff = lastDayInt - 3; //Thursday of last week (from W4_Funcs.getMiddleOfWeek)
                         var lastDay = W4_Funcs.getAdjustedDaySameTime(pre_lastWeek, daysDiff);
-                        console.log("Return 11");
                         return W4_Funcs.getDSTSafeDateTime(lastDay, startTime.getHourOfDay(), startTime.getMinuteOfHour(), startTime.getSecondOfMinute());
                     }
                     else {
@@ -2006,7 +2005,6 @@ class W4_Funcs {
                         }
                         var daysDiff = lastDayInt - 3; //Thursday of last week (from W4_Funcs.getMiddleOfWeek)
                         var lastDay = W4_Funcs.getAdjustedDaySameTime(lastWeek, daysDiff);
-                        console.log("Return 12");
                         return W4_Funcs.getDSTSafeDateTime(lastDay, startTime.getHourOfDay(), startTime.getMinuteOfHour(), startTime.getSecondOfMinute());
                     }
                 } else {//Asset.ENDUNIT_ONDATE:
@@ -2019,14 +2017,12 @@ class W4_Funcs {
                         for (var i = lastDay.getDayOfWeek() % 7; i < 7; ++i) {
                             lastDay = W4_Funcs.getDSTSafeDateTime(W4_Funcs.getNextDay(lastDay), 0, 0, 0);
                             if (lastDay.getMillis() > repeatEndTime0.getMillis()) {
-                                console.log("Return 13");
                                 return W4_Funcs.getDSTSafeDateTime(lastDayPrev, startTime.getHourOfDay(), startTime.getMinuteOfHour(), startTime.getSecondOfMinute());
                             }
                             if (i < 6 && shift.getWeeklyRepeatDays()[i + 1]) {
                                 lastDayPrev = W4_Funcs.getDSTSafeDateTime(lastDay, 0, 0, 0);
                             }
                         }
-                        console.log("Return 14");
                         return W4_Funcs.getDSTSafeDateTime(lastDayPrev, startTime.getHourOfDay(), startTime.getMinuteOfHour(), startTime.getSecondOfMinute());
                     }
                     else {
@@ -2051,7 +2047,6 @@ class W4_Funcs {
                                 }
                             }
                             lastDayDT = W4_Funcs.getAdjustedDaySameTime(lastDayDT, -7 * shift.getRepeatAmount() + (lastDay - (lastDayDT.getDayOfWeek() % 7)));
-                            console.log("Return 15");
                             return W4_Funcs.getDSTSafeDateTime(lastDayDT, startTime.getHourOfDay(), startTime.getMinuteOfHour(), startTime.getSecondOfMinute());
                         }
 
@@ -2062,14 +2057,12 @@ class W4_Funcs {
                         for (var i = lastDayDT.getDayOfWeek() % 7; i < 7; ++i) {
                             lastDayDT = W4_Funcs.getDSTSafeDateTime(W4_Funcs.getNextDay(lastDayDT), 0, 0, 0);
                             if (lastDayDT.getMillis() > repeatEndTime0.getMillis()) {
-                                console.log("Return 16");
                                 return W4_Funcs.getDSTSafeDateTime(lastDayPrev, startTime.getHourOfDay(), startTime.getMinuteOfHour(), startTime.getSecondOfMinute());
                             }
                             if (i < 6 && shift.getWeeklyRepeatDays()[i + 1]) {
                                 lastDayPrev = W4_Funcs.getDSTSafeDateTime(lastDayDT, 0, 0, 0);
                             }
                         }
-                        console.log("Return 17");
                         return W4_Funcs.getDSTSafeDateTime(lastDayPrev, startTime.getHourOfDay(), startTime.getMinuteOfHour(), startTime.getSecondOfMinute());
                     }
                 }
@@ -2080,7 +2073,6 @@ class W4_Funcs {
                             var monthsDiff0 = (shift.getRepeatEndOccurences() - 1) * shift.getRepeatAmount();
                             var lastMonth0 = W4_Funcs.getDSTSafeDateTime(startTime, 0, 0, 0);
                             lastMonth0 = W4_Funcs.addMonths(lastMonth0, monthsDiff0);
-                            console.log("Return 18");
                             return W4_Funcs.getDSTSafeDateTime(lastMonth0, startTime.getHourOfDay(), startTime.getMinuteOfHour(), startTime.getSecondOfMinute());
                         default: //Asset.MONTHLYREPEATTYPE_DAYOFWEEK:
                             var monthsDiff1 = (shift.getRepeatEndOccurences() - 1) * shift.getRepeatAmount();
@@ -2096,10 +2088,8 @@ class W4_Funcs {
                             }
                             var lastDay = W4_Funcs.getAdjustedDaySameTime(finalMonthStartDay, startDayDiff + (shiftXthWeek * 7));
                             if (lastDay.getMonthOfYear() != lastMonth1.getMonthOfYear() || lastDay.getYear() != lastMonth1.getYear()) {
-                                console.log("Return 19");
                                 return W4_Funcs.getDSTSafeDateTime(lastMonth1.getYear(), lastMonth1.getMonthOfYear(), W4_Funcs.getNumDaysInMonth(lastMonth1), startTime.getHourOfDay(), startTime.getMinuteOfHour(), startTime.getSecondOfMinute());
                             }
-                            console.log("Return 20");
                             return W4_Funcs.getDSTSafeDateTime(lastDay, startTime.getHourOfDay(), startTime.getMinuteOfHour(), startTime.getSecondOfMinute());
                     }
                 } else { //Asset.ENDUNIT_ONDATE:
@@ -2115,7 +2105,6 @@ class W4_Funcs {
                                 lastMonth = W4_Funcs.getDSTSafeDateTime(startTime, 0, 0, 0);
                                 lastMonth = W4_Funcs.addMonths(lastMonth, latestMonth * shift.getRepeatAmount());
                             }
-                            console.log("Return 21");
                             return W4_Funcs.getDSTSafeDateTime(lastMonth, startTime.getHourOfDay(), startTime.getMinuteOfHour(), startTime.getSecondOfMinute());
                         default: //Asset.MONTHLYREPEATTYPE_DAYOFWEEK:
                             var monthsDiff2 = (repeatEndTime.getMonthOfYear() + (repeatEndTime.getYear() * 12)) - (startTime.getMonthOfYear() + (startTime.getYear() * 12));
@@ -2149,11 +2138,9 @@ class W4_Funcs {
                                 }
                                 lastDay = W4_Funcs.getAdjustedDaySameTime(finalMonthStartDay, startDayDiff + (shiftXthWeek * 7));
                                 if (lastDay.getMonthOfYear() != lastMonth.getMonthOfYear() || lastDay.getYear() != lastMonth.getYear()) {
-                                    console.log("Return 22");
                                     return W4_Funcs.getDSTSafeDateTime(lastMonth.getYear(), lastMonth.getMonthOfYear(), W4_Funcs.getNumDaysInMonth(lastMonth), startTime.getHourOfDay(), startTime.getMinuteOfHour(), startTime.getSecondOfMinute());
                                 }
                             }
-                            console.log("Return 23");
                             return W4_Funcs.getDSTSafeDateTime(lastDay, startTime.getHourOfDay(), startTime.getMinuteOfHour(), startTime.getSecondOfMinute());
                     }
                 }
@@ -2162,7 +2149,6 @@ class W4_Funcs {
                     var yearsDiff = (shift.getRepeatEndOccurences() - 1) * shift.getRepeatAmount();
                     var lastYear = W4_Funcs.getDSTSafeDateTime(startTime, 0, 0, 0);
                     lastYear = W4_Funcs.addYears(lastYear, yearsDiff);
-                    console.log("Return 24");
                     return W4_Funcs.getDSTSafeDateTime(lastYear, startTime.getHourOfDay(), startTime.getMinuteOfHour(), startTime.getSecondOfMinute());
                 } else { //Asset.ENDUNIT_ONDATE:
                     var yearsDiff = repeatEndTime.getYear() - startTime.getYear();
@@ -2179,7 +2165,6 @@ class W4_Funcs {
                     }
                     lastYear = W4_Funcs.getDSTSafeDateTime(startTime, 0, 0, 0);
                     lastYear = W4_Funcs.addYears(lastYear, latestYear * shift.getRepeatAmount());
-                    console.log("Return 25");
                     return W4_Funcs.getDSTSafeDateTime(lastYear, startTime.getHourOfDay(), startTime.getMinuteOfHour(), startTime.getSecondOfMinute());
                 }
         }
@@ -2350,7 +2335,7 @@ class W4_Funcs {
             else
                 function0(null);
         }).catch((error) => {
-            console.log("Failed to load user");
+            // console.log("Failed to load user");
             console.error(error);
         });
     }
@@ -2364,11 +2349,11 @@ class W4_Funcs {
                 var writePermissions = dataSnapshot.val();
                 function0(readPermissions, writePermissions);
             }).catch((error) => {
-                console.log("Failed to load write permissions");
+                // console.log("Failed to load write permissions");
                 console.error(error);
             });
         }).catch((error) => {
-            console.log("Failed to load read permissions");
+            // console.log("Failed to load read permissions");
             console.error(error);
         });
     }
@@ -2569,5 +2554,25 @@ class W4_Funcs {
                 }
                 func();
             });
+    }
+
+    static setCalendarEleMonthButtons(ele) {
+        let prevMonthButton = ele.children[0].children[0].children[0].children[0];
+        let nextMonthButton = ele.children[0].children[0].children[2].children[0];
+        prevMonthButton.setAttribute("width", "40");
+        prevMonthButton.setAttribute("height", "40");
+        nextMonthButton.setAttribute("width", "40");
+        nextMonthButton.setAttribute("height", "40");
+    }
+
+    static objSize(obj) {
+        if (obj == null)
+            return 0;
+        var size = 0, key;
+        for (key in obj) {
+            if (obj.hasOwnProperty(key))
+                ++size;
+        }
+        return size;
     }
 }

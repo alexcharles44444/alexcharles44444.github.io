@@ -91,8 +91,8 @@ class NewEditPersonActivity extends W4Activity {
 
         if (a.newPerson) {
             a.getSupportActionBar().setTitle("New Person");
-            a.findViewById("EmailNote").setVisibility(View.VISIBLE);
-            a.findViewById("New_Person_Email").setVisibility(View.VISIBLE);
+            // a.findViewById("EmailNote").setVisibility(View.VISIBLE);
+            a.findViewById("New_Person_Email_Div").setVisibility(View.VISIBLE);
             a.findViewById("Delete_Edit_Person").setVisibility(View.GONE);
             a.findViewById("Edit_Person_Password_Title").setText("Password");
             a.findViewById("Edit_Person_Password").ele.placeholder = "Password";
@@ -488,44 +488,54 @@ class NewEditPersonActivity extends W4Activity {
                 if (resultCode == AppCompatActivity.RESULT_OK) {
                     //Delete the user
                     a.setEditPersonLoading(true);
-                    var reffPerson = firebase.database().ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_ASSET_PEOPLE).child(a.selectedPerson.getW4id());
-                    W4_Funcs.deleteFromDB(reffPerson, "Deleted person " + a.selectedPerson.getFirst_name() + " " + a.selectedPerson.getLast_name());
-                    Deletions.deleteTimePunches_withPerson(a.selectedPerson.getW4id());
-                    Deletions.deletePersonFromShifts(a.selectedPerson.getW4id());
-                    Deletions.deleteTaskSheetOccurences(null, a.selectedPerson.getW4id());
                     W4_Funcs.getPersonPasswordFromUID(a.selectedPerson.getW4id(), function (password0) {
                         if (password0 != null) {
-                            var reffUser = firebase.database().ref().child(MainActivity.DB_PATH_USERS).child(a.selectedPerson.getW4id());
-                            W4_Funcs.deleteFromDB(reffUser, "");
                             firebase.auth().signInWithEmailAndPassword(a.selectedPerson.getEmail(), password0)
                                 .then((userCredential) => {
-                                    console.log("signInWithEmail:success " + firebase.auth().getUid());
+                                    // console.log("signInWithEmail:success " + firebase.auth().getUid());
                                     firebase.auth().currentUser.delete().then(() => {
-                                        console.log("User account deleted.");
+                                        // console.log("User account deleted.");
                                         firebase.auth().setPersistence(MainActivity.persistenceVar).then(function () {
                                             return firebase.auth().signInWithEmailAndPassword(MainActivity.current_email, MainActivity.current_password) //Log back into main account
                                                 .then((userCredential) => {
-                                                    console.log("signInWithEmail:success " + firebase.auth().getUid());
+                                                    // console.log("signInWithEmail:success " + firebase.auth().getUid());
                                                     MainActivity.w4Toast(this, "Successfully deleted Person", Toast.LENGTH_LONG);
-                                                    HomeActivity.logOut();
-                                                    MainActivity.overrideAutoLogin = true;
-                                                    var intent = new Intent(AppCompatActivity.getApplicationContext(), null);
-                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                    a.startActivity(intent);
+
+                                                    let func = function () {
+                                                        HomeActivity.logOut();
+                                                        MainActivity.overrideAutoLogin = true;
+                                                        var intent = new Intent(AppCompatActivity.getApplicationContext(), null);
+                                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                        a.startActivity(intent);
+                                                    };
+
+                                                    a.deletionCaller = new W4CallbackManager(5, func);
+                                                    var func2 = function () {
+                                                        a.deletionCaller.call();
+                                                    };
+
+                                                    W4_Funcs.deleteFromDB(firebase.database().ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_ASSET_PEOPLE).child(a.selectedPerson.getW4id()), "Deleted person " + a.selectedPerson.getFirst_name() + " " + a.selectedPerson.getLast_name(), func2);
+                                                    Deletions.deleteTimePunches_withPerson(a.selectedPerson.getW4id(), func2);
+                                                    Deletions.deletePersonFromShifts(a.selectedPerson.getW4id(), func2);
+                                                    Deletions.deleteTaskSheetOccurences(null, a.selectedPerson.getW4id(), func2);
+                                                    W4_Funcs.deleteFromDB(firebase.database().ref().child(MainActivity.DB_PATH_USERS).child(a.selectedPerson.getW4id()), "", func2);
+
                                                 }).catch((error) => {
-                                                    console.log("signInWithEmail:failure|" + error.code + "|" + error.message);
+                                                    // console.log("signInWithEmail:failure|" + error.code + "|" + error.message);
                                                     MainActivity.w4Toast(this, "Could not authenticate your credentials", Toast.LENGTH_LONG);
                                                     System.exit(2);
                                                 });
                                         });
                                     }).catch((error) => {
-                                        console.log("signInWithEmail:failure|" + error.code + "|" + error.message);
+                                        // console.log("signInWithEmail:failure|" + error.code + "|" + error.message);
                                         System.exit(3);
                                     });
                                 }).catch((error) => {
-                                    console.log("signInWithEmail:failure|" + error.code + "|" + error.message);
-                                    MainActivity.w4Toast(this, "Could not authenticate your credentials", Toast.LENGTH_LONG);
-                                    System.exit(4);
+                                    // console.log("signInWithEmail:failure|" + error.code + "|" + error.message);
+                                    MainActivity.dialogBox(a, "Error", "This user needs to log in to Clean Assistant to allow deletion.");
+                                    a.setEditPersonLoading(false);
+                                    // MainActivity.w4Toast(this, "Could not authenticate your credentials", Toast.LENGTH_LONG);
+                                    // System.exit(4);
                                 });
                         }
                         else {
@@ -547,19 +557,19 @@ class NewEditPersonActivity extends W4Activity {
     editFireBaseUser(newPerson, oldPassword, newPassword, readPermissions, writePermissions) {
         var a = this;
         var newPerson2 = newPerson;
-        console.log("New password: |" + newPassword + "| Old: |" + oldPassword + "|" + oldPassword.equals(newPassword));
+        // console.log("New password: |" + newPassword + "| Old: |" + oldPassword + "|" + oldPassword.equals(newPassword));
         if ((a.findViewById("Edit_Person_Password")).getText().length >= 6 || (a.findViewById("Edit_Person_Password")).getText().length == 0) {
             if (!newPassword.equals(oldPassword)) {
-                console.log("Password needs changing");
+                // console.log("Password needs changing");
                 var reffPerson = firebase.database().ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_ASSET_PEOPLE).child(newPerson2.getW4id());
                 W4_Funcs.writeToDB(reffPerson, newPerson2, "Edited Person (new password) " + newPerson2.getFirst_name() + " " + newPerson2.getLast_name());
                 a.writePermissionsToDB(newPerson2.getW4id(), readPermissions, writePermissions);
                 firebase.auth().signInWithEmailAndPassword(a.selectedPerson.getEmail(), oldPassword)
                     .then((userCredential) => {
-                        console.log("signInWithEmail:success " + firebase.auth().getUid());
+                        // console.log("signInWithEmail:success " + firebase.auth().getUid());
                         firebase.auth().currentUser.updatePassword(newPassword)
                             .then(() => {
-                                console.log("User account changed password.");
+                                // console.log("User account changed password.");
                                 var passwordReff = firebase.database().ref().child(MainActivity.DB_PATH_USERS).child(firebase.auth().getUid()).child(MainActivity.DB_PATH_USERS_PASSWORD);
                                 W4_Funcs.writeToDB(passwordReff, newPassword, "");
                                 if (newPerson2.getW4id().equals(MainActivity.currentPersonID))
@@ -567,23 +577,24 @@ class NewEditPersonActivity extends W4Activity {
                                 firebase.auth().setPersistence(MainActivity.persistenceVar).then(function () {
                                     return firebase.auth().signInWithEmailAndPassword(MainActivity.current_email, MainActivity.current_password) //Log back into main account
                                         .then((userCredential) => {
-                                            console.log("signInWithEmail:success " + firebase.auth().getUid());
+                                            // console.log("signInWithEmail:success " + firebase.auth().getUid());
                                             MainActivity.w4Toast(this, "Successfully edited Person", Toast.LENGTH_LONG);
                                             a.finish();
                                         }).catch((error) => {
-                                            console.log("signInWithEmail:failure|" + error.code + "|" + error.message);
+                                            // console.log("signInWithEmail:failure|" + error.code + "|" + error.message);
                                             MainActivity.w4Toast(this, "Could not authenticate your credentials", Toast.LENGTH_LONG);
                                             System.exit(5);
                                         });
                                 });
                             }).catch((error) => {
-                                console.log("updatePassword:failure|" + error.code + "|" + error.message);
+                                // console.log("updatePassword:failure|" + error.code + "|" + error.message);
                                 System.exit(6);
                             });
                     }).catch((error) => {
-                        console.log("signInWithEmail:failure|" + error.code + "|" + error.message);
-                        MainActivity.w4Toast(this, "Could not authenticate your credentials", Toast.LENGTH_LONG);
-                        System.exit(7);
+                        // console.log("signInWithEmail:failure|" + error.code + "|" + error.message);
+                        MainActivity.dialogBox(a, "Error", "This user needs to log in to Clean Assistant to allow password changes.");
+                        a.setEditPersonLoading(false);
+                        // System.exit(7);
                     });
             } else { //No new password
                 var reffPerson = firebase.database().ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_ASSET_PEOPLE).child(newPerson.getW4id());
@@ -607,7 +618,7 @@ class NewEditPersonActivity extends W4Activity {
             a.findViewById("Edit_Person_Type_Spinner").setClickable(false);
             a.findViewById("Cancel_Edit").setVisibility(View.GONE);
             a.findViewById("Accept_Edit").setVisibility(View.GONE);
-            a.findViewById("Delete_Edit_Person").setVisibility(View.GONE);
+            a.findViewById("Delete_Edit_Person").setEnabled(false);
             a.findViewById("Edit_Person_Progress").setVisibility(View.VISIBLE);
             a.findViewById("Edit_Person_Progress2").setVisibility(View.VISIBLE);
         } else {
@@ -618,7 +629,7 @@ class NewEditPersonActivity extends W4Activity {
             a.findViewById("Cancel_Edit").setVisibility(View.VISIBLE);
             a.findViewById("Accept_Edit").setVisibility(View.VISIBLE);
             if (!a.newPerson)
-                a.findViewById("Delete_Edit_Person").setVisibility(View.VISIBLE);
+                a.findViewById("Delete_Edit_Person").setEnabled(true);
             a.findViewById("Edit_Person_Progress").setVisibility(View.GONE);
             a.findViewById("Edit_Person_Progress2").setVisibility(View.GONE);
         }
@@ -654,19 +665,20 @@ class NewEditPersonActivity extends W4Activity {
     }
 
     createNewFireBaseUser(person, password, readPermissions, writePermissions) {
-        var subject = "Your Account For Clean Assistant Has Been Created";
-        var message =
-            "Download the app for your device:<br>" +
-            "Android<br>" +
-            "https://play.google.com/store/apps/details?id=com.where44444.cleanbook<br><br>" +
-            "iOS<br>" +
-            "https://apps.apple.com/us/app/cleanassistant/id1558722026<br><br>" +
-            "E-mail: <b>" + person.getEmail() + "</b><br>" +
-            "Password: <b>" + password + "</b><br><br>" +
-            "Please change your password as soon as possible in the app! Tap your profile icon at the top right and type your password in<br>" +
-            "both fields then press accept.";
+        // var subject = "Your Account For Clean Assistant Has Been Created";
+        // var message =
+        //     "Download the app for your device:<br>" +
+        //     "Android<br>" +
+        //     "https://play.google.com/store/apps/details?id=com.where44444.cleanbook<br><br>" +
+        //     "iOS<br>" +
+        //     "https://apps.apple.com/us/app/cleanassistant/id1558722026<br><br>" +
+        //     "E-mail: <b>" + person.getEmail() + "</b><br>" +
+        //     "Password: <b>" + password + "</b><br><br>" +
+        //     "Please change your password as soon as possible in the app! Tap your profile icon at the top right and type your password in<br>" +
+        //     "both fields then press accept.";
 
-        MainActivity.emailOBJ = new EmailOBJ(subject, message, person.getEmail());
+        // MainActivity.emailOBJ = new EmailOBJ(subject, message, person.getEmail());
+
         this.completeCreateNewFireBaseUser(person, password, readPermissions, writePermissions);
     }
 
@@ -685,20 +697,52 @@ class NewEditPersonActivity extends W4Activity {
                 var reffPerson = firebase.database().ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_ASSET_PEOPLE).child(uid);
                 W4_Funcs.writeToDB(reffPerson, person, "New Person " + person.getFirst_name() + " " + person.getLast_name());
 
-                // Sign in success, update UI with the signed-in user's information
-                console.log("createUserWithEmail:success " + firebase.auth().getUid());
-                HomeActivity.logOut();
-                MainActivity.overrideAutoLogin = true;
-                var intent = new Intent(AppCompatActivity.getApplicationContext(), null);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                a.startActivity(intent);
-                MainActivity.w4Toast(this, "Successfully added new Person", Toast.LENGTH_LONG);
+                firestore_db.collection("users").doc(uid).set({
+                    email: person.getEmail(),
+                    password: password
+                })
+                    .then(() => {
+                        // console.log("Document successfully written!");
+                        MainActivity.dialogBox(MainActivity.mainActivity, "Email sent", "An email with login information has been sent to " + person.getEmail() + ", they may need to check their spam folder");
+                        a.completeCreateNewFireBaseUser2(person);
+                    })
+                    .catch((error) => {
+                        console.error("Error writing document: ", error);
+                        var subject = "Your Account For Clean Assistant Has Been Created";
+                        var message =
+                            "Download the app for your device:<br>" +
+                            "Android<br>" +
+                            "https://play.google.com/store/apps/details?id=com.where44444.cleanbook<br><br>" +
+                            "iOS<br>" +
+                            "https://apps.apple.com/us/app/cleanassistant/id1558722026<br><br>" +
+                            "E-mail: <b>" + person.getEmail() + "</b><br>" +
+                            "Password: <b>" + password + "</b><br><br>" +
+                            "Please change your password as soon as possible in the app! Tap your profile icon at the top right and type your password in<br>" +
+                            "both fields then press accept.";
+                        MainActivity.emailOBJ = new EmailOBJ(subject, message, person.getEmail());
+                        a.completeCreateNewFireBaseUser2(person);
+                    });
             }).catch((error) => {
                 // If sign in fails, display a message to the user.
                 a.setEditPersonLoading(false);
                 MainActivity.w4Toast(this, error.message, Toast.LENGTH_LONG);
-                console.log("createUserWithEmail:failure, current mauth " + firebase.auth().currentUser.uid + "|" + error.code + "|" + error.message);
+                // console.log("createUserWithEmail:failure, current mauth " + firebase.auth().currentUser.uid + "|" + error.code + "|" + error.message);
                 MainActivity.emailOBJ = null;
             });
+    }
+
+    completeCreateNewFireBaseUser2(person) {
+        var a = this;
+        // Sign in success, update UI with the signed-in user's information
+        // console.log("createUserWithEmail:success " + firebase.auth().getUid());
+        HomeActivity.logOut();
+        MainActivity.overrideAutoLogin = true;
+        var intent = new Intent(AppCompatActivity.getApplicationContext(), null);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        a.startActivity(intent);
+        if (MainActivity.emailOBJ == null)
+            MainActivity.w4Toast(a, "Successfully added new Person", Toast.LENGTH_LONG);
+        else
+            MainActivity.w4Toast(a, "Clean Assistant failed to send an email to " + person.getEmail() + ", you will be prompted to send one manually", Toast.LENGTH_LONG);
     }
 }

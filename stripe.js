@@ -85,7 +85,7 @@ const firebaseUiConfig = {
 };
 firebase.auth().onAuthStateChanged((firebaseUser) => {
   if (firebaseUser) {
-    console.log("Logged in");
+    // console.log("Logged in");
     document.querySelector('#loader').style.display = 'none';
     document.getElementById("loader0").style.display = "";
     document.getElementById("start_buttons").style.display = "none";
@@ -97,7 +97,7 @@ firebase.auth().onAuthStateChanged((firebaseUser) => {
     currentUser = firebaseUser.uid;
     startDataListeners();
   } else {
-    console.log("Logged out");
+    // console.log("Logged out");
     document.getElementById("loader0").style.display = "none";
     document.getElementById("start_buttons").style.display = "";
     document.querySelector('main').style.display = 'none';
@@ -251,7 +251,7 @@ document
     // .httpsCallable("ext-firestore-stripe-subscriptions-createPortalLink");
     const { data } = await functionRef({ returnUrl: window.location.origin });
     // window.location.assign(data.url);
-    window.open(data.url, '_blank');
+    window.open(data.url);
     document.getElementById("loader0").style.display = "none";
     document.querySelectorAll('button').forEach((b) => (b.disabled = false));
   });
