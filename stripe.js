@@ -249,9 +249,12 @@ document
       .functions(functionLocation)
       .httpsCallable("ext-firestore-stripe-payments-createPortalLink");
     // .httpsCallable("ext-firestore-stripe-subscriptions-createPortalLink");
+    var windowReference = window.open();
     const { data } = await functionRef({ returnUrl: window.location.origin });
     // window.location.assign(data.url);
-    window.open(data.url);
+    console.log("Recieved url");
+    windowReference.location = data.url;
+    // window.open(data.url);
     document.getElementById("loader0").style.display = "none";
     document.querySelectorAll('button').forEach((b) => (b.disabled = false));
   });
