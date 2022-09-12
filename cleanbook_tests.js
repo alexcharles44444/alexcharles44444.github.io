@@ -1,4 +1,4 @@
-let testing_enabled = false;
+let testing_enabled = false; //Disable by commenting out cleanbook_tests.js script tag in index.html
 let a_click = 0;
 let a_click_list = 1;
 let a_valid_input = 2;
