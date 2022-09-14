@@ -1,14 +1,11 @@
 [
   {
-    "relation": [
-      "delegate_permission/common.handle_all_urls"
-    ],
+    "relation": ["delegate_permission/common.handle_all_urls"],
     "target": {
       "namespace": "android_app",
       "package_name": "com.where44444.cleanbook",
-      "sha256_cert_fingerprints": [
-        "91:50:5D:AC:4F:4E:1F:DE:7A:A5:C0:8D:C2:1C:93:AB:0E:20:7E:D4:24:EF:65:50:A5:00:DD:58:75:C8:22:C5"
-      ]
+      "sha256_cert_fingerprints":
+        ["91:50:5D:AC:4F:4E:1F:DE:7A:A5:C0:8D:C2:1C:93:AB:0E:20:7E:D4:24:EF:65:50:A5:00:DD:58:75:C8:22:C5"]
     }
   }
 ]
