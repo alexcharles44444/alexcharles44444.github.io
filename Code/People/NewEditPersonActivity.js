@@ -386,7 +386,7 @@ class NewEditPersonActivity extends W4Activity {
                                 if (oldPassword != null) {
                                     a.editFireBaseUser(newPerson, oldPassword, password, readPermissions, writePermissions);
                                 } else {
-                                    MainActivity.dialogBox(a, "Error", "Cannot retrieve password, contact Clean Assistant Support at alexcharles44444@gmail.com");
+                                    MainActivity.dialogBox(a, "Error", "Cannot retrieve password, contact Clean Assistant Support at " + SUPPORT_EMAIL);
                                 }
                             });
                         if (MainActivity.currentUser.getW4id().equals(MainActivity.currentUser.getCompanyid())) {
@@ -449,7 +449,7 @@ class NewEditPersonActivity extends W4Activity {
                         + "Person "
                         + "is assigned to a Shift, they will see Task Templates assigned to that Shift. They will only see "
                         + "Completed "
-                        + "and In Progress Tasks that they initiated. ");
+                        + "and In Progress Tasks that they initiated.");
                     a.startActivity(intent);
                 });
                 for (var i = 0; i < a.read_switches.length; ++i) {
@@ -468,7 +468,7 @@ class NewEditPersonActivity extends W4Activity {
                 }
             }
             else {
-                MainActivity.dialogBox(NewEditPersonActivity.this, "Error", "Cannot retrieve permissions, contact Clean Assistant Support at alexcharles44444@gmail.com");
+                MainActivity.dialogBox(NewEditPersonActivity.this, "Error", "Cannot retrieve permissions, contact Clean Assistant Support at " + SUPPORT_EMAIL);
             }
         }
 
@@ -539,7 +539,7 @@ class NewEditPersonActivity extends W4Activity {
                                 });
                         }
                         else {
-                            MainActivity.dialogBox(a, "Error", "Cannot retrieve password, contact Clean Assistant Support at alexcharles44444@gmail.com");
+                            MainActivity.dialogBox(a, "Error", "Cannot retrieve password, contact Clean Assistant Support at " + SUPPORT_EMAIL);
                         }
                     });
                 }

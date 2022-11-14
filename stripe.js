@@ -72,6 +72,10 @@ const firebaseUiConfig = {
     },
     uiShown: () => {
       document.querySelector('#loader').style.display = 'none';
+      var ele = document.getElementsByClassName("firebaseui-id-name")[0];
+      if (ele != null) {
+        console.log(ele.value);
+      }
     },
   },
   signInFlow: 'popup',
@@ -79,10 +83,11 @@ const firebaseUiConfig = {
   signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID],
   credentialHelper: firebaseui.auth.CredentialHelper.NONE,
   // Your terms of service url.
-  tosUrl: '../CleanAssistant_Docs/EULA.txt',
+  tosUrl: 'https://where44444.github.io/CleanAssistant_Docs/EULA.txt',
   // Your privacy policy url.
-  privacyPolicyUrl: '../CleanAssistant_Docs/Privacy_Policy.html',
+  privacyPolicyUrl: 'https://where44444.github.io/CleanAssistant_Docs/Privacy_Policy.html',
 };
+
 firebase.auth().onAuthStateChanged((firebaseUser) => {
   if (firebaseUser) {
     // console.log("Logged in");
@@ -95,7 +100,7 @@ firebase.auth().onAuthStateChanged((firebaseUser) => {
     document.querySelector("#my-subscription").style.display = "none";
     document.querySelector("#subscribe").style.display = "none";
     currentUser = firebaseUser.uid;
-    startDataListeners();
+    showInfoForm(firebaseUser);
   } else {
     // console.log("Logged out");
     document.getElementById("loader0").style.display = "none";
@@ -105,6 +110,67 @@ firebase.auth().onAuthStateChanged((firebaseUser) => {
   }
 });
 
+
+function showInfoForm(firebaseUser) {
+  // console.log(firebaseUser.displayName);
+  // console.log(firebaseUser.email);
+  var now = new Date();
+  var date = new Date(Number(firebaseUser.metadata.a));
+  if (now.getTime() - date.getTime() < 30000) {
+    document.getElementById("info-form").style.display = "";
+    document.getElementById("loader0").style.display = "none";
+
+    document.getElementById("form_name").value = firebaseUser.displayName;
+    document.getElementById("form_email").value = firebaseUser.email;
+  }
+  else {
+    startDataListeners();
+    document.getElementById("loader0").style.display = "";
+  }
+}
+
+function saveInfoForm() {
+  var valid = true;
+  document.getElementById("field_error_name").style.display = "none";
+  document.getElementById("field_error_email").style.display = "none";
+  document.getElementById("field_error_phone").style.display = "none";
+  document.getElementById("field_error_company").style.display = "none";
+
+  var ele = document.getElementById("form_name");
+  if (ele.value == "") {
+    document.getElementById("field_error_name").style.display = "block";
+    valid = false;
+  }
+  ele = document.getElementById("form_email");
+  if (ele.value == "") {
+    document.getElementById("field_error_email").style.display = "block";
+    valid = false;
+  }
+  ele = document.getElementById("form_phone");
+  if (ele.value == "") {
+    document.getElementById("field_error_phone").style.display = "block";
+    valid = false;
+  }
+  ele = document.getElementById("form_company");
+  if (ele.value == "") {
+    document.getElementById("field_error_company").style.display = "block";
+    valid = false;
+  }
+
+  if (valid) {
+    db.collection("new_customers").doc(currentUser).set({
+      name: document.getElementById("form_name").value,
+      email: document.getElementById("form_email").value,
+      phone: document.getElementById("form_phone").value,
+      company: document.getElementById("form_company").value
+    }).then(() => {
+    })
+
+    document.getElementById("info-form").style.display = "none";
+    document.getElementById("loader0").style.display = "";
+    startDataListeners();
+  }
+}
 
 /**
  * Data listeners

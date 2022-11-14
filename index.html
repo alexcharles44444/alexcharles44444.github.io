@@ -1,660 +1,2698 @@
 <!DOCTYPE html>
-<html lang="en-US">
-<title>Clean Assistant</title>
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta charset="UTF-8">
-  <!-- Ensures optimal rendering on mobile devices. -->
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" /> <!-- Optimal Internet Explorer compatibility -->
-  <script src="./lib/firebasejs/8.9.1/firebase-app.js"></script>
-  <!-- <script src="./lib/firebasejs/7.14.6/firebase-app.js"></script> -->
-  <script src="./lib/firebasejs/8.9.1/firebase-database.js"></script>
-  <script src="./lib/firebasejs/8.9.1/firebase-auth.js"></script>
-  <!-- <script src="./lib/firebasejs/7.14.6/firebase-auth.js"></script> -->
-  <script src="./lib/firebasejs/8.9.1/firebase-storage.js"></script>
-  <!-- <script src="./lib/firebasejs/7.14.6/firebase-firestore.js"></script> -->
-  <script src="./lib/firebasejs/8.9.1/firebase-firestore.js"></script>
-  <!-- <script src="./lib/firebasejs/7.14.6/firebase-functions.js"></script> -->
-  <script src="./lib/firebasejs/8.9.1/firebase-functions.js"></script>
-  <link rel="stylesheet" type="text/css" href="./layout/styles.css" />
+<html itemscope="" itemtype="http://schema.org/WebPage" lang="en"
+  class=" js csstransforms csstransforms3d csstransitions">
 
-  <script src="./lib/caleandar-master/js/caleandar.min.js"></script>
-  <link rel="stylesheet" href="./lib/caleandar-master/css/theme2.css" />
-  <!-- <link rel="stylesheet" type="text/css"
-    href="https://fonts.googleapis.com/css?family=DM Sans:400|Bitter:400|Changa One:400|Droid Sans:400|Droid Serif:400|Exo:400|Great Vibes:400|Inconsolata:400|Lato:400|Merriweather:400|Montserrat:400|Open Sans:400|Oswald:400|PT Sans:400|PT Serif:400|Ubuntu:400|Varela:400|Varela Round:400|Vollkorn:400&amp;text=DM SansBiterChgOodfExGVbIclLwpPTUuRk">
-  <link rel="stylesheet" type="text/css"
-    href="https://fonts.googleapis.com/css?family=Bitter:400,700,400italic|Changa One:400,400italic|DM Sans:400,500,700|Droid Sans:400,700|Droid Serif:400,700,400italic,700italic|Exo:100,200,300,400,500,600,700,800,900,100italic,200italic,300italic,400italic,500italic,600italic,700italic,800italic,900italic|Great Vibes:400|Inconsolata:400,700|Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic|Merriweather:300,400,700,900,300italic,400italic,700italic,900italic|Montserrat:100,200,300,400,500,600,700,800,900,100italic,200italic,300italic,400italic,500italic,600italic,700italic,800italic,900italic|Open Sans:300,400,600,700,800,300italic,400italic,600italic,700italic,800italic|Oswald:200,300,400,500,600,700|PT Sans:400,700,400italic,700italic|PT Serif:400,700,400italic,700italic|Ubuntu:300,400,500,700,300italic,400italic,500italic,700italic|Varela:400|Varela Round:400|Vollkorn:400,700,400italic,700italic&amp;subset=latin">
-     -->
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+
+  <link rel="dns-prefetch" href="https://static.web-repository.com/">
+  <link rel="preconnect" href="https://static.web-repository.com/">
+  <link rel="dns-prefetch" href="https://content.app-sources.com/">
+  <link rel="preconnect" href="https://content.app-sources.com/">
+  <link rel="preload" as="script" href="./Home_files/platform.client.min.js">
+
+  <link rel="icon" href="data:,">
+
+  <title>Home</title>
+
+  <link rel="canonical" href="https://cleanassistant.net/">
+  <meta property="og:url" content="https://cleanassistant.net/">
+  <meta itemprop="url" content="https://cleanassistant.net/">
+  <meta name="twitter:url" content="https://cleanassistant.net/">
+  <meta name="description" content="">
+  <meta property="og:site_name" content="Clean Assistant ">
+  <meta property="og:title" content="Home">
+  <meta property="og:type" content="website">
+  <meta property="og:description" content="">
+  <meta itemprop="name" content="Home">
+  <meta itemprop="description" content="">
+  <meta name="twitter:title" content="Home">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:description" content="">
+  <script type="text/javascript">
+    var WebPlatform = window.WebPlatform || {};
+
+    WebPlatform.cookiesDisclaimer = ''.trim();
+    WebPlatform.cookiesInfoBtn = "".trim();
+    WebPlatform.cookiesInfoBtnLink = "".trim();
+    WebPlatform.cookiesAcceptBtnText = "".trim() || 'OK';
+    WebPlatform.ipCountryCode = "US";
+
+    WebPlatform.dateFormat = 'mm/dd/yy';
+    if (!WebPlatform.onReady) {
+      WebPlatform.documentReadyRequests = [];
+      WebPlatform.onReady = function (request) {
+        if (WebPlatform.documentReadyRequests === null)
+          request();
+        else
+          WebPlatform.documentReadyRequests.push(request);
+      };
+    }
+
+    if (!WebPlatform.merge) {
+      WebPlatform.merge = function (target, source) {
+        for (var key in source)
+          if ((typeof target[key] === "undefined") || target[key] === '')
+            target[key] = source[key];
+        return target;
+      };
+    }
+  </script>
+  <link href="./Home_files/platform.client.min.css" type="text/css" rel="stylesheet">
+  <link rel="preload stylesheet" as="style" href="https://static.web-repository.com/t/theme25/css/trunk.min.css?v=916"
+    id="style-default" class="stylesheet">
+
+  <link rel="preload stylesheet" as="style" media="(max-width: 1024px)"
+    href="https://static.web-repository.com/t/theme25/css/trunk-1024.min.css?v=916" id="style-1024" class="stylesheet">
+
+  <link rel="preload stylesheet" as="style" media="(max-width: 768px)"
+    href="https://static.web-repository.com/t/theme25/css/trunk-768.min.css?v=916" id="style-768" class="stylesheet">
+
+  <link rel="preload stylesheet" as="style" media="(max-width: 480px)"
+    href="https://static.web-repository.com/t/theme25/css/trunk-480.min.css?v=916" id="style-480" class="stylesheet">
+
+  <meta property="og:image" content="https://content.app-sources.com/">
+  <meta itemprop="image" content="https://content.app-sources.com/">
+  <meta name="twitter:image" content="https://content.app-sources.com/">
+  <!--[if lt IE 9]>
+      <script type="text/javascript" src="https://static.web-repository.com/scripts/common/html5shiv.min.js"></script>
+      <![endif]-->
+  <style type="text/css" id="global-styles">
+    :root {
+      --color-primary: rgba(22, 237, 50, 1);
+      --color-secondary1: rgba(255, 255, 255, 1);
+      --color-secondary2: rgba(255, 255, 255, 1);
+      --color-secondary3: rgba(255, 255, 255, 1);
+      --color-secondary4: rgba(242, 243, 247, 1);
+    }
+
+
+    .theme .color-primary,
+    .color-primary {
+      color: rgb(19, 199, 43);
+    }
+
+    .theme .bg-color-primary,
+    .bg-color-primary {
+      background-color: rgb(19, 199, 43);
+    }
+
+    .theme .border-color-primary,
+    .border-color-primary {
+      border-color: rgb(19, 199, 43);
+    }
+
+    .theme .fill-color-primary,
+    .fill-color-primary {
+      fill: rgba(22, 237, 50, 1);
+    }
+
+    .theme .color-secondary1,
+    .color-secondary1 {
+      color: rgba(255, 255, 255, 1);
+    }
+
+    .theme .bg-color-secondary1,
+    .bg-color-secondary1 {
+      background-color: rgba(255, 255, 255, 1);
+    }
+
+    .theme .border-color-secondary1,
+    .border-color-secondary1 {
+      border-color: rgba(255, 255, 255, 1);
+    }
+
+    .theme .fill-color-secondary1,
+    .fill-color-secondary1 {
+      fill: rgba(255, 255, 255, 1);
+    }
+
+    .theme .color-secondary2,
+    .color-secondary2 {
+      color: rgba(255, 255, 255, 1);
+    }
+
+    .theme .bg-color-secondary2,
+    .bg-color-secondary2 {
+      background-color: rgba(255, 255, 255, 1);
+    }
+
+    .theme .border-color-secondary2,
+    .border-color-secondary2 {
+      border-color: rgba(255, 255, 255, 1);
+    }
+
+    .theme .fill-color-secondary2,
+    .fill-color-secondary2 {
+      fill: rgba(255, 255, 255, 1);
+    }
+
+    .theme .color-secondary3,
+    .color-secondary3 {
+      color: rgba(255, 255, 255, 1);
+    }
+
+    .theme .bg-color-secondary3,
+    .bg-color-secondary3 {
+      background-color: rgba(255, 255, 255, 1);
+    }
+
+    .theme .border-color-secondary3,
+    .border-color-secondary3 {
+      border-color: rgba(255, 255, 255, 1);
+    }
+
+    .theme .fill-color-secondary3,
+    .fill-color-secondary3 {
+      fill: rgba(255, 255, 255, 1);
+    }
+
+    .theme .color-secondary4,
+    .color-secondary4 {
+      color: rgba(242, 243, 247, 1);
+    }
+
+    .theme .bg-color-secondary4,
+    .bg-color-secondary4 {
+      background-color: rgba(242, 243, 247, 1);
+    }
+
+    .theme .border-color-secondary4,
+    .border-color-secondary4 {
+      border-color: rgba(242, 243, 247, 1);
+    }
+
+    .theme .fill-color-secondary4,
+    .fill-color-secondary4 {
+      fill: rgba(242, 243, 247, 1);
+    }
+
+    .note-editable.panel-body h1,
+    .text-widget-content h1,
+    .post-description h1 {
+      font-family: Lato, arial;
+      line-height: 1em;
+      font-size: 72px;
+      color: #3e3e3e;
+
+      letter-spacing: normal;
+
+    }
+
+    .note-editable.panel-body h2,
+    .text-widget-content h2,
+    .post-description h2 {
+      font-family: Lato, arial;
+      line-height: 1em;
+      font-size: 42px;
+      color: #3e3e3e;
+
+      letter-spacing: normal;
+
+    }
+
+    .note-editable.panel-body h3,
+    .text-widget-content h3,
+    .post-description h3 {
+      font-family: Lato, arial;
+      line-height: 1em;
+      font-size: 28px;
+      color: #3e3e3e;
+
+      letter-spacing: normal;
+
+    }
+
+    .note-editable.panel-body h4,
+    .text-widget-content h4,
+    .post-description h4 {
+      font-family: Lato, arial;
+      line-height: 1em;
+      font-size: 21px;
+      color: rgba(38, 38, 38, 1);
+
+      letter-spacing: normal;
+
+    }
+
+    .note-editable.panel-body h5,
+    .text-widget-content h5,
+    .post-description h5 {
+      font-family: Lato, arial;
+      line-height: 1em;
+      font-size: 18px;
+      color: #3e3e3e;
+
+      letter-spacing: normal;
+
+    }
+
+    .note-editable.panel-body h6,
+    .text-widget-content h6,
+    .post-description h6 {
+      font-family: Open Sans, arial;
+      line-height: 1em;
+      font-size: 15px;
+      color: #3e3e3e;
+
+      letter-spacing: normal;
+
+    }
+
+    .note-editable.panel-body li,
+    .text-widget-content li,
+
+    .note-editable.panel-body p,
+    .text-widget-content p,
+    .post-description p {
+      font-family: Open Sans, arial;
+      line-height: 1.6em;
+      font-size: 16px;
+      color: rgba(84, 84, 84, 1);
+
+      letter-spacing: normal;
+
+    }
+
+    .note-editable.panel-body blockquote>p,
+    .text-widget-content blockquote>p,
+
+    .note-editable.panel-body blockquote,
+    .text-widget-content blockquote,
+    .post-description blockquote {
+      font-family: Open Sans, arial;
+      line-height: 1.6em;
+      font-size: 15px;
+      color: #3e3e3e;
+
+      letter-spacing: normal;
+
+    }
+
+    body {}
+
+    @media screen and (max-width: 768px) {
+
+      .note-editable.panel-body h1,
+      .text-widget-content h1 {
+        font-family: Lato;
+        line-height: 1em;
+        font-size: 48px !important;
+        color: #3e3e3e;
+
+        letter-spacing: normal;
+
+      }
+
+      .note-editable.panel-body h2,
+      .text-widget-content h2 {
+        font-family: Lato;
+        line-height: 1em;
+        font-size: 32px !important;
+        color: #3e3e3e;
+
+        letter-spacing: normal;
+
+      }
+
+      .note-editable.panel-body h3,
+      .text-widget-content h3 {
+        font-family: Lato;
+        line-height: 1em;
+        font-size: 26px !important;
+        color: #3e3e3e;
+
+        letter-spacing: normal;
+
+      }
+
+      .note-editable.panel-body h4,
+      .text-widget-content h4 {
+        font-family: Lato;
+        line-height: 1em;
+        font-size: 18px !important;
+        color: rgba(46, 46, 46, 1);
+
+        letter-spacing: normal;
+
+      }
+
+      .note-editable.panel-body h5,
+      .text-widget-content h5 {
+        font-family: Lato;
+        line-height: 1em;
+        font-size: 18px !important;
+        color: #3e3e3e;
+
+        letter-spacing: normal;
+
+      }
+
+      .note-editable.panel-body h6,
+      .text-widget-content h6 {
+        font-family: Open Sans;
+        line-height: 1em;
+        font-size: 14px !important;
+        color: #3e3e3e;
+
+        letter-spacing: normal;
+
+      }
+
+      .note-editable.panel-body li,
+      .text-widget-content li,
+      .note-editable.panel-body p,
+      .text-widget-content p {
+        font-family: Open Sans;
+        line-height: 1.6em;
+        font-size: 14px !important;
+        color: #3e3e3e;
+
+        letter-spacing: normal;
+
+      }
+
+      .note-editable.panel-body blockquote>p,
+      .text-widget-content blockquote>p,
+      .note-editable.panel-body blockquote,
+      .text-widget-content blockquote {
+        font-family: Open Sans;
+        line-height: 1.6em;
+        font-size: 14px !important;
+        color: #3e3e3e;
+
+        letter-spacing: normal;
+
+      }
+
+
+      body {}
+    }
+
+
+    .page-layout:not(.style-boxed-layout) .grid-content,
+    .theme .page-layout:not(.style-boxed-layout) .container,
+    .page-layout.header-layout-floating:not(.style-boxed-layout) .main-header-wrapper,
+    .page-layout.fixed-header-layout-floating:not(.style-boxed-layout) .fixed-header-wrapper,
+    .mega-menu-inner,
+    .megamenu-settings-wrapper {
+      max-width: 1100px;
+    }
+
+    .style-boxed-layout.page-layout,
+    .theme .style-boxed-layout .fixed-header-wrapper,
+    .theme .style-boxed-layout .fixed-header-wrapper.visible,
+    #website.theme .fixed-header-layout-floating .fixed-header-wrapper,
+    #website.theme .fixed-header-layout-floating .fixed-header-wrapper.visible {
+      width: 1100px;
+    }
+
+    /*
+    #website.theme .header-layout-floating .fixed-header-wrapper, 
+    #website.theme .header-layout-floating .fixed-header-wrapper.visible {
+      width: 1100px;
+    }*/
+    /*
+    #website.theme .fixed-header-layout-floating .fixed-header-wrapper, 
+    #website.theme .fixed-header-layout-floating .fixed-header-wrapper.visible {
+      width: calc(1100px - 130px) !important;
+  }
+  */
+    .style-boxed-layout .grid-content,
+    .style-boxed-layout .container,
+    .style-boxed-layout.header-layout-floating .main-header-wrapper,
+    .style-boxed-layout.fixed-header-layout-floating .fixed-header-wrapper {
+      max-width: 90%;
+    }
+
+    .note-editable.panel-body a,
+    .text-widget-content a {
+      color: ;
+      text-decoration: none;
+    }
+
+    .note-editable.panel-body a:hover,
+    .text-widget-content a:hover {
+      color: ;
+      text-decoration: none;
+    }
+
+    .theme .page-layout {
+      background: rgba(255, 255, 255, 1);
+    }
+
+    .theme .primaryColor,
+    .theme .highlightColor:hover,
+    .theme .smaller .highlightColor:hover,
+    .theme .highlightColor.active,
+    .portfolio-filter ul li.active a,
+    .portfolio-filter ul li a:hover,
+    .portfolio-list-wrapper .image-overlay a:hover,
+    .portfolio-widget-item .primaryColor-bg2:hover,
+    .tmdp-pagination [data-role]:hover i,
+    .blog-back-btn:hover i,
+    .products-filter-style-1 ul li.active a,
+    .products-filter-style-1 ul li a:hover,
+    .side-filter .products-filter section>ul>li.active>a,
+    .side-filter .products-filter section>ul>li:hover>a,
+    .side-filter .products-filter section ul li li:hover>a,
+    .side-filter .products-filter section ul li li.active>a,
+    .has-subcategories div:hover:before,
+    .store6 .product-item-description .product-item-price,
+    .post-category a,
+    .login-question a,
+    .promo-code-toggle-btn,
+    .steps-nav-wrapper a.active,
+    .steps-nav-wrapper a:hover,
+    .steps-nav-wrapper a.active:after,
+    .box-select h5,
+    .quick-view-wrapper .product-body-container .quick-view-title a:hover,
+    .theme .view-details-btn,
+    .products-filter .search-form button:hover:after,
+    .product-characteristics:hover,
+    .product-reviews-link:hover,
+    .theme .profile-sidebar li:hover a,
+    .member-logout-button {
+      color: rgba(22, 237, 50, 1) !important;
+    }
+
+    .cart-table.style-2 .fake-checkbox.checked,
+    .cart-table.style-2 .fake-checkbox:hover:before {
+      border: 2px solid rgba(22, 237, 50, 1);
+    }
+
+    .theme .active>.website-nav-link {
+      color: rgb(19, 199, 43);
+    }
+
+    .theme .primaryColor-bg:hover,
+    .tmdp-pagination [data-role="0"],
+    .theme .active .primaryColor-bg {
+      background-color: rgb(19, 199, 43);
+      border-color: rgb(19, 199, 43);
+    }
+
+    .theme .active .primaryColor-bg,
+    .theme .primaryColor-bg:hover,
+    .theme .smaller .primaryColor-bg:hover,
+    .theme .smaller .active .primaryColor-bg {
+      color: #fff !important;
+    }
+
+    .theme .signin-button:hover svg,
+    .theme .cart-button:hover svg,
+    .theme .signin-button.active svg,
+    .theme .cart-button.active svg,
+    .theme .smaller .signin-button:hover svg,
+    .theme .smaller .cart-button:hover svg,
+    .theme .smaller .signin-button.active svg,
+    .theme .smaller .cart-button.active svg,
+    .booking-final-step .booking-name svg {
+      fill: rgba(22, 237, 50, 1);
+    }
+
+    .theme .primaryColor-bg2,
+    .top-bar .social-media i,
+    .theme .read-more,
+    .blog-comment-form a:hover,
+    .theme .buttons-wrapper-outer .primaryColor-bg2,
+    .product-main-photo.has-badge:after,
+    .live-theme .ui-widget-header,
+    nav li a:before,
+    .store2 .product-item .product-badge,
+    .theme .profile-sidebar li a:after,
+    .vertical-menu-styling.design-4 li:after,
+    .live-theme-message a,
+    .next-step-popup svg,
+    .form-field .custom-checkbox input[type=checkbox]:checked+.custom-checkbox-label:before,
+    .form-field .custom-checkbox input[type=radio]:checked+.custom-checkbox-label:before,
+    .elite-widget ul li.active a:after,
+    .elite-tab-call-to-action,
+    .cart-title:after,
+    .product-tabs li a.active:after,
+    .checkout-style-2 .checkout-step.active,
+    .live-theme .widget-checkout .checkout-info span .variations-update,
+    .product-info .variations-update,
+    .fake-checkbox.checked:before,
+    .bump-active .tick-wrapper:before,
+    .title-border,
+    .theme .manage-link,
+    .theme .profile-sidebar li a.active,
+    .copy-link-icon,
+    .fake-checkbox:hover:before,
+    .grid-content-store .product-price .price-discount-tag,
+    .variation-wrapper-radio .box-select.active:before,
+    .variation-wrapper-check .box-select.active:before,
+    .product-photo-list li a.active:after,
+    .product-photo-list li a:hover:after,
+    .next-step-popup.cart-preview-full-height a {
+      background-color: rgb(19, 199, 43);
+    }
+
+    .theme .border-color,
+    article blockquote,
+    .theme nav li ul,
+    .theme .primaryColor-border,
+    blockquote,
+    .portfolio-filter ul li.active a,
+    .tmdp-pagination [data-role]:hover,
+    .blog-back-btn:hover,
+    .theme .profile-sidebar li a.active,
+    .products-filter-style-1 ul li.active a,
+    .pagination-wrapper li a:hover,
+    .pagination-wrapper li.active a,
+    .products-filter-style-2 li.active a,
+    .vertical-menu-styling.design-2 li:hover,
+    .vertical-menu-styling.design-2 li.active,
+    .vertical-menu-styling.design-3 li:hover,
+    .vertical-menu-styling.design-3 li.active,
+    .form-field .custom-checkbox input[type=checkbox]:checked+.custom-checkbox-label:before,
+    .form-field .custom-checkbox input[type=radio]:checked+.custom-checkbox-label:before,
+    /*.select-wrapper.style-1 ul li a.active,
+  .select-wrapper.style-1 ul li a:hover,
+  .select-wrapper.style-2 ul li a.active,
+  .select-wrapper.style-2 ul li a:hover,
+  .select-wrapper.style-3 ul li a.active,
+  .select-wrapper.style-3 ul li a:hover,
+  .select-wrapper.style-1 ul li a.active:before,
+  .select-wrapper.style-2 ul li a.active:before,
+  .select-wrapper.style-3 ul li a.active:before,*/
+    .box-select.active,
+    .box-select:hover,
+    .circle-select:hover,
+    .circle-select.active,
+    .color-select.active,
+    .color-select:hover,
+    .checkout-style-1 .checkout-step.active,
+    .checkout-style-1 .checkout-step:hover,
+    .fake-checkbox.checked:before,
+    .bump-active .tick-wrapper:before,
+    .variation-wrapper-radio .box-select.active:before,
+    .variation-wrapper-check .box-select.active:before {
+      border-color: rgb(19, 199, 43);
+    }
+
+    .theme .header-side-style-1 nav ul li.website-nav-link-highlighted>a,
+    .theme .header-side-style-1a nav ul li.website-nav-link-highlighted>a {
+      border-color: rgb(19, 199, 43);
+    }
+
+    .checkout-spinner {
+      border-color: rgb(19, 199, 43);
+      border-top-color: rgba(0, 0, 0, .2);
+      border-right-color: rgba(0, 0, 0, .2);
+      border-bottom-color: rgba(0, 0, 0, .2);
+    }
+
+    .tmdp-slides-loading,
+    #client-ajax-message,
+    #portfolio-popup-content.active-loading,
+    #tmdp-simple-lightbox-content.active-loading,
+    .loader.active-loading {
+      border-left-color: rgb(19, 199, 43);
+    }
+
+    .posts-list-wrapper .post-title a,
+    article .post-meta a,
+    article .post-meta p,
+    .portfolio-filter li a,
+    .product-item-description h3,
+    .product-item-description .product-item-price,
+    .breadcrumb li a,
+    .breadcrumb li span,
+    .product-body-container h2,
+    .product-page-style-image-top .product-price span,
+    article .post-meta span,
+    .theme .post-title,
+    .comments-list h3,
+    .blog-tag-cloud a,
+    .post-categories,
+    .checkout-wrapper h2,
+    .checkout-wrapper .cart-labels span,
+    .checkout-wrapper .product-info a,
+    .checkout-wrapper .cart-container .qty,
+    .checkout-wrapper .cart-container .row-total,
+    .checkout-wrapper .subtotal-wrapper span,
+    .live-theme .checkout-wrapper .promo-code-toggle-btn,
+    .checkout-wrapper .cart-container .row-delete i,
+    .product-price span,
+    .products-showing span,
+    .filter-lane label,
+    .products-filter-style-2 li a,
+    .product-body-container h1,
+    .checkout-wrapper h1,
+    .no-items-text {
+      color: #3e3e3e;
+    }
+
+    .tmdp-bullets .tmdp-bullet:hover,
+    .tmdp-bullets .tmdp-bullet.active,
+    .side-filter .products-filter ul li a:hover:before,
+    .side-filter .products-filter ul li.active>a:before {
+      background: rgba(22, 237, 50, 1) !important;
+      border-color: rgba(22, 237, 50, 1) !important;
+    }
+
+    .theme .highlightBg:hover {
+      background: rgba(22, 237, 50, 1);
+      color: #fff !important;
+    }
+
+    .theme .theme18 .navigation-wrapper .active>.website-nav-link {
+      background: rgba(22, 237, 50, 1);
+      color: #fff;
+    }
+
+    .theme .theme18 .navigation-wrapper .active>a:hover {
+      color: #fff !important;
+    }
+  </style>
+  <style type="text/css">
+  </style>
+
+  <link rel="preload stylesheet" as="style"
+    href="https://fonts.googleapis.com/css?display=swap&amp;family=Lato:regular">
+  <!-- /><div></div> */ /**/ <!-- -->
+
 </head>
 
-<body>
-  <div id="TEST_WARNING"
-    style="display: none; position: fixed; top: 0px; font-size: 10pt; color: red; z-index: 10000000;">TESTING
-    MODE</div>
-  <button id="TEST_CONTINUE_BUTTON" onclick="test_continue();"
-    style="display: none; position: fixed; top: 50px; font-size: 25pt; color: red; z-index: 10000000;">CONTINUE</button>
-  <!-- The Modal -->
-  <div id="myModal" class="no_selection"
-    style="display: none; cursor: move; position: fixed; z-index: 102; padding-top: 100px; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.9);"
-    onwheel="mouseWheelFunc(event)">
-
-    <!-- Modal Content (The Image) -->
-    <img class="modal-content" id="img01" class="no_selection" ondragstart="return false;" ondrop="return false;"
-      style="display: none; z-index: 103; margin: 5% auto; position: fixed; top: -20px; width: 80%; left: 0px; right: 0px; cursor: move;"
-      onwheel="mouseWheelFunc(event)">
-
-    <!-- The Close Button -->
-    <span id="closeButton" class="no_selection hoverOpacity"
-      style="z-index: 104; cursor: pointer; position: fixed; top: 15px; right: 35px; color: #f1f1f1; font-size: 100px; font-weight: bold; transition: 0.3s;">&times;</span>
-    <span id="zoomInButton" class="no_selection hoverOpacity" onclick="zoomIn();"
-      style="z-index: 104; cursor: pointer; position: fixed; top: 175px; right: 30px; color: #f1f1f1; font-size: 100px; font-weight: bold; transition: 0.3s;">&plus;</span>
-    <span id="zoomOutButton" class="no_selection hoverOpacity" onclick="zoomOut();"
-      style="z-index: 104; cursor: pointer; position: fixed; top: 275px; right: 33px; color: #f1f1f1; font-size: 100px; font-weight: bold; transition: 0.3s;">&minus;</span>
-  </div>
-
-
-
-
-  <div id="do_Print" style="display: none;">
-    <div class="clickable no_selection no-print" id="print_back_arrow" style="position: absolute; left: 5px; top: 5px;"
-      onclick="W4_Funcs.printBackArrowPressed();"><img class="icon_black_to_blue2" src="./res/arrow_back2.png"
-        width="50" height="50"></div>
-    <div class="clickable no_selection no-print" id="print_copy_button"
-      style="position: absolute; left: 70px; top: 5px;" onclick="W4_Funcs.printCopyPressed();"><img
-        class="icon_black_to_blue2" src="./res/copy2.png" width="50" height="50"></div>
-    <div class="clickable no_selection no-print" id="print_print_button"
-      style="position: absolute; left: 135px; top: 5px;" onclick="W4_Funcs.printPrintButtonPressed();"><img
-        class="icon_black_to_blue2" src="./res/print.png" width="50" height="50"></div>
-    <br><br>
-    <div id="print_div">
-    </div>
-  </div>
-
-  <!-- Views that should be visible on print screen or not -->
-  <div class="hide" id="snackbar" style="display: none; z-index: 7;"></div>
-  <!-- End printable/non printable viewss -->
-
-  <div id="google_play_store_div" style="display: none;">
-    <h2 style="text-align: center;">Download the Clean Assistant app for faster browsing and clock in/out functionality
-    </h2>
-    <img onclick="open_google_play_store();" class="clickable" style="width: 100%; display: block;"
-      src="res/get_on_google_play.png">
-    <button onclick="close_store_div();" style="display: block; height: 50px; width: 100%;">No Thanks</button>
-  </div>
-
-  <div id="app_store_div" style="display: none;">
-    <h2 style="text-align: center;">Download the Clean Assistant app for faster browsing and clock in/out functionality
-    </h2>
-    <img onclick="open_app_store();" class="clickable" style="width: 100%; display: block;"
-      src="res/app-store-logo-apple.png">
-    <button onclick="close_store_div();" style="display: block; height: 50px; width: 100%;">No Thanks</button>
-  </div>
-
-  <div id="dont_Print">
-    <div class="loader" id="firstLoader" style="display: none; margin: auto;"></div>
-    <div id="dialogbox_black_overlay"
-      style="display: none; position: fixed; width: 100%; height: 100%; left: 50%; top: 50%; transform: translate(-50%, -50%); background-color: black; opacity: .5; z-index: 100;">
-    </div>
-    <div id="dialogbox" class="hide"
-      style="display: none; position: fixed; width: 80%; padding: 2%; left: 50%; top: 50%; transform: translate(-50%, -50%); background-color: white; color: black; font-size: 20px; z-index: 101;">
-      <span id="dialogbox_text" style="font-size: 18px;"><span
-          style='font-size: 30px;'>Title</span><br><br>TEXTTEXTTEXTTEXTTEXTTEXTTEXTTEXT</span>
-      <br><br>
-      <button id="dialogbox_button" class="buttonHeight"
-        style="display: block; font-size: 25px; width: 50%; margin: auto;"
-        onclick="MainActivity.hideDialogBox();">OK</button>
-    </div>
-    <!--Headerbar-->
-    <div id="bars_div" style="display: none;">
-      <div class="no_selection">
-        <div id="headerbar"
-          style="display: flex; flex-direction: row-reverse; background-color: #FFFFFF; position: fixed; top: 0px; left: 0px; width: 100%; height: 40px; padding-top: 10px; padding-bottom: 10px; border-bottom: solid 1px #F2F2F2; z-index: 4;">
-          <div id="profile_initials_div">
-            <div id="profile_circle_initials" class="clickable"
-              style="color: black; position: absolute; font-weight: 900; text-align: center; width: 40px; height: 40px; line-height: 40px; margin-right: 10px;">
+<body class="theme live-theme " data-resources="https://static.web-repository.com"
+  data-content="https://content.app-sources.com/" data-locale="en" data-ver="916"
+  data-minor="916.10554.706384.-1795763655">
+  <div class="style-full-width-layout page-layout theme25 clearfix ">
+    <div class="header-wrapper main-header-wrapper horizontal-header-wrapper ">
+      <div class="header-row  header-row-main bg-color-secondary3" style="">
+        <div class="header-row-space top" style="height: 0px"></div>
+        <div class="flex flex-row align-center flex-header container relative">
+          <div class="flex-1 header-widget-container flex flex-row">
+            <div class="header-widget-space" style="width: 0px"></div>
+            <div class="header-widget" id="header-widget-1531565329803" data-type="headers/Logo">
+              <div class="theme-logo" data-role="logo">
+                <a href="https://cleanassistant.net/" rel="home">
+                  <span>
+                    <img src="./Home_files/src_assets_logos_logo_rounded-7213130.png" alt="Clean Assistant "
+                      style="max-height: 110px;">
+                  </span>
+                </a>
+              </div>
             </div>
-            <img src="./res/icon_circle.png" height=40 width=40 style="margin-right: 10px;">
           </div>
-          <div style="margin-right: 20px;" id="profile_menu" style="display: none;">
-            <table style="background-color: white; border: 0px solid lightgray; box-shadow: 0px 0px 5px grey;">
-              <tr>
-                <th style="color: black; height: 40px; padding: 10px;" id="profile_menu_header"></th>
-              </tr>
-              <tr>
-                <td style="height: 40px; padding: 10px;" class="clickable white_menu_option" id="profile_menu_profile">
-                  Profile</td>
-              </tr>
-              <tr>
-                <td style="height: 40px; padding: 10px;" class="clickable white_menu_option" id="profile_menu_logout">
-                  Logout</td>
-              </tr>
-            </table>
+          <div class="flex-none header-widget-container flex flex-row">
           </div>
-          <div class="clickable" id="action_notification">
-            <div id="NotificationsRedCircle_ActionBar">
-              <img src="./res/red_circle.png" style='position: absolute; width: 20px; height: 20px; z-index: 3;'>
-              <div id="NotificationsRedCircleText"
-                style="position: absolute; width: 20px; height: 20px; text-align: center; color: #FFFFFFFF; font-size: 12pt; z-index: 4;">
-                10</div>
+          <!-- <div class="flex-1 header-widget-container flex flex-row justify-flex-end"> -->
+          <div style="margin-right: 100px;">
+            <div class="header-widget" id="header-widget-1531565329804" data-type="headers/Menu">
+              <style type="text/css">
+                #header-widget-1531565329804 nav>ul>li>a.website-nav-link {
+                  padding: 16px;
+                }
+
+                #header-widget-1531565329804 ul li a.website-nav-link {
+                  font-size: 18px;
+                  font-family: Lato;
+                  color: rgb(19, 199, 43);
+
+                }
+
+                #header-widget-1531565329804 .before,
+                #header-widget-1531565329804 .after,
+                #header-widget-1531565329804 .middle {
+                  background: #3e3e3e;
+                }
+
+                #header-widget-1531565329804 .burger-menu-visible .before,
+                #header-widget-1531565329804 .burger-menu-visible .after,
+                #header-widget-1531565329804 .burger-menu-visible .middle {
+                  background: rgba(22, 237, 50, 1);
+                }
+
+                #header-widget-1531565329804 nav>ul>li:hover a.website-nav-link,
+                #header-widget-1531565329804 nav>ul>li.active a.website-nav-link,
+                #header-widget-1531565329804 .overlay nav li:hover>div>ul li a.website-nav-link:hover {
+                  color: rgba(22, 237, 50, 1);
+                }
+
+                #header-widget-1531565329804 .with-background nav>ul>li:hover>a,
+                #header-widget-1531565329804 .with-background nav>ul>li.active>a {
+                  background-color: transparent;
+                  border-radius: 0px;
+                }
+
+                #header-widget-1531565329804 .with-border li:hover:before,
+                #header-widget-1531565329804 .with-border li.active:before,
+                #header-widget-1531565329804 .border-below li:hover a.website-nav-link:after,
+                #header-widget-1531565329804 .border-below li.active a.website-nav-link:after {
+                  background: rgba(22, 237, 50, 1);
+                }
+
+                #header-widget-1531565329804 .border-at-left nav>ul>li.active,
+                #header-widget-1531565329804 .border-at-left nav>ul>li:hover {
+                  border-color: rgb(19, 199, 43);
+                }
+
+                #header-widget-1531565329804 .border-below nav>ul>li:after.active,
+                #header-widget-1531565329804 .border-below nav>ul>li:after:hover {
+                  background: rgba(22, 237, 50, 1);
+                }
+
+                #header-widget-1531565329804 nav li:hover>div>ul.with-border {
+                  border: 1px solid #3e3e3e;
+                  background-color: #ffffff;
+                }
+
+                #header-widget-1531565329804 nav li:hover>div>ul,
+                #header-widget-1531565329804 nav li.visible>div>ul {
+                  background-color: #ffffff;
+                }
+
+                #header-widget-1531565329804 nav li:hover>div>ul li a.website-nav-link,
+                #header-widget-1531565329804 nav li.visible>div>ul li a.website-nav-link {
+                  color: #6a6a6a;
+                }
+
+                #header-widget-1531565329804 nav li:hover>div>ul li a.website-nav-link:hover {
+                  color: rgba(22, 237, 50, 1);
+                }
+
+                #header-widget-1531565329804 .vertical-menu-styling.design-1 nav>ul>li,
+                #header-widget-1531565329804 .vertical-menu-styling.design-3 nav>ul>li {
+                  border-color: #3e3e3e;
+                }
+
+                #header-widget-1531565329804 .vertical-menu-styling.border-below.left li:after {
+                  background-color: rgb(19, 199, 43);
+                }
+
+                #header-widget-1531565329804 .overlay nav li>div>ul>li>a.website-nav-link {
+                  color: rgba(22, 237, 50, 1);
+                }
+
+                #header-widget-1531565329804 .horizontal-menu-styling.with-divider nav>ul>li:after {
+                  background-color: #CCCCCC;
+                }
+              </style>
+
+              <div class="right-submenu menu-widget with-border left mobile-column horizontal-menu-styling"
+                style="background: transparent">
+                <nav class="mobile-headerBackgroundColor">
+                  <ul class="clearfix">
+                    <li>
+                      <a class="website-nav-link" rel="tab" href="https://cleanassistant.net/">
+                        Home
+                      </a>
+                    </li>
+
+                    <li>
+                      <a class="website-nav-link" rel="tab" href="https://www.cleanassistant.net/app">
+                        Log In
+                      </a>
+                    </li>
+
+                    <li>
+                      <a class="website-nav-link" rel="tab" href="https://www.cleanassistant.net/stripe">
+                        Sign Up
+                      </a>
+                    </li>
+
+                    <li>
+                      <a class="website-nav-link" rel="tab" href="https://www.cleanassistant.net/contact-form">
+                        Contact
+                      </a>
+                    </li>
+
+                  </ul>
+                </nav>
+
+              </div>
             </div>
-            <img class="icon_black_to_blue" src="./res/icon_notifications.png" height=40 width=40
-              style="padding-right: 15px;">
+
+            <div class="header-widget-space" style="width: 305px"></div>
+            <div class="header-widget-space" style="width: 0px"></div>
           </div>
-          <div class="clickable" id="action_inbox">
-            <div id="InboxRedCircle">
-              <img src="./res/red_circle.png" style='position: absolute; width: 20px; height: 20px; z-index: 3;'>
-              <div id="InboxRedCircleText"
-                style="position: absolute; width: 20px; height: 20px; text-align: center; color: #FFFFFFFF; font-size: 12pt; z-index: 4;">
-                10</div>
-            </div>
-            <img class="icon_black_to_blue" src="./res/icon_inbox2.png" height=40 width=40 style="padding-right: 10px;">
-          </div>
-          <div class="clickable" id="activity_back_arrow" style="position: absolute; left: 270px; top: 5px;"><img
-              class="icon_black_to_blue2" src="./res/arrow_back2.png" width="50" height="50"></div>
-          <div id="support_bar" style="color: black; position: absolute; left: 350px; top: 15px; font-size: 20px;">
+        </div>
+        <div class="header-row-space bottom" style="height: 6px"></div>
+      </div>
+    </div>
+    <div class="mobile-header-overlay"></div>
+    <div class="mobile-menu  bg-color-secondary3">
+      <ul class="navToggle burger slide mobile-burger">
+        <li class="before"></li>
+        <li class="middle"></li>
+        <li class="after"></li>
+      </ul>
+      <div class="mobile-menu-logo">
+        <div class="header-widget" id="header-widget-1531565329803-mobile" data-type="headers/Logo">
+          <div class="theme-logo" data-role="logo">
+            <a href="https://cleanassistant.net/" rel="home">
+              <span>
+                <img src="./Home_files/src_assets_logos_logo_rounded-7213130.png" alt="Clean Assistant "
+                  style="max-height: 110px;">
+              </span>
+            </a>
           </div>
         </div>
       </div>
-      <!--END Headerbar-->
 
-      <!--Sidebar-->
-      <div class="no_selection" style="color: white;">
-        <div id="sidebar"
-          style="background-color: #1B1D2A; position: fixed; top: 0px; left: 0px; width: 260px; height: 100%; z-index: 5;">
-          <h2 id="sidebar_header"
-            style="color: white; text-align: center; font-size: 30px; margin-top: 10px; padding-bottom: 20px; border-bottom: solid 1px #2AAF6D;">
-            Clean Assistant</h2>
-          <div class="clickable sidebar_item" id="sidebar_button_home" style="opacity: 0.9;"><img
-              src="./res/icon_home.png" style="position: relative; top: 10px; scale: 0.8;"><span
-              id="sidebar_item_text_0" style="color: white; font-size: 15px;">Home</span></div>
-          <!--UPDATE THESE IDS WHEN NEW BUTTONS ADDED-->
-          <!-- <div class="clickable sidebar_item" style="opacity: 0.9;"><img src="./res/icon_dashboard.png"
-            style="position: relative; top: 10px; scale: 0.8;"><span id="sidebar_item_text_1"
-            style="font-size: 15px;">Dashboard</span></div> -->
-          <div class="clickable sidebar_item" id="sidebar_button_userprofile" style="opacity: 0.9;"><img
-              src="./res/icon_userprofile.png" style="position: relative; top: 10px; scale: 0.8;"><span
-              id="sidebar_item_text_1" style="color: white; font-size: 15px;">User Profile</span></div>
-          <div class="clickable sidebar_item" id="sidebar_button_manage_subscription" style="opacity: 0.9;"><img
-              src="./res/icon_payments.png" style="position: relative; top: 10px; scale: 0.8;"><span
-              id="sidebar_item_text_2" style="color: white; font-size: 15px;">Manage Subscription</span></div>
-          <div class="loader" id="loader_manage_subscription"
-            style="display: none; width: 10px; height: 10px; margin-left: 20px;"></div>
-        </div>
-        <div id="sidebar_bottom"
-          style="position: fixed; bottom: 60px; left: 0px; width: 260px; height: 60px; border-top: solid 1px #2AAF6D; z-index: 6;">
-          <div id="sidebar_logout_button" class="clickable sidebar_item" style="opacity: 0.9;"><img
-              src="./res/icon_logout.png" style="position: relative; top: 10px; scale: 0.8;"><span
-              id="sidebar_item_text_3" style="color: white; font-size: 20px;">Logout</span></div>
-        </div>
-        <div id="sidebar_toggle_button" onclick="setSidebar();" class="clickable sidebar_item2"
-          style="opacity: 0.9; background-color: #272935; position: fixed; bottom: 0px; left: 0px; width: 260px; z-index: 6;">
-          <img id="sidebar_toggle_img" src="./res/icon_sidebar_close.png"
-            style="display: block; margin-left: auto; margin-right: auto;">
-        </div>
-      </div>
-    </div>
-    <!--END Sidebar-->
+      <style type="text/css">
+        @media screen and (max-width: 768px) {
 
-    <div id="activities" style="margin-left: 260px; margin-top: 60px;">
-    </div>
-    <script>
-      var userAgent = navigator.userAgent.toLowerCase();
-      var Android = userAgent.indexOf("android") > -1;
-      var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-      if (Android) {
-        document.getElementById("dont_Print").style.display = "none";
-        document.getElementById("google_play_store_div").style.display = "";
-      } else if (iOS) {
-        document.getElementById("dont_Print").style.display = "none";
-        document.getElementById("app_store_div").style.display = "";
+          .mobile-menu .header-widget>.text-widget-content span,
+          .mobile-menu .header-widget>.text-widget-content p,
+          .mobile-menu .header-widget>.text-widget-content a,
+          .mobile-menu .header-widget>.text-widget-content blockquote,
+          .mobile-menu .header-widget>.text-widget-content h1,
+          .mobile-menu .header-widget>.text-widget-content h2,
+          .mobile-menu .header-widget>.text-widget-content h3,
+          .mobile-menu .header-widget>.text-widget-content h4,
+          .mobile-menu .header-widget>.text-widget-content h5,
+          .mobile-menu .header-widget>.text-widget-content h6 {
+            color: rgba(22, 237, 50, 1) !important;
+          }
+        }
+      </style>
+      <div class="mobile-header-wrapper " style="background: rgba(255, 255, 255, 1)">
 
-      }
-      else {
-        document.getElementById("dont_Print").style.display = "";
-        document.getElementById("google_play_store_div").style.display = "none";
-        document.getElementById("app_store_div").style.display = "none";
-      }
 
-      function open_google_play_store() {
-        window.open("https://play.google.com/store/apps/details?id=com.where44444.cleanbook", '_self');
-      }
 
-      function open_app_store() {
-        window.open("https://apps.apple.com/us/app/cleanassistant/id1558722026", '_self');
-      }
 
-      function close_store_div() {
-        document.getElementById("dont_Print").style.display = "";
-        document.getElementById("google_play_store_div").style.display = "none";
-        document.getElementById("app_store_div").style.display = "none";
-      }
 
-      String.prototype.equals = function (str2) {
-        return this == str2;
-      };
-      const _STRIPE_PUBLISHABLE_KEY = "pk_test_51KUdlfHIiPodnP4DDdXYPaUTtBrcbVnK7rMYw3Au395ZzP7a7C0RjyZWNzXsJoVlNKEMBbeOva9EiNu9Q75schHV00rWocfRTe";
+        <div class="header-widget" id="header-widget-1531565329804-mobile" data-type="headers/Menu">
 
-      const firebaseConfig = {
-        apiKey: "AIzaSyBVm1GrGziSazlDCGTRJLhIpeWdLTLnXSs",
-        authDomain: "cleanbook-b42d5.firebaseapp.com",
-        databaseURL: "https://cleanbook-b42d5.firebaseio.com",
-        projectId: "cleanbook-b42d5",
-        storageBucket: "cleanbook-b42d5.appspot.com",
-        messagingSenderId: "332358043151",
-        appId: "1:332358043151:web:36d348bb2ce8f496f9857a",
-        measurementId: "G-QGCNQC096N"
-      };
-      firebase.initializeApp(firebaseConfig);
-      const firestore_db = firebase.firestore();
 
-      async function manageSubscription_PersonActivity() {
-        document.getElementById("dialogbox_loader").style.display = "";
-        document.getElementById("dialogbox_button").style.display = "none";
-        const functionRef = firebase
-          .app()
-          .functions("us-central1")
-          .httpsCallable("ext-firestore-stripe-payments-createPortalLink");
-        const { data } = await functionRef({ returnUrl: window.location.origin });
-        document.getElementById("dialogbox_loader").style.display = "none";
-        document.getElementById("dialogbox_button").style.display = "block";
-        // window.open(data.url, '_blank');
-        window.open(data.url, '_self');
-      }
-    </script>
-    <script type="text/javascript" src="Code/JavaClasses/System.js"></script>
-    <script type="text/javascript" src="Code/JavaClasses/ArrayAdapter.js"></script>
-    <script type="text/javascript" src="Code/JavaClasses/TimeUnitType.js"></script>
-    <script type="text/javascript" src="Code/JavaClasses/TimeUnit.js"></script>
-    <script type="text/javascript" src="Code/JavaClasses/LayoutInflater.js"></script>
-    <script type="text/javascript" src="Code/JavaClasses/OptionsItem.js"></script>
-    <script type="text/javascript" src="Code/w4_funcs.js"></script>
-    <script type="text/javascript" src="Code/W4Classes/W4SaveState.js"></script>
-    <script type="text/javascript" src="Code/TheCompany.js"></script>
-    <script type="text/javascript" src="Code/JavaClasses/AppCompatActivity.js"></script>
-    <script type="text/javascript" src="Code/Main/MainActivity.js"></script>
-    <script type="text/javascript" src="Code/Asset.js"></script>
-    <script type="text/javascript" src="Code/cleanbook.js"></script>
-    <script type="text/javascript" src="Code/Deletions.js"></script>
-    <script type="text/javascript" src="Code/FireBaseListeners.js"></script>
-    <script type="text/javascript" src="Code/W4Activity.js"></script>
-    <script type="text/javascript" src="Code/Email/EmailOBJ.js"></script>
-    <script type="text/javascript" src="Code/EmployeeStatus/EmployeeStatusActivity.js"></script>
-    <script type="text/javascript" src="Code/EmployeeStatus/EmployeeStatusListActivity.js"></script>
-    <script type="text/javascript" src="Code/EmployeeStatus/EmployeeStatusListAdapter.js"></script>
-    <script type="text/javascript" src="Code/EmployeeStatus/EmployeeStatusStruct.js"></script>
-    <script type="text/javascript" src="Code/InspectionPlan/InspectionPlan.js"></script>
-    <script type="text/javascript" src="Code/InspectionPlan/NewEditInspectionPlanActivity.js"></script>
-    <script type="text/javascript" src="Code/InspectionPlan/ViewInspectionPlanActivity.js"></script>
-    <script type="text/javascript" src="Code/InspectionPlan/ViewInspectionPlansListActivity.js"></script>
-    <script type="text/javascript" src="Code/InspectionPlanOccurence/DoInspectionPlanInProgressActivity.js"></script>
-    <script type="text/javascript" src="Code/InspectionPlanOccurence/InspectionPlanOccurence.js"></script>
-    <script type="text/javascript" src="Code/InspectionPlanOccurence/ViewInspectionPlanCompleteActivity.js"></script>
-    <script type="text/javascript" src="Code/JavaClasses/InputType.js"></script>
-    <script type="text/javascript" src="Code/JavaClasses/Intent.js"></script>
-    <script type="text/javascript" src="Code/JavaClasses/R.js"></script>
-    <script type="text/javascript" src="Code/JavaClasses/View.js"></script>
-    <script type="text/javascript" src="Code/JavaClasses/SupportActionBar.js"></script>
-    <script type="text/javascript" src="Code/JavaClasses/Toast.js"></script>
-    <script type="text/javascript" src="Code/Location/Location.js"></script>
-    <script type="text/javascript" src="Code/Location/LocationListAdapter.js"></script>
-    <script type="text/javascript" src="Code/Location/NewEditLocationActivity.js"></script>
-    <script type="text/javascript" src="Code/Location/ViewLocationActivity.js"></script>
-    <script type="text/javascript" src="Code/Location/ViewLocationsListActivity.js"></script>
-    <script type="text/javascript" src="Code/Main/AdminToolsActivity.js"></script>
-    <script type="text/javascript" src="Code/Main/ConfirmActivity.js"></script>
-    <script type="text/javascript" src="Code/Main/HomeActivity.js"></script>
-    <script type="text/javascript" src="Code/Main/NewEditCompanyActivity.js"></script>
-    <script type="text/javascript" src="Code/Main/OwnerToolsActivity.js"></script>
-    <script type="text/javascript" src="Code/Main/PrivacyPolicyActivity.js"></script>
-    <script type="text/javascript" src="Code/Main/TemplateListAdapter.js"></script>
-    <script type="text/javascript" src="Code/Main/TextActivity.js"></script>
-    <script type="text/javascript" src="Code/Main/ViewNotificationsListActivity.js"></script>
-    <script type="text/javascript" src="Code/Main/ViewTemplateListActivity.js"></script>
-    <script type="text/javascript" src="Code/Main/ViewTextActivity.js"></script>
-    <script type="text/javascript" src="Code/Message/Message.js"></script>
-    <script type="text/javascript" src="Code/Message/MessageBubbleListAdapter.js"></script>
-    <script type="text/javascript" src="Code/Message/ViewMessageDialogueActivity.js"></script>
-    <script type="text/javascript" src="Code/Message/ViewMessageLocationsActivity.js"></script>
-    <script type="text/javascript" src="Code/Notification/NotificationsManager.js"></script>
-    <script type="text/javascript" src="Code/Notification/NotificationW4Save.js"></script>
-    <script type="text/javascript" src="Code/Notification/W4Notification.js"></script>
-    <script type="text/javascript" src="Code/People/NewEditPersonActivity.js"></script>
-    <script type="text/javascript" src="Code/People/Person.js"></script>
-    <script type="text/javascript" src="Code/People/PersonListAdapter.js"></script>
-    <script type="text/javascript" src="Code/People/ViewPeopleListActivity.js"></script>
-    <script type="text/javascript" src="Code/People/ViewPersonActivity.js"></script>
-    <script type="text/javascript" src="Code/Report/ClockExportObject.js"></script>
-    <script type="text/javascript" src="Code/Report/Exports.js"></script>
-    <script type="text/javascript" src="Code/Report/ReportTypesActivity.js"></script>
-    <script type="text/javascript" src="Code/Report/StartEndDateActivity.js"></script>
-    <script type="text/javascript" src="Code/Report/TaskExportObject.js"></script>
-    <script type="text/javascript" src="Code/SDS/SDSListAdapter.js"></script>
-    <script type="text/javascript" src="Code/SDS/ViewNewEditSDSActivity.js"></script>
-    <script type="text/javascript" src="Code/SDS/ViewSDSListActivity.js"></script>
-    <script type="text/javascript" src="Code/SDS/ViewSDSLocationsListActivity.js"></script>
-    <script type="text/javascript" src="Code/Shift/CalendarActivity.js"></script>
-    <script type="text/javascript" src="Code/Shift/NewEditShiftActivity.js"></script>
-    <script type="text/javascript" src="Code/Shift/Shift.js"></script>
-    <script type="text/javascript" src="Code/Shift/ShiftListAdapter.js"></script>
-    <script type="text/javascript" src="Code/Shift/ViewShiftActivity.js"></script>
-    <script type="text/javascript" src="Code/Shift/ViewShiftCalendarActivity.js"></script>
-    <script type="text/javascript" src="Code/Shift/ViewShiftListActivity.js"></script>
-    <script type="text/javascript" src="Code/SupplyItem/NewEditSupplyItemActivity.js"></script>
-    <script type="text/javascript" src="Code/SupplyItem/RequestSuppliesActivity.js"></script>
-    <script type="text/javascript" src="Code/SupplyItem/SupplyItem.js"></script>
-    <script type="text/javascript" src="Code/SupplyItem/SupplyItemListAdapter.js"></script>
-    <script type="text/javascript" src="Code/SupplyItem/ViewSupplyItemActivity.js"></script>
-    <script type="text/javascript" src="Code/SupplyItem/ViewSupplyItemListActivity.js"></script>
-    <script type="text/javascript" src="Code/SupplyItem/ViewSupplyItemLocationsListActivity.js"></script>
-    <script type="text/javascript" src="Code/Task/DoTaskInProgressActivity.js"></script>
-    <script type="text/javascript" src="Code/Task/NewEditTaskActivity.js"></script>
-    <script type="text/javascript" src="Code/Task/TaskByLocationListAdapter.js"></script>
-    <script type="text/javascript" src="Code/Task/TaskByPersonListAdapter.js"></script>
-    <script type="text/javascript" src="Code/Task/TaskSheet.js"></script>
-    <script type="text/javascript" src="Code/Task/TaskSheetOccurence.js"></script>
-    <script type="text/javascript" src="Code/Task/ViewTaskActivity.js"></script>
-    <script type="text/javascript" src="Code/Task/ViewTaskCompleteActivity.js"></script>
-    <script type="text/javascript" src="Code/Task/ViewTaskListActivity.js"></script>
-    <script type="text/javascript" src="Code/Task/ViewTaskListByTypeActivity.js"></script>
-    <script type="text/javascript" src="Code/TimePunch/NewEditTimePunchActivity.js"></script>
-    <script type="text/javascript" src="Code/TimePunch/TimePunch.js"></script>
-    <script type="text/javascript" src="Code/TimePunch/TimePunchByLocationListAdapter.js"></script>
-    <script type="text/javascript" src="Code/TimePunch/TimePunchByPersonListAdapter.js"></script>
-    <script type="text/javascript" src="Code/TimePunch/TimePunchDateAndHours.js"></script>
-    <script type="text/javascript" src="Code/TimePunch/TimePunchListAdapter.js"></script>
-    <script type="text/javascript" src="Code/TimePunch/TotalHoursActivity.js"></script>
-    <script type="text/javascript" src="Code/TimePunch/ViewTimePunchActivity.js"></script>
-    <script type="text/javascript" src="Code/TimePunch/ViewTimePunchListActivity.js"></script>
-    <script type="text/javascript" src="Code/TimePunch/ViewTimePunchListByTypeActivity.js"></script>
-    <script type="text/javascript" src="Code/W4Classes/Admin.js"></script>
-    <script type="text/javascript" src="Code/W4Classes/CompanyData.js"></script>
-    <script type="text/javascript" src="Code/W4Classes/firestore_customer.js"></script>
-    <script type="text/javascript" src="Code/W4Classes/firestore_metadata.js"></script>
-    <script type="text/javascript" src="Code/W4Classes/GPSObj.js"></script>
-    <script type="text/javascript" src="Code/W4Classes/RepeatingDateStruct.js"></script>
-    <script type="text/javascript" src="Code/W4Classes/SpinnerSortItem.js"></script>
-    <script type="text/javascript" src="Code/W4Classes/User.js"></script>
-    <script type="text/javascript" src="Code/W4Classes/W4AlarmManager.js"></script>
-    <script type="text/javascript" src="Code/W4Classes/W4CallbackManager.js"></script>
-    <script type="text/javascript" src="Code/W4Classes/W4Data.js"></script>
-    <script type="text/javascript" src="Code/W4Classes/W4DateTime.js"></script>
-    <script type="text/javascript" src="Code/W4Classes/W4FirebaseStorageObject.js"></script>
-    <script type="text/javascript" src="Code/W4Classes/W4_DBLog.js"></script>
-    <!-- <script type="text/javascript" src="../cleanbook_tests.js"></script>   -->
-    <script>
-      var KEY_ENTER = "Enter";
-      var KEY_NUMPADENTER = "NumpadEnter"
-      var KEY_ESCAPE = "Escape"
-      var _key_enter_just_pressed = false;
-
-      document.addEventListener("keyup", function (event) {
-        if (event.code == (KEY_ENTER) || event.code == (KEY_NUMPADENTER)) {
-          if (!_key_enter_just_pressed) {
-            if (document.getElementById("dialogbox").className != "hide") {
-              document.getElementById("dialogbox_button").click();
-              event.preventDefault();
+          <style type="text/css">
+            #header-widget-1531565329804-mobile nav>ul>li>a.website-nav-link {
+              padding: 16px;
             }
-          }
-          _key_enter_just_pressed = false;
-        }
-        if (event.code == KEY_ESCAPE) {
-          if (document.getElementById("myModal").style.display != "none") {
-            document.getElementById("closeButton").click();
-          } else if (document.getElementById("activity_back_arrow").style.display != "none") {
-            document.getElementById("activity_back_arrow").click();
-          }
-        }
-      });
 
-      var mousedown = false;
-      var mouseCoords = new Object();
-      var currentTranslate = new Object();
-      document.addEventListener("mousedown", function (event) {
-        mousedown = true;
-        mouseCoords.x = event.clientX;
-        mouseCoords.y = event.clientY;
-      });
+            #header-widget-1531565329804-mobile ul li a.website-nav-link {
+              font-size: 18px;
+              font-family: Lato;
+              color: rgb(19, 199, 43);
 
-      document.addEventListener("mouseup", function (event) {
-        mousedown = false;
-      });
+            }
 
-      document.addEventListener("mousemove", function (event) {
-        if (mousedown) {
-          var img = document.getElementById("img01");
-          if (img != null) {
-            currentTranslate.x += (event.clientX - mouseCoords.x) / imgzoom;
-            currentTranslate.y += (event.clientY - mouseCoords.y) / imgzoom;
-            setImgTransform();
-            mouseCoords.x = event.clientX;
-            mouseCoords.y = event.clientY;
-          }
-        }
-      });
+            #header-widget-1531565329804-mobile .before,
+            #header-widget-1531565329804-mobile .after,
+            #header-widget-1531565329804-mobile .middle {
+              background: #3e3e3e;
+            }
 
-      // document.addEventListener("click", function (event) {
-      //   if (AppCompatActivity.activities.length > 0) {
-      //     var currentActivity = AppCompatActivity.activities[AppCompatActivity.activities.length - 1];
-      //     // currentActivity.setLastClickedEle(event.target);
-      //     currentActivity.setLastScroll_Y();
-      //   }
-      // });
+            #header-widget-1531565329804-mobile .burger-menu-visible .before,
+            #header-widget-1531565329804-mobile .burger-menu-visible .after,
+            #header-widget-1531565329804-mobile .burger-menu-visible .middle {
+              background: rgba(22, 237, 50, 1);
+            }
 
-      function checkEnterPress(event) {
-        return (event.code == (KEY_ENTER) || event.code == (KEY_NUMPADENTER)) && document.getElementById("dialogbox").className.equals("hide");
-      }
+            #header-widget-1531565329804-mobile nav>ul>li:hover a.website-nav-link,
+            #header-widget-1531565329804-mobile nav>ul>li.active a.website-nav-link,
+            #header-widget-1531565329804-mobile .overlay nav li:hover>div>ul li a.website-nav-link:hover {
+              color: rgba(22, 237, 50, 1);
+            }
 
-      var imgzoom = 1;
-      function mouseWheelFunc(event) {
-        var img = document.getElementById("img01");
-        if (img != null) {
-          imgzoom *= 1 + (event.deltaY * -0.001);
-          if (imgzoom < .1)
-            imgzoom = .1;
-          setImgTransform();
-          event.preventDefault();
-        }
-      }
+            #header-widget-1531565329804-mobile .with-background nav>ul>li:hover>a,
+            #header-widget-1531565329804-mobile .with-background nav>ul>li.active>a {
+              background-color: transparent;
+              border-radius: 0px;
+            }
 
-      function zoomIn() {
-        imgzoom *= 1.2;
-        setImgTransform();
-      }
+            #header-widget-1531565329804-mobile .with-border li:hover:before,
+            #header-widget-1531565329804-mobile .with-border li.active:before,
+            #header-widget-1531565329804-mobile .border-below li:hover a.website-nav-link:after,
+            #header-widget-1531565329804-mobile .border-below li.active a.website-nav-link:after {
+              background: rgba(22, 237, 50, 1);
+            }
 
-      function zoomOut() {
-        imgzoom *= .8
-        if (imgzoom < .1)
-          imgzoom = .1;
-        setImgTransform();
-      }
+            #header-widget-1531565329804-mobile .border-at-left nav>ul>li.active,
+            #header-widget-1531565329804-mobile .border-at-left nav>ul>li:hover {
+              border-color: rgb(19, 199, 43);
+            }
 
-      function setImgTransform() {
-        var img = document.getElementById("img01");
-        if (img != null)
-          img.style.transform = "scale(" + imgzoom + ") translate(" + currentTranslate.x + "px, " + currentTranslate.y + "px)";
-      }
+            #header-widget-1531565329804-mobile .border-below nav>ul>li:after.active,
+            #header-widget-1531565329804-mobile .border-below nav>ul>li:after:hover {
+              background: rgba(22, 237, 50, 1);
+            }
 
-      var sidebar_open = false;
-      var _sidebar_width = "";
-      function setSidebar() {
-        var i = 0;
-        sidebar_open = !sidebar_open;
-        if (sidebar_open) {
-          document.getElementById("sidebar").style.width = "260px";
-          document.getElementById("sidebar_toggle_button").style.width = "260px";
-          document.getElementById("sidebar_bottom").style.width = "260px";
-          document.getElementById("sidebar_header").style.display = "";
-          document.getElementById("sidebar_toggle_img").src = "./res/icon_sidebar_close.png";
-          _sidebar_width = "260px";
-          if (document.getElementById("activities").style.marginLeft != "0px")
-            document.getElementById("activities").style.marginLeft = _sidebar_width;
-          var element = document.getElementById("sidebar_item_text_" + i);
-          while (element != null) {
-            element.style.display = "";
-            ++i;
-            element = document.getElementById("sidebar_item_text_" + i);
-          }
-          document.getElementById("activity_back_arrow").style.left = "270px";
-          document.getElementById("support_bar").style.left = "350px";
-        }
-        else {
-          document.getElementById("sidebar").style.width = "70px";
-          document.getElementById("sidebar_toggle_button").style.width = "70px";
-          document.getElementById("sidebar_bottom").style.width = "70px";
-          document.getElementById("sidebar_header").style.display = "none";
-          document.getElementById("sidebar_toggle_img").src = "./res/icon_sidebar_open.png";
-          _sidebar_width = "70px";
-          if (document.getElementById("activities").style.marginLeft != "0px")
-            document.getElementById("activities").style.marginLeft = _sidebar_width;
-          var element = document.getElementById("sidebar_item_text_" + i);
-          while (element != null) {
-            element.style.display = "none";
-            ++i;
-            element = document.getElementById("sidebar_item_text_" + i);
-          }
-          document.getElementById("activity_back_arrow").style.left = "75px";
-          document.getElementById("support_bar").style.left = "155px";
-        }
-        for (let a of AppCompatActivity.activities) {
-          var view = a.findViewById("sidebar_sensitive");
-          if (view != null)
-            view.ele.style.left = _sidebar_width;
-        }
-      }
+            #header-widget-1531565329804-mobile nav li:hover>div>ul.with-border {
+              border: 1px solid #3e3e3e;
+              background-color: #ffffff;
+            }
 
-      setSidebar();
+            #header-widget-1531565329804-mobile nav li:hover>div>ul,
+            #header-widget-1531565329804-mobile nav li.visible>div>ul {
+              background-color: #ffffff;
+            }
+
+            #header-widget-1531565329804-mobile nav li:hover>div>ul li a.website-nav-link,
+            #header-widget-1531565329804-mobile nav li.visible>div>ul li a.website-nav-link {
+              color: #6a6a6a;
+            }
+
+            #header-widget-1531565329804-mobile nav li:hover>div>ul li a.website-nav-link:hover {
+              color: rgba(22, 237, 50, 1);
+            }
+
+            #header-widget-1531565329804-mobile .vertical-menu-styling.design-1 nav>ul>li,
+            #header-widget-1531565329804-mobile .vertical-menu-styling.design-3 nav>ul>li {
+              border-color: #3e3e3e;
+            }
+
+            #header-widget-1531565329804-mobile .vertical-menu-styling.border-below.left li:after {
+              background-color: rgb(19, 199, 43);
+            }
+
+            #header-widget-1531565329804-mobile .overlay nav li>div>ul>li>a.website-nav-link {
+              color: rgba(22, 237, 50, 1);
+            }
+
+            #header-widget-1531565329804-mobile .horizontal-menu-styling.with-divider nav>ul>li:after {
+              background-color: #CCCCCC;
+            }
+          </style>
+
+          <div class=" right-submenu menu-widget with-border   
+           
+           design-4 center mobile-column vertical-menu-styling" style="background: transparent">
 
 
-      var activities0 = [
-        "activity_admin_tools",
-        "activity_calendar",
-        "activity_confirm",
-        "activity_do_inspection_plan_in_progress",
-        "activity_do_task_in_progress",
-        "activity_employee_status",
-        "activity_employee_status_list",
-        "activity_home",
-        "activity_main",
-        "activity_new_edit_company",
-        "activity_new_edit_inspection_plan",
-        "activity_new_edit_location",
-        "activity_new_edit_person",
-        "activity_new_edit_shift_time",
-        "activity_new_edit_supply_item",
-        "activity_new_edit_task",
-        "activity_new_edit_time_punch",
-        "activity_owner_tools",
-        "activity_privacy_policy",
-        "activity_report_types",
-        "activity_request_supplies",
-        "activity_start_end_date",
-        "activity_text",
-        "activity_total_hours",
-        "activity_view_inspection_plan",
-        "activity_view_inspection_plan_complete",
-        "activity_view_inspection_plans_list",
-        "activity_view_location",
-        "activity_view_locations_list",
-        "activity_view_message_dialogue",
-        "activity_view_message_locations_list",
-        "activity_view_new_edit_s_d_s",
-        "activity_view_notifications_list",
-        "activity_view_people_list",
-        "activity_view_person",
-        "activity_view_s_d_s_list",
-        "activity_view_s_d_s_locations_list",
-        "activity_view_shift_calendar",
-        "activity_view_shift_time",
-        "activity_view_shifts_list",
-        "activity_view_supply_item",
-        "activity_view_supply_item_list",
-        "activity_view_supply_item_locations_list",
-        "activity_view_task",
-        "activity_view_task_complete",
-        "activity_view_task_list",
-        "activity_view_task_list_by_type",
-        "activity_view_template_list",
-        "activity_view_text",
-        "activity_view_time_punch",
-        "activity_view_time_punch_by_type",
-        "activity_view_time_punch_list",
-        "admin_tools_admin_view",
-        "chat_bubble_left",
-        "chat_bubble_right",
-        "custom_actionbar_notification_item",
-        "generic_list_item",
-        "inspection_plan_do_area_view",
-        "inspection_plan_do_point_view",
-        "inspection_plan_edit_area_view",
-        "inspection_plan_edit_point_view",
-        "inspection_plan_list_item",
-        "inspection_plan_view_area_view",
-        "inspection_plan_view_point_view",
-        "location_notification_list_item",
-        "notification_view",
-        "shift_added_person",
-        "supply_item_list_item",
-        "task_complete_subtask_view",
-        "task_complete_task_view",
-        "task_completed_list_item",
-        "task_do_subtask_view",
-        "task_do_task_view",
-        "task_list_item",
-        "task_subtask_view",
-        "task_task_view",
-        "task_view_subtask_view",
-        "task_view_task_view"
-      ];
+            <nav class="mobile-headerBackgroundColor">
+              <ul class="clearfix">
+                <li>
+                  <a class="website-nav-link" rel="tab" href="https://www.cleanassistant.net">
+                    Home
+                  </a>
+                </li>
 
-      var _appCompatActivity = new AppCompatActivity();
-      function startMainActivity() {
-        document.getElementById("firstLoader").style.display = "none";
-        var intent = new Intent(null, new MainActivity());
-        intent.isMain = true;
-        _appCompatActivity.startActivity(intent);
-      }
+                <li>
+                  <a class="website-nav-link" rel="tab" href="https://www.cleanassistant.net/app">
+                    Log In
+                  </a>
+                </li>
 
-      var numActivitiesLoaded = 0;
-      function loadNextActivity() {
-        var url = "./layout/" + activities0[numActivitiesLoaded] + ".html";
-        fetch(url)
-          .then(function (response) {
-            response.text().then(function (text) {
-              R.layout[activities0[numActivitiesLoaded]] = text;
-              ++numActivitiesLoaded;
-              if (numActivitiesLoaded >= activities0.length)
-                startMainActivity();
-              else
-                loadNextActivity();
-            });
-          });
-      }
-      document.getElementById("firstLoader").style.display = "";
-      loadNextActivity();
-    </script>
+                <li>
+                  <a class="website-nav-link" rel="tab" href="https://www.cleanassistant.net/stripe">
+                    Sign Up
+                  </a>
+                </li>
 
+                <li>
+                  <a class="website-nav-link" rel="tab" href="https://www.cleanassistant.net/contact-form">
+                    Contact
+                  </a>
+                </li>
+              </ul>
+            </nav>
 
-    <!-- <div id="HomeActivity_div" style="color: rgb(27, 29, 42);">
-        <div style="background-color: #FFFFFF; padding-left: 20px; padding-top: 20px;">
-          <span style="font-size: 34px; font-weight: 500; ">Welcome to Clean Assistant App!</span><br><br>
-          <span style="font-size: 16px; font-weight: 400; color: rgb(128, 130, 146);">The app that helps you gather real
-            time data, organize, systemize, and scale your janitorial - cleaning business.</span>
+          </div>
         </div>
-        <div style="margin: 40px; background-color: #FFFFFF;">
-          <span style="font-size: 22px; font-weight: 500;">Overview</span><br>
-          Clean Assistant App- is a powerful janitorial & cleaning software application both on iOS and Android<br>
-          <br><br>
-          It contains multiple features like:<br>
-          <br><br>
-          - Easy Scheduling<br>
-          - Real time data time tracking checklist / tasks<br>
-          - Supply Managing<br>
-          - Location Messaging<br>
-          - Inspection Managing<br>
-          - SDS Sheets Managing<br>
-          - GPS Login / GPS Log out<br>
-          Take your business to the next level!<br>
+
+        <div class="header-widget" id="header-widget-1533304111444-mobile" data-type="headers/Button">
+          <div class="main-widget-content">
+            <style type="text/css">
+              #header-widget-1533304111444-mobile .hvr-sweep-to-right:before,
+              #header-widget-1533304111444-mobile .hvr-fade:hover,
+              #header-widget-1533304111444-mobile .hvr-fade:focus,
+              #header-widget-1533304111444-mobile .hvr-fade:active,
+              #header-widget-1533304111444-mobile .hvr-rectangle-out:before {
+                background: rgba(255, 255, 255, 1) !important;
+                border-color: rgba(255, 255, 255, 1) !important;
+              }
+
+              #header-widget-1533304111444-mobile .hvr-sweep-to-right:hover,
+              #header-widget-1533304111444-mobile .hvr-sweep-to-right:focus,
+              #header-widget-1533304111444-mobile .hvr-sweep-to-right:active,
+              #header-widget-1533304111444-mobile .hvr-fade:hover,
+              #header-widget-1533304111444-mobile .hvr-fade:focus,
+              #header-widget-1533304111444-mobile .hvr-fade:active,
+              #header-widget-1533304111444-mobile .hvr-rectangle-out:hover,
+              #header-widget-1533304111444-mobile .hvr-rectangle-out:focus,
+              #header-widget-1533304111444-mobile .hvr-rectangle-out:active {
+                color: #ffffff !important;
+              }
+            </style>
+          </div>
         </div>
-      </div> -->
+      </div>
+    </div>
+    <a class="scrollToTop transition-all fa" title="Scroll To Top" style="display: none;">
+      <img src="./ic_arrow_up.png" height="15" width="15">
+    </a>
+
+    <div class="content slide">
+      <div class="content-wrapper">
+        <div class="content">
+          <div id="container-widget-1590256678107" data-type="Container" class="grid-row
+       bg-color-secondary3 stretched-mobile stretched-tablet" data-delay=""
+            style="padding-bottom:2.85244%;
+      padding-top: 2.34628%; padding-left: 0;
+      
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: auto;
+      
+      background-image: url(&#39;https://content.app-sources.com/s/0243601288027648/uploads/Images/bg2-3895366.png&#39;);">
+            <div class="grid-content ">
+              <div class="grid-column    " style="width: 56%;
+                 padding-left:0px;padding-right:0%;
+                 background-image: none;
+                 
+                   background-size: cover;
+                   background-repeat: no-repeat;
+                   background-position: center center;
+                 
+                 top: 0px;
+                 
+                 ">
+
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive textWidget headingWidget col20" id="heading-widget-1590256678105" data-type="HeadingWidget"
+                    data-delay="" data-animation-duration="1100" data-animation-delay="0"
+                    data-animation="lazyAnimation-0" style="margin-top: 1.40693%; margin-left: 0px;">
+                    <div class="text-widget-content">
+                      <h1 style="text-align: left; line-height: 1.2;"><span
+                          style="font-size: 54px; font-weight: 700; color: rgb(62, 62, 62);">Manage Your Cleaning
+                          Business and Janitorial Service In Real Time.</span></h1>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive col9" id="separator-widget-1590256678104" data-type="Separator" data-delay=""
+                    data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 2.54545%; margin-left: 0px;">
+                    <div>
+                      <div class="hr-title fullwidth-separator" style="text-align: left;">
+                        <span class="border-color-primary" <="" span="">
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive textWidget col12" id="text-widget-1590256678103" data-type="TextWidget" data-delay=""
+                    data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 2.72727%; margin-left: 0px;">
+                    <div class="text-widget-content">
+                      <p><span style="color: rgb(62, 62, 62);">Are you still managing your cleaning service or
+                          janitorial service with pen and paper ? Let us help you bring your business
+                          online.&nbsp;</span></p>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive buttonWidget col20" id="button-widget-1590256678102" data-type="Button" data-delay=""
+                    data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 4.54545%; margin-left: 0%;">
+                    <div class="main-widget-content">
+                      <style type="text/css">
+                        #button-widget-1590256678102 .hvr-sweep-to-right:before,
+                        #button-widget-1590256678102 .hvr-fade:hover,
+                        #button-widget-1590256678102 .hvr-fade:focus,
+                        #button-widget-1590256678102 .hvr-fade:active,
+                        #button-widget-1590256678102 .hvr-rectangle-out:before {
+                          background: rgb(89, 255, 111) !important;
+                          border-color: rgba(255, 255, 255, 1) !important;
+                        }
+
+                        #button-widget-1590256678102 .hvr-sweep-to-right:hover,
+                        #button-widget-1590256678102 .hvr-sweep-to-right:focus,
+                        #button-widget-1590256678102 .hvr-sweep-to-right:active,
+                        #button-widget-1590256678102 .hvr-fade:hover,
+                        #button-widget-1590256678102 .hvr-fade:focus,
+                        #button-widget-1590256678102 .hvr-fade:active,
+                        #button-widget-1590256678102 .hvr-rectangle-out:hover,
+                        #button-widget-1590256678102 .hvr-rectangle-out:focus,
+                        #button-widget-1590256678102 .hvr-rectangle-out:active,
+                        #button-widget-1590256678102 .hvr-sweep-to-right:hover .btn-text-wrapper span {
+                          color: #ffffff !important;
+                        }
+                      </style>
+                      <div style="text-align: left;">
+                        <a href="https://cleanassistant.net/stripe" target="_self"
+                          class="theme-button hvr-sweep-to-right" style="font-size: 17px; 
+             color:#ffffff;background-color: rgba(72, 176, 86, 1); border-color: rgba(72, 176, 86, 1); letter-spacing: 0px; border-width: 0px;
+             padding: 23px 46px;
+             width: auto;
+             box-shadow: -8px 6px 15px 0px rgba(0, 0, 0, 0.3) ;
+             border-radius: 3px;">
+
+                          <span class="">
+                            14 Day Free Trial</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="grid-column    " style="width: 44%;
+                 padding-left:0%;padding-right:2%;background-color: transparent;
+                 background-image: none;
+                 
+                   background-size: cover;
+                   background-repeat: no-repeat;
+                   background-position: center center;
+                 
+                 top: 0px;
+                 
+                 ">
+
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive imageWidget col20" id="image-widget-1593895266820" data-type="ImageWidget" data-delay=""
+                    data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 0px; margin-left: 0px;">
+
+                    <div class="image-box  image-position-default" style="max-width: 462px;">
+                      <div class="widget-preserving-ratio-outer " style="padding-bottom: 125.75757575757575%">
+
+                        <div class="widget-preserving-ratio-inner"
+                          data-slide="https://content.app-sources.com/s/07906809875805354/uploads/Images/Screenshot_2022-10-31_12.01.39_AM_iphone13blue_portrait-7209619.png">
+                          <a class="lazyImage flex flex-col image-fit">
+                            <img src="./Home_files/Screenshot_2022-10-31_12.01.39_AM_iphone13blue_portrait-7209619.png"
+                              class="flex-none" alt="" style="">
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="container-widget-1667197721941" data-type="Container" class="grid-row
+       bg-color-secondary3 stretched-mobile stretched-tablet" data-delay="" style="padding-bottom:3%;
+      padding-top: 3%; padding-left: 0;
+      
+        background-position: center center;
+        background-repeat: repeat;
+        background-size: auto;
+      
+      background-image: none;">
+            <div class="grid-content ">
+              <div class="grid-column    " style="width: 100%;
+                 padding-left:0px;padding-right:0px;
+                 background-image: none;
+                 
+                   background-size: cover;
+                   background-repeat: no-repeat;
+                   background-position: center center;
+                 
+                 top: 0px;
+                 
+                 ">
+
+                <div class="widget-row with-centered-content">
+                  <div class="widget 
+          widgetResponsive textWidget headingWidget col20" id="heading-widget-1667197721940" data-type="HeadingWidget"
+                    data-delay="" data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 0px; margin-left: 0px;">
+                    <div class="text-widget-content">
+                      <h2 style="text-align: center;"><span class="" style="color: rgb(62, 62, 62);">What Can You Do
+                          With </span></h2>
+                      <h2 style="text-align: center;"><span class="" style="color: rgb(62, 62, 62);">The Clean Assistant
+                          Software?&nbsp;</span></h2>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="container-widget-1590256706399" data-type="Container" class="grid-row
+       bg-color-secondary3 stretched-mobile stretched-tablet" data-delay="" style="padding-bottom:4.05924%;
+      padding-top: 2.42718%; padding-left: 0;
+      
+        background-position: center center;
+        background-repeat: repeat;
+        background-size: auto;
+      
+      background-image: none;">
+            <div class="grid-content ">
+              <div class="grid-column has-bg-color" style="width: 29.9636%;
+                 padding-left:4%;padding-right:4%;background-color: rgba(255, 255, 255, 0.10967741935483871);
+                 background-image: none;
+                 
+                   background-size: cover;
+                   background-repeat: no-repeat;
+                   background-position: center center;
+                 
+                 top: 0px;
+                 
+                 ">
+
+                <div class="widget-row ">
+                  <div class="widget           anim-delayed-item widgetResponsive iconSection col20 anim-displayed"
+                    id="icon-widget-1590256628488" data-type="Icon" data-delay="" data-animation-duration="1100"
+                    data-animation-delay="0" data-animation="lazyAnimation-6"
+                    style="margin-top: 18.1818%; margin-left: 0px; animation-delay: 0ms; animation-duration: 1100ms;">
+                    <div class="type1 icon-widget">
+                      <div class="icon">
+                        <i class="fa color-primary" style="font-size: 46px;">
+                          <img src="./ic_calendar.png" width="60" height="60" style="margin-bottom: -20px;">
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive textWidget headingWidget col20" id="heading-widget-1590256706397" data-type="HeadingWidget"
+                    data-delay="" data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 0%; margin-left: 0%;">
+                    <div class="text-widget-content">
+                      <h3 style="text-align: left;"><span style="font-weight: 700; color: rgb(62, 62, 62);">Scheduling
+                          System</span></h3>
+                      <h3 style="text-align: left;"><span style="color: rgb(255, 255, 255); font-weight: 700;"><span
+                            style="color: rgb(62, 62, 62);">Management</span><span
+                            style="color: rgb(62, 62, 62);">&nbsp;</span></span><br></h3>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive textWidget col20" id="text-widget-1590256706396" data-type="TextWidget" data-delay=""
+                    data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 7.85124%; margin-left: 0%;">
+                    <div class="text-widget-content">
+                      <p><span style="color: rgb(62, 62, 62);">Create shifts with options for daily, weekly, and monthly
+                          repeating cycles and overnight capability.</span></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="grid-column  grid-column-no-widgets   " style="width: 4.91803%;
+                 padding-left:0px;padding-right:0px;
+                 background-image: none;
+                 
+                   background-size: cover;
+                   background-repeat: no-repeat;
+                   background-position: center center;
+                 
+                 top: 0px;
+                 
+                 ">
+
+                <div class="widget-row ">
+                </div>
+              </div>
+              <div class="grid-column     has-bg-color" style="width: 29.9636%;
+                 padding-left:4%;padding-right:4%;background-color: rgba(255, 255, 255, 0.11);
+                 background-image: none;
+                 
+                   background-size: cover;
+                   background-repeat: no-repeat;
+                   background-position: center center;
+                 
+                 top: 0px;
+                 
+                 ">
+
+                <div class="widget-row ">
+                  <div class="widget           anim-delayed-item widgetResponsive iconSection col20 anim-displayed"
+                    id="icon-widget-1590256628485" data-type="Icon" data-delay="" data-animation-duration="1100"
+                    data-animation-delay="0" data-animation="lazyAnimation-6"
+                    style="margin-top: 18.1818%; margin-left: 0px; animation-delay: 0ms; animation-duration: 1100ms;">
+                    <div class="type1 icon-widget">
+                      <div class="icon">
+                        <i class="fa color-primary" style=" font-size: 46px;">
+                          <img src="./ic_day.png" width="60" height="60" style="margin-bottom: -20px;">
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive textWidget headingWidget col20" id="heading-widget-1590256628486" data-type="HeadingWidget"
+                    data-delay="" data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 0%; margin-left: 0%;">
+                    <div class="text-widget-content">
+                      <h3 style="text-align: left;"><span style="font-weight: bold; color: rgb(62, 62, 62);">Time Task
+                        </span></h3>
+                      <h3 style="text-align: left;"><span
+                          style="font-weight: bold; color: rgb(62, 62, 62);">Checklist</span></h3>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive textWidget col20" id="text-widget-1590256628487" data-type="TextWidget" data-delay=""
+                    data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 7.85124%; margin-left: 0%;">
+                    <div class="text-widget-content">
+                      <p><span style="color: rgb(62, 62, 62);">Track employees real time progress through their shift as
+                          they check off tasks.</span></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="grid-column  grid-column-no-widgets   " style="width: 4.91803%;
+                 padding-left:0px;padding-right:0px;
+                 background-image: none;
+                 
+                   background-size: cover;
+                   background-repeat: no-repeat;
+                   background-position: center center;
+                 
+                 top: 0px;
+                 
+                 ">
+
+                <div class="widget-row ">
+                </div>
+              </div>
+              <div class="grid-column     has-bg-color" style="width: 30.2368%;
+                 padding-left:4%;padding-right:4%;background-color: rgba(255, 255, 255, 0.11);
+                 background-image: none;
+                 
+                   background-size: cover;
+                   background-repeat: no-repeat;
+                   background-position: center center;
+                 
+                 top: 0px;
+                 
+                 ">
+
+                <div class="widget-row ">
+                  <div class="widget           anim-delayed-item widgetResponsive iconSection col20 anim-displayed"
+                    id="icon-widget-1590256628482" data-type="Icon" data-delay="" data-animation-duration="1100"
+                    data-animation-delay="0" data-animation="lazyAnimation-6"
+                    style="margin-top: 17.9592%; margin-left: 0px; animation-delay: 0ms; animation-duration: 1100ms;">
+                    <div class="type1 icon-widget">
+                      <div class="icon">
+                        <i class="fa color-primary" style=" font-size: 46px;">
+                          <img src="./ic_clock.png" width="60" height="60" style="margin-bottom: -20px;">
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive textWidget headingWidget col20" id="heading-widget-1590256628483" data-type="HeadingWidget"
+                    data-delay="" data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 0%; margin-left: 0%;">
+                    <div class="text-widget-content">
+                      <h3 style="text-align: left;"><span style="font-weight: bold; color: rgb(62, 62, 62);">GPS Clock
+                          In &amp; Clock Out</span></h3>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive textWidget col20" id="text-widget-1590256628484" data-type="TextWidget" data-delay=""
+                    data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 7.7551%; margin-left: 0%;">
+                    <div class="text-widget-content">
+                      <p><span style="color: rgb(62, 62, 62);">Require employees to be within a customizable distance of
+                          their location to clock in and out of their shift.</span></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="container-widget-1667197721939" data-type="Container" class="grid-row
+       bg-color-secondary3 stretched-mobile stretched-tablet" data-delay="" style="padding-bottom:4.05924%;
+      padding-top: 3.45584%; padding-left: 0;
+      
+        background-position: center center;
+        background-repeat: repeat;
+        background-size: auto;
+      
+      background-image: none;">
+            <div class="grid-content ">
+              <div class="grid-column     has-bg-color" style="width: 29.9636%;
+                 padding-left:4%;padding-right:4%;background-color: rgba(255, 255, 255, 0.10967741935483871);
+                 background-image: none;
+                 
+                   background-size: cover;
+                   background-repeat: no-repeat;
+                   background-position: center center;
+                 
+                 top: 0px;
+                 
+                 ">
+
+                <div class="widget-row ">
+                  <div class="widget           anim-delayed-item widgetResponsive iconSection col20 anim-displayed"
+                    id="icon-widget-1667197721938" data-type="Icon" data-delay="" data-animation-duration="1100"
+                    data-animation-delay="0" data-animation="lazyAnimation-6"
+                    style="margin-top: 18.1818%; margin-left: 0px; animation-delay: 0ms; animation-duration: 1100ms;">
+                    <div class="type1 icon-widget">
+                      <div class="icon">
+                        <i class="fa color-primary" style=" font-size: 46px;">
+                          <img src="./ic_cart.png" width="60" height="60" style="margin-bottom: -20px;">
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive textWidget headingWidget col20" id="heading-widget-1667197721937" data-type="HeadingWidget"
+                    data-delay="" data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 8.26446%; margin-left: 0%;">
+                    <div class="text-widget-content">
+                      <h3 style="text-align: left;"><span style="font-weight: bold; color: rgb(62, 62, 62);">Supply
+                          System</span></h3>
+                      <h3 style="text-align: left;"><span
+                          style="font-weight: bold; color: rgb(62, 62, 62);">Management</span></h3>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive textWidget col20" id="text-widget-1667197721936" data-type="TextWidget" data-delay=""
+                    data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 7.85124%; margin-left: 0%;">
+                    <div class="text-widget-content">
+                      <p><span style="color: rgb(62, 62, 62);">Track and fulfill supply requests for each
+                          location.</span></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="grid-column  grid-column-no-widgets   " style="width: 4.91803%;
+                 padding-left:0px;padding-right:0px;
+                 background-image: none;
+                 
+                   background-size: cover;
+                   background-repeat: no-repeat;
+                   background-position: center center;
+                 
+                 top: 0px;
+                 
+                 ">
+
+                <div class="widget-row ">
+                </div>
+              </div>
+              <div class="grid-column     has-bg-color" style="width: 29.9636%;
+                 padding-left:4%;padding-right:4%;background-color: rgba(255, 255, 255, 0.11);
+                 background-image: none;
+                 
+                   background-size: cover;
+                   background-repeat: no-repeat;
+                   background-position: center center;
+                 
+                 top: 0px;
+                 
+                 ">
+
+                <div class="widget-row ">
+                  <div class="widget           anim-delayed-item widgetResponsive iconSection col20 anim-displayed"
+                    id="icon-widget-1667197721934" data-type="Icon" data-delay="" data-animation-duration="1100"
+                    data-animation-delay="0" data-animation="lazyAnimation-6"
+                    style="margin-top: 18.1818%; margin-left: 0px; animation-delay: 0ms; animation-duration: 1100ms;">
+                    <div class="type1 icon-widget">
+                      <div class="icon">
+                        <i class="fa color-primary" style=" font-size: 46px;">
+                          <img src="./ic_truck.png" width="60" height="60" style="margin-bottom: -20px;">
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive textWidget headingWidget col20" id="heading-widget-1667197721933" data-type="HeadingWidget"
+                    data-delay="" data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 8.26446%; margin-left: 0%;">
+                    <div class="text-widget-content">
+                      <h3 style="text-align: left;"><span style="font-weight: 700; color: rgb(62, 62, 62);">Safety Data
+                          Sheet</span></h3>
+                      <h3 style="text-align: left;"><span
+                          style="font-weight: 700; color: rgb(62, 62, 62);">Management&nbsp;</span></h3>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive textWidget col20" id="text-widget-1667197721932" data-type="TextWidget" data-delay=""
+                    data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 7.85124%; margin-left: 0%;">
+                    <div class="text-widget-content">
+                      <p><span style="color: rgb(62, 62, 62);">Upload unlimited&nbsp;MSDS or SDS sheets and
+                          individualize them to any location or employee.</span></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="grid-column  grid-column-no-widgets   " style="width: 4.91803%;
+                 padding-left:0px;padding-right:0px;
+                 background-image: none;
+                 
+                   background-size: cover;
+                   background-repeat: no-repeat;
+                   background-position: center center;
+                 
+                 top: 0px;
+                 
+                 ">
+
+                <div class="widget-row ">
+                </div>
+              </div>
+              <div class="grid-column     has-bg-color" style="width: 30.2368%;
+                 padding-left:4%;padding-right:4%;background-color: rgba(255, 255, 255, 0.11);
+                 background-image: none;
+                 
+                   background-size: cover;
+                   background-repeat: no-repeat;
+                   background-position: center center;
+                 
+                 top: 0px;
+                 
+                 ">
+
+                <div class="widget-row ">
+                  <div class="widget           anim-delayed-item widgetResponsive iconSection col20 anim-displayed"
+                    id="icon-widget-1667197721931" data-type="Icon" data-delay="" data-animation-duration="1100"
+                    data-animation-delay="0" data-animation="lazyAnimation-6"
+                    style="margin-top: 17.9592%; margin-left: 0px; animation-delay: 0ms; animation-duration: 1100ms;">
+                    <div class="type1 icon-widget">
+                      <div class="icon">
+                        <i class="fa color-primary" style=" font-size: 46px;">
+                          <img src="./ic_binoculars.png" width="60" height="60" style="margin-bottom: -20px;">
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive textWidget headingWidget col20" id="heading-widget-1667197721930" data-type="HeadingWidget"
+                    data-delay="" data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 8.26446%; margin-left: 0%;">
+                    <div class="text-widget-content">
+                      <h3 style="text-align: left;"><span
+                          style="font-weight: bold; color: rgb(62, 62, 62);">Inspection&nbsp;</span></h3>
+                      <h3 style="text-align: left;"><span style="font-weight: 700;">Management</span><span
+                          style="font-weight: bold; color: rgb(62, 62, 62);">&nbsp;</span></h3>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive textWidget col20" id="text-widget-1667197721929" data-type="TextWidget" data-delay=""
+                    data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 7.85124%; margin-left: 0%;">
+                    <div class="text-widget-content">
+                      <p><span style="color: rgb(62, 62, 62);">Create and perform inspections for each shift to track
+                          cleaning effectiveness.</span></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="container-widget-1667197721910" data-type="Container" class="grid-row
+       bg-color-secondary3 stretched-mobile stretched-tablet" data-delay="" style="padding-bottom:4.05924%;
+      padding-top: 3.45584%; padding-left: 0;
+      
+        background-position: center center;
+        background-repeat: repeat;
+        background-size: auto;
+      
+      background-image: none;">
+            <div class="grid-content ">
+              <div class="grid-column     has-bg-color" style="width: 29.9636%;
+                 padding-left:4%;padding-right:4%;background-color: rgba(255, 255, 255, 0.10967741935483871);
+                 background-image: none;
+                 
+                   background-size: cover;
+                   background-repeat: no-repeat;
+                   background-position: center center;
+                 
+                 top: 0px;
+                 
+                 ">
+
+                <div class="widget-row ">
+                  <div class="widget           anim-delayed-item widgetResponsive iconSection col20 anim-displayed"
+                    id="icon-widget-1667197721909" data-type="Icon" data-delay="" data-animation-duration="1100"
+                    data-animation-delay="0" data-animation="lazyAnimation-6"
+                    style="margin-top: 18.1818%; margin-left: 0px; animation-delay: 0ms; animation-duration: 1100ms;">
+                    <div class="type1 icon-widget">
+                      <div class="icon">
+                        <i class="fa color-primary" style=" font-size: 46px;">
+                          <img src="./ic_send.png" width="60" height="60" style="margin-bottom: -20px;">
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive textWidget headingWidget col20" id="heading-widget-1667197721908" data-type="HeadingWidget"
+                    data-delay="" data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 8.26446%; margin-left: 0%;">
+                    <div class="text-widget-content">
+                      <h3 style="text-align: left;"><span style="font-weight: bold; color: rgb(62, 62, 62);">Location
+                          Messaging</span></h3>
+                      <h3 style="text-align: left;"><span
+                          style="font-weight: bold; color: rgb(62, 62, 62);">Management</span></h3>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive textWidget col20" id="text-widget-1667197721907" data-type="TextWidget" data-delay=""
+                    data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 7.85124%; margin-left: 0%;">
+                    <div class="text-widget-content">
+                      <p><span style="color: rgb(62, 62, 62);">Add clients and cleaners to be able send messages to
+                          everyone working at a location.&nbsp;</span></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="grid-column  grid-column-no-widgets   " style="width: 4.91803%;
+                 padding-left:0px;padding-right:0px;
+                 background-image: none;
+                 
+                   background-size: cover;
+                   background-repeat: no-repeat;
+                   background-position: center center;
+                 
+                 top: 0px;
+                 
+                 ">
+
+                <div class="widget-row ">
+                </div>
+              </div>
+              <div class="grid-column     has-bg-color" style="width: 29.9636%;
+                 padding-left:4%;padding-right:4%;background-color: rgba(255, 255, 255, 0.11);
+                 background-image: none;
+                 
+                   background-size: cover;
+                   background-repeat: no-repeat;
+                   background-position: center center;
+                 
+                 top: 0px;
+                 
+                 ">
+
+                <div class="widget-row ">
+                  <div class="widget           anim-delayed-item widgetResponsive iconSection col20 anim-displayed"
+                    id="icon-widget-1667197721906" data-type="Icon" data-delay="" data-animation-duration="1100"
+                    data-animation-delay="0" data-animation="lazyAnimation-6"
+                    style="margin-top: 18.1818%; margin-left: 0px; animation-delay: 0ms; animation-duration: 1100ms;">
+                    <div class="type1 icon-widget">
+                      <div class="icon">
+                        <i class="fa color-primary" style=" font-size: 46px;">
+                          <img src="./ic_building.png" width="60" height="60" style="margin-bottom: -20px;">
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive textWidget headingWidget col20" id="heading-widget-1667197721905" data-type="HeadingWidget"
+                    data-delay="" data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 8.26446%; margin-left: 0%;">
+                    <div class="text-widget-content">
+                      <h3 style="text-align: left;"><span style="font-weight: 700; color: rgb(62, 62, 62);">Report
+                          System</span></h3>
+                      <h3 style="text-align: left;"><span
+                          style="font-weight: 700; color: rgb(62, 62, 62);">Management&nbsp;</span></h3>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive textWidget col20" id="text-widget-1667197721904" data-type="TextWidget" data-delay=""
+                    data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 7.85124%; margin-left: 0%;">
+                    <div class="text-widget-content">
+                      <p>See all supply reports, employees hours, live task summaries, inspections etc.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="grid-column  grid-column-no-widgets   " style="width: 4.91803%;
+                 padding-left:0px;padding-right:0px;
+                 background-image: none;
+                 
+                   background-size: cover;
+                   background-repeat: no-repeat;
+                   background-position: center center;
+                 
+                 top: 0px;
+                 
+                 ">
+
+                <div class="widget-row ">
+                </div>
+              </div>
+              <div class="grid-column     has-bg-color" style="width: 30.2368%;
+                 padding-left:4%;padding-right:3%;background-color: rgba(255, 255, 255, 0.11);
+                 background-image: none;
+                 
+                   background-size: cover;
+                   background-repeat: no-repeat;
+                   background-position: center center;
+                 
+                 top: 0px;
+                 
+                 ">
+
+                <div class="widget-row ">
+                  <div class="widget           anim-delayed-item widgetResponsive iconSection col20 anim-displayed"
+                    id="icon-widget-1667197721903" data-type="Icon" data-delay="" data-animation-duration="1100"
+                    data-animation-delay="0" data-animation="lazyAnimation-6"
+                    style="margin-top: 17.9592%; margin-left: 0px; animation-delay: 0ms; animation-duration: 1100ms;">
+                    <div class="type1 icon-widget">
+                      <div class="icon">
+                        <i class="fa color-primary" style=" font-size: 46px;">
+                          <img src="./ic_group.png" width="60" height="60" style="margin-bottom: -20px;">
+                        </i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive textWidget headingWidget col20" id="heading-widget-1667197721902" data-type="HeadingWidget"
+                    data-delay="" data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 8.26446%; margin-left: 0%;">
+                    <div class="text-widget-content">
+                      <h3 style="text-align: left;"><span
+                          style="font-family: Lato, arial; font-size: 28px; background-color: rgba(255, 255, 255, 0); font-weight: 700;">Account
+                          &amp; Employee</span></h3>
+                      <h3 style="text-align: left;"><span
+                          style="font-family: Lato, arial; font-size: 28px; background-color: rgba(255, 255, 255, 0); font-weight: 700;">Management</span><span
+                          style="font-family: Lato, arial; font-size: 28px; background-color: rgba(255, 255, 255, 0); font-weight: bold;">&nbsp;</span><br>
+                      </h3>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive textWidget col20" id="text-widget-1667197721901" data-type="TextWidget" data-delay=""
+                    data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 7.85124%; margin-left: 0%;">
+                    <div class="text-widget-content">
+                      <p><span style="color: rgb(62, 62, 62);">Manage all account and employee information. Manage what
+                          your cleaners and supervisors can see.</span></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="container-widget-1667200856111" data-type="Container" class="grid-row
+       stretched-mobile stretched-tablet" data-delay="" style="padding-bottom:6.6343%;
+      padding-top: 3.8835%; padding-left: 0;
+      background-color: transparent;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: auto;
+      
+      background-image: none;">
+            <div class="grid-content ">
+              <div class="grid-column    " style="width: 100%;
+                 padding-left:0px;padding-right:0px;
+                 background-image: none;
+                 
+                   background-size: cover;
+                   background-repeat: no-repeat;
+                   background-position: center center;
+                 
+                 top: 0px;
+                 
+                 ">
+
+                <div class="widget-row with-centered-content">
+                  <div class="widget 
+          widgetResponsive textWidget headingWidget col18" id="heading-widget-1667201067132" data-type="HeadingWidget"
+                    data-delay="" data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 0%; margin-left: 0%;">
+                    <div class="text-widget-content">
+                      <h2 style="text-align: center;">Organize Your Business and Build Your Systems, It's Time To Grow!
+                      </h2>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="container-widget-1667200856165" data-type="Container" class="grid-row
+       stretched-mobile stretched-tablet" data-delay="" style="padding-bottom:0.647249%;
+      padding-top: 0%; padding-left: 0;
+      background-color: transparent;
+        background-position: right bottom;
+        background-repeat: no-repeat;
+        background-size: auto;
+      
+      background-image: none;">
+            <div class="grid-content ">
+              <div class="grid-column    " style="width: 73%;
+                 padding-left:0%;padding-right:6%;background-color: transparent;
+                 background-image: none;
+                 
+                   background-size: cover;
+                   background-repeat: no-repeat;
+                   background-position: center center;
+                 
+                 top: 0px;
+                 
+                 ">
+
+                <div class="widget-row with-centered-content">
+                  <div class="widget 
+          widgetResponsive textWidget col20" id="text-widget-1667201067131" data-type="TextWidget" data-delay=""
+                    data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 7px; margin-left: 0%;">
+                    <div class="text-widget-content">
+                      <p style="text-align: center; "><span style="font-size: 20px;">Our team of developers created
+                          <span class="" style="color: rgb(5, 56, 12);">Clean Assistant</span> to improve the lives of
+                        </span></p>
+                      <p style="text-align: center; "><span style="font-size: 20px;">owners and operators.&nbsp;</span>
+                      </p>
+                      <p style="text-align: center; "><br></p>
+                      <p style="text-align: center; "><span style="font-size: 20px;">Conveniently watch how to use each
+                          feature with the recently added a tutorial section.</span></p>
+                      <p style="text-align: center; "><br></p>
+                      <p style="text-align: center; "><span style="font-size: 20px;">If you need additional help, you
+                          can easily reach our exceptional support team via email at</span></p>
+                      <p style="text-align: center; "><span style="font-size: 20px; color: rgb(0, 63, 8);"
+                          class="">info@cleanassistant.net</span></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="grid-column  grid-column-no-widgets  grid-column-with-bg  has-bg-image  " style="width: 27%;
+                 padding-left:2%;padding-right:0%;background-color: transparent;
+                 background-image: url(&#39;https://content.app-sources.com/s/07906809875805354/uploads/Images/Screenshot_2022-10-31_2.55.43_AM_macbookgold_front-7210324.png&#39;);
+                 
+                   background-size: cover;
+                   background-repeat: no-repeat;
+                   background-position: center center;
+                 
+                 top: 0px;
+                 
+                 ">
+
+                <div class="widget-row ">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="container-widget-1667200856114" data-type="Container" class="grid-row
+       stretched-mobile stretched-tablet" data-delay="" style="padding-bottom:4.04531%;
+      padding-top: 8.17152%; padding-left: 0;
+      background-color: transparent;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: auto;
+      
+      background-image: none;">
+            <div class="grid-content ">
+              <div class="grid-column    " style="width: 100%;
+                 padding-left:0px;padding-right:0px;
+                 background-image: none;
+                 
+                   background-size: cover;
+                   background-repeat: no-repeat;
+                   background-position: center center;
+                 
+                 top: 0px;
+                 
+                 ">
+
+                <div class="widget-row with-centered-content">
+                  <div class="widget 
+          widgetResponsive textWidget headingWidget col18" id="heading-widget-1667200856113" data-type="HeadingWidget"
+                    data-delay="" data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 0%; margin-left: 0%;">
+                    <div class="text-widget-content">
+                      <h2 style="text-align: center;">Everything You Need To Grow Your Business With The Right Cleaning
+                        and Janitorial Service Software</h2>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="container-widget-1667206856912" data-type="Container" class="grid-row
+       bg-color-secondary1 grid-row-fullwidth stretched-mobile stretched-tablet" data-delay="" style="padding-bottom:0%;
+      padding-top: 3.9644%; padding-left: 0;
+      
+        background-position: center center;
+        background-repeat: repeat;
+        background-size: auto;
+      
+      background-image: none;">
+            <div class="grid-content ">
+              <div class="grid-column  grid-column-no-widgets  grid-column-with-bg  has-bg-image  " style="width: 39%;
+                 padding-left:0px;padding-right:0px;background-color: transparent;
+                 background-image: url(&#39;https://content.app-sources.com/s/07906809875805354/uploads/Images/Screenshot_2022-04-11_2.59.49_PM-7253291.png&#39;);
+                 
+                   background-size: cover;
+                   background-repeat: no-repeat;
+                   background-position: center center;
+                 border-radius: 150px;
+                 top: 0px;
+                 
+                 ">
+
+                <div class="widget-row ">
+                </div>
+              </div>
+              <div class="grid-column    " style="width: 61%;
+                 padding-left:6%;padding-right:0%;
+                 background-image: none;
+                 
+                   background-size: cover;
+                   background-repeat: no-repeat;
+                   background-position: center center;
+                 
+                 top: 0px;
+                 
+                 ">
+
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive textWidget col20" id="text-widget-1667206856910" data-type="TextWidget" data-delay=""
+                    data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 0%; margin-left: 0px;">
+                    <div class="text-widget-content">
+                      <p style="text-align: left;"><span style="font-size: 18px; color: rgba(255, 255, 255, 0.698);"
+                          class="color-primary">E X T R A&nbsp; &nbsp;H E A D I N G</span></p>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive textWidget headingWidget col20" id="heading-widget-1667206856909" data-type="HeadingWidget"
+                    data-delay="" data-animation-duration="1100" data-animation-delay="0"
+                    data-animation="lazyAnimation-0" style="margin-top: 1.40693%; margin-left: 0px;">
+                    <div class="text-widget-content">
+                      <h2 style="text-align: left;"><span style="font-size: 32px; color: rgb(62, 62, 62);">What's Up
+                        </span></h2>
+                      <h2 style="text-align: left;"><span style="font-size: 32px; color: rgb(62, 62, 62);">Cleaning and
+                          Janitorial Operators</span></h2>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive col13" id="separator-widget-1667206856908" data-type="Separator" data-delay=""
+                    data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 2.54545%; margin-left: 0px;">
+                    <div>
+                      <div class="hr-title fullwidth-separator" style="text-align: left;">
+                        <span class="border-color-primary" <="" span="">
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive textWidget col16" id="text-widget-1667206856907" data-type="TextWidget" data-delay=""
+                    data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 3.5809%; margin-left: 0px;">
+                    <div class="text-widget-content">
+                      <p><span style="color: rgb(62, 62, 62);">If you’re tired of stressing while trying to grow your
+                          business, you came&nbsp;to the right place.</span></p>
+                      <p><span style="color: rgb(62, 62, 62);"><br></span></p>
+                      <p><span style="background-color: rgba(255, 255, 255, 0);"><span style="color: rgb(62, 62, 62);">I
+                            started working on Clean Assistant 5 years ago, because I saw the cleaning industry was one
+                            of the industries&nbsp;that wasn't innovating.&nbsp;&nbsp;</span></span><br></p>
+                      <p><span style="color: rgb(62, 62, 62);"><br></span></p>
+                      <p><span style="background-color: rgba(255, 255, 255, 0);"><span
+                            style="color: rgb(62, 62, 62);">Well… I took it upon myself! I can now say we have hundreds
+                            of users that use our software&nbsp;on a daily basis.&nbsp;</span></span><br></p>
+                      <p><span style="color: rgb(62, 62, 62);"><br></span></p>
+                      <p><span style="background-color: rgba(255, 255, 255, 0); color: rgb(62, 62, 62);">The last five
+                          years of my life have been dedicated to helping businesses and cleaners grow online</span></p>
+                      <p><span style="background-color: rgba(255, 255, 255, 0); color: rgb(62, 62, 62);"><br></span></p>
+                      <p><span style="background-color: rgba(255, 255, 255, 0); color: rgb(62, 62, 62);">AND I’m
+                          determined to provide the largest collection of online cleaning resources and
+                          tools.</span><br></p>
+                      <p><span style="color: rgb(62, 62, 62);"><br></span></p>
+                      <p><span style="background-color: rgba(255, 255, 255, 0); color: rgb(62, 62, 62);">Clean Assistant
+                          is a tool that will actually save you time, money, and watch your business live. It's like
+                          having a camera in your clients building.</span><br></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="container-widget-1667212214353" data-type="Container" class="grid-row
+       stretched-mobile stretched-tablet" data-delay="" style="padding-bottom:0%;
+      padding-top: 11.246%; padding-left: 0;
+      background-color: rgba(255, 255, 255, 1);
+        background-position: center center;
+        background-repeat: repeat;
+        background-size: auto;
+      
+      background-image: none;">
+            <div class="grid-content ">
+              <div class="grid-column    " style="width: 100%;
+                 padding-left:0px;padding-right:0px;
+                 background-image: none;
+                 
+                   background-size: cover;
+                   background-repeat: no-repeat;
+                   background-position: center center;
+                 
+                 top: 0px;
+                 
+                 ">
+
+                <div class="widget-row with-centered-content">
+                  <div class="widget 
+          widgetResponsive textWidget headingWidget col20" id="heading-widget-1667212214351" data-type="HeadingWidget"
+                    data-delay="" data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 0%; margin-left: 0px;">
+                    <div class="text-widget-content">
+                      <h2 style="text-align: center;"><span style="font-weight: bold;">What Our Clients Are
+                          Saying</span></h2>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row with-centered-content">
+                  <div class="widget 
+          widgetResponsive textWidget col14" id="text-widget-1667212214350" data-type="TextWidget" data-delay=""
+                    data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 1%; margin-left: 0px;">
+                    <div class="text-widget-content">
+                      <p style="text-align: center; ">We got some amazing clients</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="container-widget-1667212214349" data-type="Container" class="grid-row
+       stretched-mobile stretched-tablet" data-delay="" style="padding-bottom:6.91168%;
+      padding-top: 4.44323%; padding-left: 0;
+      background-color: rgba(255, 255, 255, 1);
+        background-position: center center;
+        background-repeat: repeat;
+        background-size: auto;
+      
+      background-image: none;">
+            <div class="grid-content ">
+              <div class="grid-column    " style="width: 25%;
+                 padding-left:2%;padding-right:2%;
+                 background-image: none;
+                 
+                   background-size: cover;
+                   background-repeat: no-repeat;
+                   background-position: center center;
+                 
+                 top: 0px;
+                 
+                 ">
+
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive textWidget col20" id="text-widget-1667212214347" data-type="TextWidget" data-delay=""
+                    data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 5.62771%; margin-left: 0%;">
+                    <div class="text-widget-content">
+                      <p style="text-align: left;"><span style="font-weight: bold; font-family: Arial;">RCC Cleaning
+                          Group</span></p>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive imageWidget col20" id="image-widget-1667212214344" data-type="ImageWidget" data-delay=""
+                    data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 0px; margin-left: 0px;">
+
+                    <div class="image-box  image-position-left" style="max-width: 231px;">
+                      <div class="widget-preserving-ratio-outer " style="padding-bottom: 15.584415584415584%">
+
+                        <div class="widget-preserving-ratio-inner"
+                          data-slide="https://content.app-sources.com/s/24444282803329/uploads/a-products/stars-7250417.png">
+                          <a class="lazyImage flex flex-col
+                image-fit">
+                            <img src="./Home_files/stars-7250417.png" class="flex-none" alt="" style="" loading="lazy">
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive textWidget col20" id="text-widget-1667212214346" data-type="TextWidget" data-delay=""
+                    data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 0.865801%; margin-left: 0px;">
+                    <div class="text-widget-content">
+                      <p>Just started with Clean Assistant and it's sooo simple and effective to organize your cleaning
+                        company, you have plenty of tools to manage your business"</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive col8" id="separator-widget-1667212214345" data-type="Separator" data-delay=""
+                    data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 0%; margin-left: 0px;">
+                    <div>
+                      <div class="hr-title fullwidth-separator" style="text-align: left;">
+                        <span style="border-color:rgba(230, 230, 230, 1);" <="" span="">
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="grid-column    " style="width: 25%;
+                 padding-left:2%;padding-right:2%;
+                 background-image: none;
+                 
+                   background-size: cover;
+                   background-repeat: no-repeat;
+                   background-position: center center;
+                 
+                 top: 0px;
+                 
+                 ">
+
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive textWidget col20" id="text-widget-1667212214342" data-type="TextWidget" data-delay=""
+                    data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 5.62771%; margin-left: 0%;">
+                    <div class="text-widget-content">
+                      <p style="text-align: left;"><span style="font-weight: bold; font-family: Arial;">Brothers
+                          Cleaning</span></p>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive imageWidget col20" id="image-widget-1667212214339" data-type="ImageWidget" data-delay=""
+                    data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 0px; margin-left: 0px;">
+
+                    <div class="image-box  image-position-left" style="max-width: 231px;">
+                      <div class="widget-preserving-ratio-outer " style="padding-bottom: 15.584415584415584%">
+
+                        <div class="widget-preserving-ratio-inner"
+                          data-slide="https://content.app-sources.com/s/24444282803329/uploads/a-products/stars-7250417.png">
+                          <a class="lazyImage flex flex-col
+                image-fit">
+                            <img src="./Home_files/stars-7250417.png" class="flex-none" alt="" style="" loading="lazy">
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive textWidget col20" id="text-widget-1667212214341" data-type="TextWidget" data-delay=""
+                    data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 0.865801%; margin-left: 0px;">
+                    <div class="text-widget-content">
+                      <p>Clean Assistant makes it so easy to use and it has given me the confidence to take vacations
+                        and not be stressed out. I'm able to see how my business is doing from my phone.</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive col8" id="separator-widget-1667212214340" data-type="Separator" data-delay=""
+                    data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 0%; margin-left: 0px;">
+                    <div>
+                      <div class="hr-title fullwidth-separator" style="text-align: left;">
+                        <span style="border-color:rgba(230, 230, 230, 1);" <="" span="">
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="grid-column    " style="width: 25%;
+                 padding-left:2%;padding-right:2%;
+                 background-image: none;
+                 
+                   background-size: cover;
+                   background-repeat: no-repeat;
+                   background-position: center center;
+                 
+                 top: 0px;
+                 
+                 ">
+
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive textWidget col20" id="text-widget-1667212214337" data-type="TextWidget" data-delay=""
+                    data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 5.62771%; margin-left: 0%;">
+                    <div class="text-widget-content">
+                      <p style="text-align: left;"><span style="font-weight: bold; font-family: Arial;">Rose
+                          Cleaning&nbsp;</span></p>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive imageWidget col20" id="image-widget-1667212214334" data-type="ImageWidget" data-delay=""
+                    data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 0px; margin-left: 0px;">
+
+                    <div class="image-box  image-position-left" style="max-width: 231px;">
+                      <div class="widget-preserving-ratio-outer " style="padding-bottom: 15.584415584415584%">
+
+                        <div class="widget-preserving-ratio-inner"
+                          data-slide="https://content.app-sources.com/s/24444282803329/uploads/a-products/stars-7250417.png">
+                          <a class="lazyImage flex flex-col
+                image-fit">
+                            <img src="./Home_files/stars-7250417.png" class="flex-none" alt="" style="" loading="lazy">
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive textWidget col20" id="text-widget-1667212214336" data-type="TextWidget" data-delay=""
+                    data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 0.865801%; margin-left: 0px;">
+                    <div class="text-widget-content">
+                      <p>Love Clean Assistant! This tool has made my commercial cleaning business take off. I can see if
+                        my employees are in the account and for long they were cleaning for.&nbsp;</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive col8" id="separator-widget-1667212214335" data-type="Separator" data-delay=""
+                    data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 0%; margin-left: 0px;">
+                    <div>
+                      <div class="hr-title fullwidth-separator" style="text-align: left;">
+                        <span style="border-color:rgba(230, 230, 230, 1);" <="" span="">
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="grid-column    " style="width: 25%;
+                 padding-left:2%;padding-right:2%;
+                 background-image: none;
+                 
+                   background-size: cover;
+                   background-repeat: no-repeat;
+                   background-position: center center;
+                 
+                 top: 0px;
+                 
+                 ">
+
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive textWidget col20" id="text-widget-1667212214332" data-type="TextWidget" data-delay=""
+                    data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 5.62771%; margin-left: 0%;">
+                    <div class="text-widget-content">
+                      <p style="text-align: left;"><span style="font-family: Arial; font-weight: 700;">AMS
+                          Janitorial</span></p>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive imageWidget col20" id="image-widget-1667212214329" data-type="ImageWidget" data-delay=""
+                    data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 0px; margin-left: 0px;">
+
+                    <div class="image-box  image-position-left" style="max-width: 231px;">
+                      <div class="widget-preserving-ratio-outer " style="padding-bottom: 12.987012987012985%">
+
+                        <div class="widget-preserving-ratio-inner"
+                          data-slide="https://content.app-sources.com/s/24444282803329/uploads/a-products/stars-7250417.png">
+                          <a class="lazyImage flex flex-col
+                image-fit">
+                            <img src="./Home_files/stars-7250417.png" class="flex-none" alt="" style="" loading="lazy">
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive textWidget col20" id="text-widget-1667212214331" data-type="TextWidget" data-delay=""
+                    data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 0.865801%; margin-left: 0px;">
+                    <div class="text-widget-content">
+                      <p><span
+                          style="font-family: &quot;Open Sans&quot;, arial; font-size: 16px; background-color: rgba(255, 255, 255, 0);">Clean
+                          Assistant has changed the way I ran my cleaning company. Not only did it smooth my day to day
+                          operation, but it also saved me an entire position.&nbsp;</span><br></p>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-row ">
+                  <div class="widget 
+          widgetResponsive col8" id="separator-widget-1667212214330" data-type="Separator" data-delay=""
+                    data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                    style="margin-top: 0%; margin-left: 0px;">
+                    <div>
+                      <div class="hr-title fullwidth-separator" style="text-align: left;">
+                        <span style="border-color:rgba(230, 230, 230, 1);" <="" span="">
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer class="page-footer ">
+        <div id="container-widget-1667208569624" data-type="Container" class="grid-row
+       stretched-mobile stretched-tablet" data-delay="" style="padding-bottom:3%;
+      padding-top: 3%; padding-left: 0;
+      background-color: transparent;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: auto;
+      
+      background-image: none;">
+          <div class="grid-content ">
+            <div class="grid-column    " style="width: 100%;
+                 padding-left:0;padding-right:0;
+                 background-image: none;
+                 
+                   background-size: cover;
+                   background-repeat: no-repeat;
+                   background-position: center center;
+                 
+                 top: 0px;
+                 
+                 ">
+
+              <div class="widget-row with-centered-content">
+                <div class="widget 
+          widgetResponsive textWidget headingWidget col20" id="heading-widget-1667208569638" data-type="HeadingWidget"
+                  data-delay="" data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                  style="margin-top: 0px; margin-left: 0px;">
+                  <div class="text-widget-content">
+                    <h2 style="text-align: center;">Stop Trying To Grow The Hard Way </h2>
+                    <h2 style="text-align: center;">It's Time To Get Your 24/7 Clean Assistant</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="widget-row ">
+                <div class="widget 
+          widgetResponsive textWidget headingWidget col20" id="heading-widget-1667208569634" data-type="HeadingWidget"
+                  data-delay="" data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                  style="margin-top: 0px; margin-left: 0px;">
+                  <div class="text-widget-content"></div>
+                </div>
+              </div>
+              <div class="widget-row with-centered-content">
+                <div class="widget 
+          widgetResponsive textWidget col20" id="text-widget-1667208569630" data-type="TextWidget" data-delay=""
+                  data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                  style="margin-top: 4%; margin-left: 0px;">
+                  <div class="text-widget-content">
+                    <p style="text-align: center; line-height: 1;"><span
+                        style="font-family: &quot;Open Sans&quot;, arial; font-size: 20px; background-color: rgba(255, 255, 255, 0); font-weight: bold;">Questions
+                        ?&nbsp;</span></p>
+                    <p style="text-align: center; line-height: 1;"><span
+                        style="font-family: &quot;Open Sans&quot;, arial; font-size: 16px; background-color: rgba(255, 255, 255, 0);"><br></span>
+                    </p>
+                    <p style="text-align: center; line-height: 1;"><span
+                        style="font-family: &quot;Open Sans&quot;, arial; font-size: 18px; background-color: rgba(255, 255, 255, 0); color: rgb(62, 62, 62);">Email
+                        us at</span><span
+                        style="font-family: &quot;Open Sans&quot;, arial; font-size: 16px; background-color: rgba(255, 255, 255, 0);"><br></span>
+                    </p>
+                    <p style="text-align: center; line-height: 1;"><br></p>
+                    <p style="text-align: center; line-height: 1;"><span
+                        style="font-size: 18px; color: rgb(62, 62, 62);">info@cleanassistant.net</span></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="container-widget-1593894889495" data-type="Container" class="grid-row
+       bg-color-secondary1 stretched-mobile stretched-tablet" data-delay="" style="padding-bottom:0.242718%;
+      padding-top: 2.02265%; padding-left: 0;
+      
+        background-position: center center;
+        background-repeat: repeat;
+        background-size: auto;
+      
+      background-image: none;">
+          <div class="grid-content ">
+            <div class="grid-column    " style="width: 100%;
+                 padding-left:0px;padding-right:0px;
+                 background-image: none;
+                 
+                   background-size: cover;
+                   background-repeat: no-repeat;
+                   background-position: center center;
+                 
+                 top: 0px;
+                 
+                 ">
+
+              <div class="widget-row with-centered-content">
+                <div class="widget 
+          widgetResponsive textWidget col20" id="text-widget-1593894889494" data-type="TextWidget" data-delay=""
+                  data-animation-duration="" data-animation-delay="" data-animation="lazyAnimation-"
+                  style="margin-top: 0%; margin-left: 0px;">
+                  <div class="text-widget-content">
+                    <p style="text-align: center;"><span
+                        style="font-family: Helvetica; font-size: 18px; color: rgb(62, 62, 62);">© 2022 Clean Assistant
+                        App. All rights Reserved.</span></p>
+                    <p style="text-align: center;"></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+  </div>
+
+  <div class="popup-wrapper at-center none" id="analyticsSettings">
+    <div class="popup-overlay" style="background: rgba(0, 0, 0, 0.7);">
+    </div>
+    <div class="wrapping-table">
+      <div class="popup-container cookies-popup">
+        <a class="close-btn"></a>
+        <span class="f-left col20 cookies-popup-title">Visitor Information Reporting</span>
+        <input id="analyticsTracking" class="css-label modify" type="checkbox" name="analyticsTracking">
+        <label for="analyticsTracking" class="css-label2 button-tooltip">Allow this website to collect visitor and
+          device info for statistical purposes.</label>
+        <div class="f-left col20"><button class="save-changes at-middle">Save Changes</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick View -->
+  <div class="quick-view-overlay">
+    <div class="quick-view-wrapper">
+      <a data-role="close" class="close-btn"></a>
+      <div class="quick-view-inner-wrapper custom-scroll">
+        <div class="product-photo-container custom-scroll" data-role="images" data-trigger=".product-main-photo"
+          data-manual-trigger="true"></div>
+        <div class="product-body-container custom-scroll">
+          <span class="quick-view-title"><a data-role="title" data-add="url"></a></span>
+          <div class="product-price">
+            <span class="current-price" data-role="currentPrice"></span>
+            <span class="old-price" data-role="oldPrice"></span>
+            <span data-role="subPeriod" style="font-size: 16px"></span>
+          </div>
+          <a class="view-details-btn" data-add="url">View Details</a>
+
+          <div class="product-variations" data-role="variations"></div>
+          <div class="addtocart-wrapper">
+            <div class="qty-wrapper">
+              <label>Quantity</label>
+              <div class="number-selector f-left flex align-center">
+                <a class="number-pad flex-none" data-role="-1">-</a>
+                <input class="quantity no-spin" name="orderQuantity" type="number" size="4" value="1" step="1"
+                  max="9999" min="1" aria-label="Quantity">
+                <a class="number-pad flex-none" data-role="1">+</a>
+              </div>
+            </div>
+            <div class="add-to-wrapper">
+              <a data-role="addToCart" data-process="cart" class="primaryColor-bg2 add-to-cart"></a>
+              <div class="sold-out-btn none" data-role="soldOut">Sold Out</div>
+            </div>
+          </div>
+          <div class="col20 f-left product-description none" data-role="simple-desc"></div>
+          <div class="product-description none"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    window.WebPlatform = window.WebPlatform || {};
+    WebPlatform.Phrases = (WebPlatform.merge || window.mergeUnique)({
+      'client.by': "by",
+      'client.on': "on",
+      'client.in': "in",
+      'label.of': "of",
+      'client.comment': "Comment",
+      'client.comments': "Comments",
+      'client.read_more': "Read More",
+      'client.load_more': "Load More",
+      'label.view': "View",
+      'label.years': "Years",
+      'label.months': "Months",
+      'label.days': "Days",
+      'label.minutes': "Minutes",
+      'label.hours': "Hours",
+      'label.seconds': "Seconds",
+      'card.number': "Card Number",
+      'card.cvc': "CVC",
+      'card.mm': "MM",
+      'card.yyyy': "YYYY",
+      'card.invalid_data': "Please verify your credit/debit card details and try again.",
+      'card.invalid_number': "The card number is not a valid credit or debit card number.",
+      'card.invalid_month': "Your card's expiration month is invalid.",
+      'card.invalid_year': "Your card's expiration year is invalid.",
+      'card.invalid_cvc': "Your card's security code is invalid.",
+      'card.unknown_error': "Please verify your payment details and try again.",
+      'label.shipping_address': "Shipping Address",
+      'label.billing_address': "Billing Address",
+      'label.january': "January",
+      'label.february': "February",
+      'label.march': "March",
+      'label.april': "April",
+      'label.may': "May",
+      'label.june': "June",
+      'label.july': "July",
+      'label.august': "August",
+      'label.september': "September",
+      'label.october': "October",
+      'label.november': "November",
+      'label.december': "December",
+      'label.jan': "Jan",
+      'label.feb': "Feb",
+      'label.mar': "Mar",
+      'label.apr': "Apr",
+      'label.may_short': "May",
+      'label.jun': "Jun",
+      'label.jul': "Jul",
+      'label.aug': "Aug",
+      'label.sep': "Sep",
+      'label.oct': "Oct",
+      'label.nov': "Nov",
+      'label.dec': "Dec",
+      'label.add_to_cart': "Add To Cart",
+      'label.buy_now': "Buy Now",
+      'label.update': "Update",
+      'label.change': "Change",
+      'label.month': "month",
+      'label.year': "year",
+      'label.months_lower': "months",
+      'label.years_lower': "years",
+      'label.week_lower': "week",
+      'label.weeks_lower': "weeks",
+      'label.saving': "Saving",
+      'label.checkout_now': "Checkout Now",
+      'label.view_cart': "View Cart",
+      'label.select_product_variant': "Select variant",
+      'err.select_product_variants': "Select variation for each item in your order",
+      'label.cod': "Pay on delivery",
+      'label.bank': "Bank Transfer",
+      'label.yes': "YES",
+      'label.no': "NO",
+      'label.enter_delivery_address': "Please enter your shipping details",
+      'label.no_delivery_offices': "No offices available",
+      'label.select_speedy_office': "Select Speedy office",
+      'label.no_shipping_services': "Please enter address",
+      'label.select_delivery_type': "Select delivery type",
+      'label.monday_min': "Mo",
+      'label.tuesday_min': "Tu",
+      'label.wednesday_min': "We",
+      'label.thursday_min': "Th",
+      'label.friday_min': "Fr",
+      'label.saturday_min': "Sa",
+      'label.sunday_min': "Su",
+      'label.monday_short': "Mon",
+      'label.tuesday_short': "Tue",
+      'label.wednesday_short': "Wed",
+      'label.thursday_short': "Thu",
+      'label.friday_short': "Fri",
+      'label.saturday_short': "Sat",
+      'label.sunday_short': "Sun",
+      'label.contact_booked_error': "You already booked a spot in this group event",
+      'label.already_booked_time_error': "The selected time is not available, please select a different time",
+      'label.booking_notice_error': "Booking is too close to the current time, please reload the page",
+      'label.delete_account_prompt': "Do you want to delete your account?",
+      'label.slots_left': "slots left",
+      'store.label.sale': "Sale",
+      'label.left_in_stock_multiple': "Only %x% left in stock!",
+      'label.left_in_stock_single': "Only 1 left in stock!",
+      'label.taxes': "Tax:",
+      'label.taxes_included': "Tax Included:",
+      'error.fill_required_fields': "Please fill all the required fields!"
+    }, WebPlatform.Phrases || {});
+  </script>
+  <script type="text/javascript">
+    WebPlatform.Store = WebPlatform.Store || {};
+
+    WebPlatform.merge(WebPlatform.Store, {
+      hideUnavailableVariations: false,
+      notEnoughQuantityMessage: "Not enough available quantity for some of the products!",
+      currencySymbol: "$",
+      currencySymbolAtLeft: true,
+      currency: 'USD',
+      priceWithTax: true,
+      country: 'US',
+      baseUrl: '/store',
+      productAddedToCart: 'Product was added to your cart',
+      fbPxId: ''
+    });
+
+
+    WebPlatform.clientData = null;
+    WebPlatform.visitorEmail = '';
+    WebPlatform.visitorName = '';
+  </script>
+
+  <script type="text/javascript" src="./Home_files/platform.client.min.js" data-cookieconsent="ignore"></script>
+  <script type="text/javascript" src="./Home_files/hit.js.download"></script>
+
+
+  <div id="client-ajax-overlay" class="">
+    <div id="client-ajax-message"></div>
+  </div>
+  <div id="tmdp-simple-lightbox-overlay"></div>
+  <div id="tmdp-simple-lightbox" data-role="close"> <a class="close" style="cursor: pointer" title="" data-role="close">
+      X </a> <a class="prev" style="cursor: pointer" title=""> &lt; </a> <a class="next" style="cursor: pointer"
+      title=""> &gt; </a>
+    <div id="tmdp-simple-lightbox-content" data-role="close"></div>
   </div>
 </body>
+
+</html>

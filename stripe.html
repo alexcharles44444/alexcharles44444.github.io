@@ -5,6 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Clean Assistant Subscriptions</title>
+    <link href="./Home_files/platform.client.min.css" type="text/css" rel="stylesheet">
     <link rel="stylesheet" href="stripe.css" />
 </head>
 
@@ -28,12 +29,52 @@
         <button type="button" id="signout" style="width: 150px; margin-top: -60px;">
             Sign out
         </button>
+        <section id="info-form" style="display: none;">
+
+            <div class="booking-step col20" id="contact_form">
+                <div class="widget-form">
+                    <div class="booking-name">
+                        <h2>Contact Info</h2>
+                    </div>
+                    <div class="form-field  required-field" data-type="text">
+                        <span class="title" style="color:#333333;">
+                            Name<span class="required">*</span></span>
+                        <span class="field-error" id="field_error_name">Required field!</span>
+                        <input id="form_name" style="color:#333333; background-color: #ffffff;" data-name="Name"
+                            aria-label="Name" type="text" data-type="text" name="field0" placeholder="">
+                    </div>
+                    <div class="form-field  required-field" data-type="text">
+                        <span class="title" style="color:#333333;">Email<span class="required">*</span></span>
+                        <span class="field-error" id="field_error_email">Required field!</span>
+                        <input id="form_email" style="color:#333333; background-color: #ffffff;" data-name="Email"
+                            aria-label="Email" type="text" data-type="email" name="field1" placeholder="">
+                    </div>
+                    <div class="form-field " data-type="text">
+                        <span class="title" style="color:#333333;">Phone<span class="required">*</span></span>
+                        <span class="field-error" id="field_error_phone">Required field!</span>
+                        <input id="form_phone" style="color:#333333; background-color: #ffffff;" data-name="Phone"
+                            aria-label="Phone" type="text" data-type="text" name="field2" placeholder="">
+                    </div>
+                    <div class="form-field " data-type="text">
+                        <span class="title" style="color:#333333;">Company Name<span class="required">*</span></span>
+                        <span class="field-error" id="field_error_company">Required field!</span>
+                        <input id="form_company" style="color:#333333; background-color: #ffffff;"
+                            data-name="Company Name" aria-label="Company Name" type="text" data-type="" name="field3"
+                            placeholder="">
+                    </div>
+
+                    <button style="padding: 20px; display: block; margin: auto; width: 100%;"
+                        onclick="saveInfoForm();">Continue &gt;</button>
+
+                </div>
+            </div>
+        </section>
         <section id="my-subscription">
             <h2>My subscription</h2>
             <p></p>
             <button style="width: 500px; height: 50px;" id="billing-portal-button">Access customer portal</button>
             <br>
-            <a style="text-decoration: none;" href="index.html" target="_blank"><button
+            <a style="text-decoration: none;" href="app.html" target="_blank"><button
                     style="width: 500px; height: 50px;">Go To Clean Assistant</button></a>
         </section>
         <div id="subscribe">

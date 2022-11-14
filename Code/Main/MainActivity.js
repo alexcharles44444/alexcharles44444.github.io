@@ -1,6 +1,6 @@
 class MainActivity extends AppCompatActivity {
-    static version = "1.49144";
-    static version_long = 149144;
+    static version = "1.49145";
+    static version_long = 149145;
 
     static w4_DB_Data = null;
     static w4_DB_Data_Secure = null;
@@ -243,7 +243,7 @@ class MainActivity extends AppCompatActivity {
                                     MainActivity.mainActivity.findViewById("Login_Email").setTextIsSelectable(true);
                                     MainActivity.signInState = MainActivity.SIGNINSTATE_CANCELLED;
                                     MainActivity.mainActivity.setLoginLoading(false);
-                                    MainActivity.dialogBox(MainActivity.mainActivity, "Error", "Cannot retrieve password, contact Clean Assistant Support at alexcharles44444@gmail.com");
+                                    MainActivity.dialogBox(MainActivity.mainActivity, "Error", "Cannot retrieve password, contact Clean Assistant Support at " + SUPPORT_EMAIL);
                                 }
                             });
                         }
@@ -424,12 +424,12 @@ class MainActivity extends AppCompatActivity {
                     this.setLoginLoading(false);
                     MainActivity.mainActivity.startActivityForResult(intent, MainActivity.requestCode_LOGOUT);
                 } else {
-                    MainActivity.dialogBox(this, "Trial Expired", "Your company's trial period for Clean Assistant is over. Please contact Clean Assistant support at:<br><br>alexcharles44444@gmail.com");
+                    MainActivity.dialogBox(this, "Trial Expired", "Your company's trial period for Clean Assistant is over. Please contact Clean Assistant support at:<br><br>" + SUPPORT_EMAIL);
                     MainActivity.signInState = MainActivity.SIGNINSTATE_CANCELLED;
                     this.setLoginLoading(false);
                 }
             } else {
-                MainActivity.dialogBox(this, "Access Disabled", "Your company's access to Clean Assistant has been disabled. Please contact Clean Assistant support at:<br><br>alexcharles44444@gmail.com");
+                MainActivity.dialogBox(this, "Access Disabled", "Your company's access to Clean Assistant has been disabled. Please contact Clean Assistant support at:<br><br>" + SUPPORT_EMAIL);
                 MainActivity.signInState = MainActivity.SIGNINSTATE_CANCELLED;
                 this.setLoginLoading(false);
             }

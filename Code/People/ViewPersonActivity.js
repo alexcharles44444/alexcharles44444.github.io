@@ -125,7 +125,7 @@ class ViewPersonActivity extends W4Activity {
                 });
             }
             else {
-                MainActivity.dialogBox(NewEditPersonActivity.this, "Error", "Cannot retrieve permissions, contact Clean Assistant Support at alexcharles44444@gmail.com");
+                MainActivity.dialogBox(NewEditPersonActivity.this, "Error", "Cannot retrieve permissions, contact Clean Assistant Support at " + SUPPORT_EMAIL);
             }
         });
     }

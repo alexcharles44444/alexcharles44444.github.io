@@ -212,7 +212,7 @@ class FireBaseListeners {
                     FireBaseListeners.viewTemplateListActivity.updateList();
                 }
 
-                if (ViewSupplyItemLocationsListActivity.viewSupplyItemLocationsListActivity != null) {
+                if (ViewSupplyItemLocationsListActivity.viewSupplyItemLocationsListActivity != null && !ViewSupplyItemLocationsListActivity.viewSupplyItemLocationsListActivity.autoentry) {
                     ViewSupplyItemLocationsListActivity.viewSupplyItemLocationsListActivity.updateList();
                 }
 
@@ -351,7 +351,7 @@ class FireBaseListeners {
                     HomeActivity.initializeHomeScreen();
                 }
 
-                if (ViewMessageLocationsActivity.viewMessageLocationsActivity != null) {
+                if (ViewMessageLocationsActivity.viewMessageLocationsActivity != null && !ViewMessageLocationsActivity.viewMessageLocationsActivity.autoentry) {
                     ViewMessageLocationsActivity.viewMessageLocationsActivity.updateList();
                 }
             }
