@@ -30,6 +30,17 @@ class NewEditShiftActivity extends W4Activity {
             var startMillis = a.getIntent().getLongExtra("startTime", (new W4DateTime()).getMillis());
             var endMillis = startMillis + TimeUnit.HOURS.toMillis(1);
             a.selectedShift = new Shift();
+
+            var color = Math.floor(Math.random() * 16777215);
+            for (var i = 0; i < 64; ++i) {
+                if (W4_Funcs.isColorAlreadyInUse(MainActivity.theCompany.getShiftList(), color)) {
+                    color = Math.floor(Math.random() * 16777215);
+                } else {
+                    break;
+                }
+            }
+            a.selectedShift.setColor(color);
+
             a.selectedShift.setStartTime(startMillis);
             a.selectedShift.setEndTime(endMillis);
             a.selectedShift.setRepeatEndDate(startMillis);
