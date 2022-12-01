@@ -1,6 +1,5 @@
 <?php
-
-header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Origin: '*'");
 require "./addinvoice.php";
 global $_conn;
 $user = $_REQUEST["user"];
