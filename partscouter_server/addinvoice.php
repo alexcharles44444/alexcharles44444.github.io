@@ -29,7 +29,7 @@
 
 // delete from DeF3dJk1QGbO10YeyvPniNSzafd2 
 // where sent="1";
-$_conn = new mysqli("invoice0.cq8acylc5ez7.us-west-2.rds.amazonaws.com", "root", "%bigDatabasePassword%", "invoice0", 3306);
+$_conn = new mysqli("invoice1.cq8acylc5ez7.us-west-2.rds.amazonaws.com", "root", "%bigDatabasePassword%", "invoice", 3306);
 
 $addsalestax_xml = '<?xml version="1.0" encoding="utf-8"?>
 <?qbxml version="16.0"?>
