@@ -3,6 +3,11 @@
 //         user varchar(255)
 //         );
 
+// create table users (
+//         user varchar(255),
+//         password varchar(255)
+//         );
+
 // create table FullNames (
 //         user varchar(255),
 //         name varchar(255)
