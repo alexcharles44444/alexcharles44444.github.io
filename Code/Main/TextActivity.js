@@ -11,10 +11,22 @@ class TextActivity extends W4Activity {
         var editText = a.findViewById("clearableEditText");
         if (hint != null) {
             editText.setHint(hint);
+            if (hint == "Password")
+                editText.ele.type = "password";
         }
         if (text != null) {
             editText.setText(text);
         }
+
+        editText.addEventListener("keyup", function (event) {
+            if (checkEnterPress(event)) {
+                _key_enter_just_pressed = true;
+                event.preventDefault();
+                a.findViewById("Accept").ele.click();
+            }
+        });
+
+        editText.ele.focus();
 
         a.findViewById("Cancel").addEventListener("click", function () {
             a.finish();

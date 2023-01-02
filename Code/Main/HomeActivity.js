@@ -552,16 +552,18 @@ class HomeActivity extends W4Activity {
         else {
             this.findViewById("OwnerToolsButton").setVisibility(View.GONE);
         }
-        //Admin tools are temporarily disabled for now
 
-        // if (MainActivity.loggedIn && MainActivity.w4_DB_Data.doAdminsIncludeUID(MainActivity.w4_DB_Data.getAdmins(), firebase.auth().currentUser.uid)) {
-        //     this.findViewById("AdminToolsButton").setVisibility(View.VISIBLE);
-        //     this.findViewById("AdminToolsButton").addEventListener("click", function () {
-        //         var intent = new Intent(HomeActivity.homeActivity, new AdminToolsActivity());
-        //         HomeActivity.homeActivity.startActivity(intent);
-        //     });
-        // } else {
-        //     HomeActivity.homeActivity.findViewById("AdminToolsButton").setVisibility(View.GONE);
-        // }
+        var reffAdmin = firebase.database().ref().child(MainActivity.DB_PATH_DATA_SECURE).child(MainActivity.DB_PATH_DATA_SECURE_ADMINS).child(MainActivity.currentUser.getW4id());
+        reffAdmin.get().then((dataSnapshot) => {
+            if (dataSnapshot.exists()) {
+                HomeActivity.homeActivity.findViewById("AdminToolsButton").setVisibility(View.VISIBLE);
+                HomeActivity.homeActivity.findViewById("AdminToolsButton").addEventListener("click", function () {
+                    var intent = new Intent(HomeActivity.homeActivity, new AdminToolsActivity());
+                    HomeActivity.homeActivity.startActivity(intent);
+                });
+            }
+        }).catch((error) => {
+            console.error(error);
+        });
     }
 }

@@ -100,6 +100,29 @@ firebase.auth().onAuthStateChanged((firebaseUser) => {
     document.querySelector("#my-subscription").style.display = "none";
     document.querySelector("#subscribe").style.display = "none";
     currentUser = firebaseUser.uid;
+
+    //If user field is empty
+    const reffUser = firebase.database().ref().child("users").child(currentUser);
+    reffUser.get().then((dataSnapshot) => {
+      if (!dataSnapshot.exists()) {
+        let ownerPermissions = [true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false];
+        var user = {
+          w4id: currentUser,
+          companyid: currentUser,
+          email: firebaseUser.email,
+          password: "",
+          readPermissions: ownerPermissions,
+          writePermissions: ownerPermissions,
+          employeeNum: 0
+        };
+        var ref = firebase.database().ref().child("users").child(currentUser);
+        ref.set(user);
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
+
+
     showInfoForm(firebaseUser);
   } else {
     // console.log("Logged out");

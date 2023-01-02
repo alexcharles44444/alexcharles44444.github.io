@@ -101,12 +101,12 @@ class NewEditPersonActivity extends W4Activity {
 
             if (MainActivity.currentUser.getCompanyid().equals(MainActivity.currentUser.getW4id())) {
                 var subscription_html = "<br><div class='loader' id='dialogbox_loader' style='display: none; margin: auto;'></div><button class='buttonHeight' style='display: block; font-size: 25px; width: 50%; margin: auto;' id='dialogbox_button' onclick='manageSubscription_PersonActivity();'>Manage Subscription</button>";
-                if (MainActivity.theCompany.getPersonList().length - 1 == MainActivity.firestoreCustomer.getMetadata().function_getMaxEmployeesInt()) {
-                    MainActivity.dialogBox(MainActivity.mainActivity, "Met Maximum Subscription", "Some employees will not be able to log in since you have met your maximum employee count of " + MainActivity.firestoreCustomer.getMetadata().function_getMaxEmployeesInt() + subscription_html);
-                } else if (MainActivity.theCompany.getPersonList().length - 1 > MainActivity.firestoreCustomer.getMetadata().function_getMaxEmployeesInt()) {
-                    var text = "Some employees will not be able to log in since you have exceeded your maximum employee count of " + MainActivity.firestoreCustomer.getMetadata().function_getMaxEmployeesInt() + ".\nOther employees that won't be able to log in:";
+                if (MainActivity.theCompany.getPersonList().length - 1 == MainActivity.firestoreCustomer.getProduct().getMetadata().function_getMaxEmployeesInt()) {
+                    MainActivity.dialogBox(MainActivity.mainActivity, "Met Maximum Subscription", "Some employees will not be able to log in since you have met your maximum employee count of " + MainActivity.firestoreCustomer.getProduct().getMetadata().function_getMaxEmployeesInt() + subscription_html);
+                } else if (MainActivity.theCompany.getPersonList().length - 1 > MainActivity.firestoreCustomer.getProduct().getMetadata().function_getMaxEmployeesInt()) {
+                    var text = "Some employees will not be able to log in since you have exceeded your maximum employee count of " + MainActivity.firestoreCustomer.getProduct().getMetadata().function_getMaxEmployeesInt() + ".\nOther employees that won't be able to log in:";
                     for (let person of MainActivity.theCompany.getPersonList()) {
-                        if (person.getEmployeeNum() > MainActivity.firestoreCustomer.getMetadata().function_getMaxEmployeesInt()) {
+                        if (person.getEmployeeNum() > MainActivity.firestoreCustomer.getProduct().getMetadata().function_getMaxEmployeesInt()) {
                             text += "<br>" + person.getFirst_name() + " " + person.getLast_name();
                         }
                     }
