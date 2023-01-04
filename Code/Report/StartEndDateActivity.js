@@ -64,7 +64,8 @@ class StartEndDateActivity extends W4Activity {
                     break;
             }
         });
-        a.personID_To_dateAndHoursMap = W4_Funcs.calculateHours(a.byPerson, a.startDay, a.endDay, a.selectedPerson, a.selectedLocation, this);
+        if (a.exportType == ReportTypesActivity.EXPORT_HOURS_COUNT || a.exportType == ReportTypesActivity.EXPORT_CLOCK_SUMMARY)
+            a.personID_To_dateAndHoursMap = W4_Funcs.calculateHours(a.byPerson, a.startDay, a.endDay, a.selectedPerson, a.selectedLocation, this);
     }
 
 
@@ -75,14 +76,16 @@ class StartEndDateActivity extends W4Activity {
                 var calendarDay = new W4DateTime(data.getIntExtra("dYear", 2000), data.getIntExtra("dMonth", 1), data.getIntExtra("dDay", 1), 0, 0, 0);
                 this.startDay = calendarDay;
                 this.setStartDateButton(W4_Funcs.calendarDayToDateTime(calendarDay, 0, 0, 0));
-                this.personID_To_dateAndHoursMap = W4_Funcs.calculateHours(this.byPerson, this.startDay, this.endDay, this.selectedPerson, this.selectedLocation, this);
+                if (a.exportType == ReportTypesActivity.EXPORT_HOURS_COUNT || a.exportType == ReportTypesActivity.EXPORT_CLOCK_SUMMARY)
+                    this.personID_To_dateAndHoursMap = W4_Funcs.calculateHours(this.byPerson, this.startDay, this.endDay, this.selectedPerson, this.selectedLocation, this);
             }
         } else if (requestCode == MainActivity.requestCodeSEEndCalendar) {
             if (resultCode == AppCompatActivity.RESULT_OK) {
                 var calendarDay = new W4DateTime(data.getIntExtra("dYear", 2000), data.getIntExtra("dMonth", 1), data.getIntExtra("dDay", 1), 0, 0, 0);
                 this.endDay = calendarDay;
                 this.setEndDateButton(W4_Funcs.calendarDayToDateTime(calendarDay, 0, 0, 0));
-                this.personID_To_dateAndHoursMap = W4_Funcs.calculateHours(this.byPerson, this.startDay, this.endDay, this.selectedPerson, this.selectedLocation, this);
+                if (a.exportType == ReportTypesActivity.EXPORT_HOURS_COUNT || a.exportType == ReportTypesActivity.EXPORT_CLOCK_SUMMARY)
+                    this.personID_To_dateAndHoursMap = W4_Funcs.calculateHours(this.byPerson, this.startDay, this.endDay, this.selectedPerson, this.selectedLocation, this);
             }
         }
     }

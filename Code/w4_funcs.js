@@ -308,6 +308,24 @@ class W4_Funcs {
         return assignedPeople;
     }
 
+    static getInspectorPeople(locationID) {
+        const assignedPeopleIDs = new Set();
+        const assignedPeople = [];
+        for (const occ of MainActivity.theCompany.getInspectionPlansCompletedList()) {
+          if (occ.getLocationID() === locationID) {
+            assignedPeopleIDs.add(occ.getPerson_inspector_id());
+          }
+        }
+        for (const personID of assignedPeopleIDs) {
+          const person = Asset.getAssetbyId(MainActivity.theCompany.getPersonList(), personID);
+          if (person !== null) {
+            assignedPeople.push(person);
+          }
+        }
+        return assignedPeople;
+      }
+      
+
     static getAssignedShiftsIDs(personID) {
         var shiftList = MainActivity.theCompany.getShiftList();
         var assignedShifts = [];
@@ -1532,6 +1550,16 @@ class W4_Funcs {
         }
         return inspectionList;
     }
+
+    static getInspectionPlanOccurrencesForPerson(personID, startMillis, endMillis) {
+        let inspectionList = [];
+        for (let plan of MainActivity.theCompany.getInspectionPlansCompletedList()) {
+          if (plan.getPerson_inspector_id().equals(personID) && plan.getDateTime() >= startMillis && plan.getDateTime() < endMillis) {
+            inspectionList.push(plan);
+          }
+        }
+        return inspectionList;
+      }
 
     static printTextClipboardText = "";
     static startEmail(message, subject, context, receiver) {

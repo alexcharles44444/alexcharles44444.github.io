@@ -361,71 +361,53 @@ class Exports {
 
     static exportInspectionSummary(byPerson, selectedPerson, selectedLocation, startDay, endDay, activity) {
         if (MainActivity.currentPerson.canExportReports()) {
-            var personList;
+            let personList = [];
             if (byPerson) {
                 personList = [];
                 personList.push(selectedPerson);
             } else {
-                personList = W4_Funcs.getAssignedPeople(selectedLocation.getW4id());
+                personList = W4_Funcs.getInspectorPeople(selectedLocation.getW4id());
             }
-            var html0 = "";
-            for (let person of personList) {
-                html0 += "<b>------" + person.getFirst_name() + " " + person.getLast_name() + "------</b><br>";
-                var day = W4_Funcs.calendarDayToDateTime(startDay, 0, 0, 0);
-                var end = W4_Funcs.calendarDayToDateTime(endDay, 0, 0, 0);
-                var shifts;
-                if (byPerson)
-                    shifts = W4_Funcs.getAssignedShifts(person.getW4id());
-                else
-                    shifts = W4_Funcs.getShiftsForLocation(selectedLocation.getW4id());
-                shifts.sort(Shift.compareTo);
-                while (day.getMillis() <= end.getMillis()) {
-                    var dateHeaderAdded = false;
-                    for (var i = 0; i < shifts.length; ++i) {
-                        var shift = shifts[i];
-                        var planList = W4_Funcs.getInspectionPlanOccurrencesForShift(shift.getW4id(), day.getMillis(), W4_Funcs.getNextDay(day).getMillis());
-                        planList.sort(InspectionPlanOccurence.compareTo);
-                        planList.reverse();
-                        if (planList.length > 0) {
-                            if (!dateHeaderAdded) {
-                                html0 += W4_Funcs.getNumbersDayText(day, " / ", false) + " " + Asset.intToDayOfWeek3Letter[day.getDayOfWeek()] + "<br>";
-                                dateHeaderAdded = true;
-                            }
-                            html0 += "&nbsp;&nbsp;--" + shift.method_getFullName() + "--<br>";
-                            for (let plan of planList) {
-                                var inspector = Asset.getAssetbyId(MainActivity.theCompany.getPersonList(), plan.getPerson_inspector_id());
-                                html0 += "&nbsp;&nbsp;Inspected " + W4_Funcs.getTimeText(new W4DateTime(plan.getDateTime()));
-                                if (inspector != null)
-                                    html0 += " by " + inspector.getFirst_name() + " " + inspector.getLast_name();
-                                html0 += "<br>";
-                                for (var i1 = 0; i1 < plan.getArea_names().length; ++i1) {
-                                    if (plan.getResult()[i1] == InspectionPlan.RESULT_BELOW || plan.getResult()[i1] == InspectionPlan.RESULT_EXCEEDS)
-                                        html0 += "&nbsp;&nbsp;&nbsp;&nbsp;" + plan.getArea_names()[i1] + " - <b>" + InspectionPlan.results_noemoji[plan.getResult()[i1]] + "</b><br>";
-                                    else
-                                        html0 += "&nbsp;&nbsp;&nbsp;&nbsp;" + plan.getArea_names()[i1] + " - " + InspectionPlan.results_noemoji[plan.getResult()[i1]] + "<br>";
-                                    if (plan.getResults().length > i1) {
-                                        for (var j = 0; j < plan.getResults()[i1].length; ++j) {
-                                            var result = plan.getResults()[i1][j];
-                                            var name = plan.getPoints()[i1][j];
 
-                                            if (result == InspectionPlan.RESULT_BELOW || result == InspectionPlan.RESULT_EXCEEDS)
-                                                html0 += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + name + " - <b>" + InspectionPlan.results_noemoji[result] + "</b><br>";
-                                            else
-                                                html0 += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + name + " - " + InspectionPlan.results_noemoji[result] + "<br>";
-                                        }
+            let html0 = "";
+            for (let person of personList) {
+                html0 += "<b>------Inspector: " + person.getFirst_name() + " " + person.getLast_name() + "------</b><br>";
+                let day = W4_Funcs.calendarDayToDateTime(startDay, 0, 0, 0);
+                let end = W4_Funcs.calendarDayToDateTime(endDay, 0, 0, 0);
+                while (day.getMillis() <= end.getMillis()) {
+                    let planList = W4_Funcs.getInspectionPlanOccurrencesForPerson(person.getW4id(), day.getMillis(), W4_Funcs.getNextDay(day).getMillis());
+                    planList.sort(InspectionPlanOccurence.compareTo);
+                    planList.reverse();
+                    if (planList.length > 0) {
+                        html0 += W4_Funcs.getNumbersDayText(day, " / ", false) + " " + Asset.intToDayOfWeek3Letter[day.getDayOfWeek()] + "<br>";
+                        for (let plan of planList) {
+                            html0 += "&nbsp;&nbsp;Inspected " + W4_Funcs.getTimeText(new W4DateTime(plan.getDateTime()));
+                            html0 += "<br>";
+                            for (let i1 = 0; i1 < plan.getArea_names().length; ++i1) {
+                                if (plan.getResult()[i1] == InspectionPlan.RESULT_BELOW || plan.getResult()[i1] == InspectionPlan.RESULT_EXCEEDS)
+                                    html0 += "&nbsp;&nbsp;&nbsp;&nbsp;" + plan.getArea_names()[i1] + " - <b>" + InspectionPlan.results_noemoji[plan.getResult()[i1]] + "</b><br>";
+                                else
+                                    html0 += "&nbsp;&nbsp;&nbsp;&nbsp;" + plan.getArea_names()[i1] + " - " + InspectionPlan.results_noemoji[plan.getResult()[i1]] + "<br>";
+                                if (plan.getResults().length > i1) {
+                                    for (let j = 0; j < plan.getResults()[i1].length; ++j) {
+                                        let result = plan.getResults()[i1][j];
+                                        let name = plan.getPoints()[i1][j];
+
+                                        if (result == InspectionPlan.RESULT_BELOW || result == InspectionPlan.RESULT_EXCEEDS)
+                                            html0 += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + name + " - <b>" + InspectionPlan.results_noemoji[result] + "</b><br>";
+                                        else
+                                            html0 += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + name + " - " + InspectionPlan.results_noemoji[result] + "<br>";
                                     }
                                 }
-                                html0 += "<br>";
                             }
+                            html0 += "<br>";
                         }
-                    } //END Location loop
-                    if (dateHeaderAdded)
-                        html0 += "<br>";
+                    }
                     day = W4_Funcs.getNextDay(day);
                 } //END Day loop
             } //END Person loop
 
-            var subject;
+            let subject;
             if (byPerson)
                 subject = selectedPerson.getFirst_name() + " " + selectedPerson.getLast_name() + " Inspection Summary " + W4_Funcs.getNumbersDayText(W4_Funcs.calendarDayToDateTime(startDay, 0, 0, 0), "/", false) + " to " + W4_Funcs.getNumbersDayText(W4_Funcs.calendarDayToDateTime(endDay, 0, 0, 0), "/", false);
             else
@@ -433,7 +415,7 @@ class Exports {
 
             W4_Funcs.startEmail(html0, subject, activity);
         } else {
-            MainActivity.w4Toast(activity, MainActivity.noReportsPermission, Toast.LENGTH_LONG);
+            MainActivity.w4Toast(activity, noReportsPermission, Toast.LENGTH_LONG);
         }
     }
 
