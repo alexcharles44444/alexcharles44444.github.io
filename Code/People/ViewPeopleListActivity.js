@@ -8,7 +8,7 @@ class ViewPeopleListActivity extends W4Activity {
     }
 
     onCreate() {
-super.onCreate();
+        super.onCreate();
         if (!MainActivity.loggedIn)
             return;
         this.getSupportActionBar().setTitle("View People");

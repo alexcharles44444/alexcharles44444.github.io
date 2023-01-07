@@ -63,11 +63,67 @@ class InspectionPlanOccurence extends InspectionPlan {
 
     static compareTo(a, o) {
         if (a.getDateTime() < o.getDateTime()) {
-            return -1;
-        }
-        if (a.getDateTime() > o.getDateTime()) {
             return 1;
         }
+        if (a.getDateTime() > o.getDateTime()) {
+            return -1;
+        }
         return 0;
+    }
+
+    static cleanImages() {
+        for (let image of DoInspectionPlanInProgressActivity.addedImages) {
+            MainActivity.firebaseStorage.ref().child(image).delete()
+                .then(() => {
+                }).catch((error) => {
+                    console.error(error);
+                });
+                MainActivity.w4Toast(MainActivity.mainActivity, "Discarded unsaved images", Toast.LENGTH_LONG);
+        }
+        DoInspectionPlanInProgressActivity.addedImages = [];
+    }
+
+    static loadThumbnails(id, plan, activity) {
+        if (id != "") {
+            var num = 0;
+            for (var i = 0; i < plan.getArea_names().length; ++i) {
+                InspectionPlanOccurence.loadThumbnail(num, plan.getArea_names()[i], id, activity);
+                ++num;
+                if (plan.getPoints().length > i)
+                    for (var j = 0; j < plan.getPoints()[i].length; ++j) {
+                        InspectionPlanOccurence.loadThumbnail(num, plan.getPoints()[i][j], id, activity);
+                        ++num;
+                    }
+            }
+        }
+    }
+
+    static loadThumbnail(num0, name, id, activity) {
+        var listRef = MainActivity.firebaseStorage.ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_ASSET_INSPECTION_PLANS_OCCURENCE).child(id).child(num0 + "|");
+        listRef.listAll()
+            .then(dir => {
+                if (activity) {
+                    var linearLayout = activity.findViewById("Inspection_Plan_Linear_Layout");
+                    if (linearLayout) {
+                        if (dir.items.length > 0) {
+                            var ref = listRef.child(dir.items[0].name);
+                            ref.getDownloadURL()
+                                .then((url) => {
+                                    linearLayout.getChildAt(num0).findViewById("ID_THUMBNAIL").setVisibility(View.VISIBLE);
+                                    linearLayout.getChildAt(num0).findViewById("ID_THUMBNAIL").setImageResource(url);
+                                    linearLayout.getChildAt(num0).findViewById("ID_THUMBNAIL").addEventListener("click", function () {
+                                        var intent = new Intent(activity, new ViewImagesActivity());
+                                        intent.putExtra("title", name);
+                                        intent.putExtra("directory", MainActivity.DB_PATH_ASSET_INSPECTION_PLANS_OCCURENCE + "/" + id + "/" + num0 + "|");
+                                        activity.startActivity(intent);
+                                    });
+                                });
+                        }
+                        else {
+                            linearLayout.getChildAt(num0).findViewById("ID_THUMBNAIL").setVisibility(View.GONE);
+                        }
+                    }
+                }
+            }).catch(error => console.error(error));
     }
 }

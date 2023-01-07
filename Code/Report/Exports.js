@@ -376,7 +376,6 @@ class Exports {
                 let end = W4_Funcs.calendarDayToDateTime(endDay, 0, 0, 0);
                 while (day.getMillis() <= end.getMillis()) {
                     let planList = W4_Funcs.getInspectionPlanOccurrencesForPerson(person.getW4id(), day.getMillis(), W4_Funcs.getNextDay(day).getMillis());
-                    planList.sort(InspectionPlanOccurence.compareTo);
                     planList.reverse();
                     if (planList.length > 0) {
                         html0 += W4_Funcs.getNumbersDayText(day, " / ", false) + " " + Asset.intToDayOfWeek3Letter[day.getDayOfWeek()] + "<br>";

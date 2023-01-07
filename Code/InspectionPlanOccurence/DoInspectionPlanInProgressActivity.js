@@ -1,10 +1,29 @@
 class DoInspectionPlanInProgressActivity extends W4Activity {
 
     static resultsIconSpinnerWidthDP = 90;
+    static index1 = -1;
+    static currentID = "";
+    static addedImages = [];
+    static shouldDestroyImages = true;
+    static doInspectionPlanInProgressActivity = null;
+
+    onDestroy() {
+        super.onDestroy();
+        DoInspectionPlanInProgressActivity.doInspectionPlanInProgressActivity = null;
+        DoInspectionPlanInProgressActivity.currentID = "";
+    }
+
+    onResume() {
+        super.onResume();
+        InspectionPlanOccurence.loadThumbnails(DoInspectionPlanInProgressActivity.currentID, this.copiedInspectionPlan, DoInspectionPlanInProgressActivity.doInspectionPlanInProgressActivity);
+    }
 
     onCreate() {
-        var a = this;
         super.onCreate();
+        var a = this;
+        DoInspectionPlanInProgressActivity.shouldDestroyImages = true;
+        DoInspectionPlanInProgressActivity.addedImages = [];
+        DoInspectionPlanInProgressActivity.doInspectionPlanInProgressActivity = a;
         if (!MainActivity.loggedIn)
             return;
         a.getSupportActionBar().setTitle("Perform Inspection");
@@ -31,6 +50,14 @@ class DoInspectionPlanInProgressActivity extends W4Activity {
             }
             a.findViewById("Delete_Do_Inspection_Plan_Occurence").setVisibility(View.VISIBLE);
         }
+
+        if (a.copiedInspectionPlan.getW4id().equals("")) {
+            var reffPlan = firebase.database().ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_ASSET_INSPECTION_PLANS_OCCURENCE).push();
+            DoInspectionPlanInProgressActivity.currentID = reffPlan.key;
+        } else {
+            DoInspectionPlanInProgressActivity.currentID = a.copiedInspectionPlan.getW4id();
+        }
+        InspectionPlanOccurence.loadThumbnails(DoInspectionPlanInProgressActivity.currentID, a.copiedInspectionPlan, DoInspectionPlanInProgressActivity.doInspectionPlanInProgressActivity);
 
         a.findViewById("Do_InspectionPlan_Occurence_Name").setText(a.copiedInspectionPlan.getName());
         var label = a.findViewById("Do_Inspection_Plan_Occurence_Shift_Label");
@@ -88,6 +115,24 @@ class DoInspectionPlanInProgressActivity extends W4Activity {
                 }
             }
         }
+        var button = a.findViewById("AddImage_Do_Inspection_Plan_Occurence");
+        button.addEventListener("click", function () {
+            var list = [];
+            for (var i = 0; i < a.copiedInspectionPlan.getArea_names().length; ++i) {
+                list.push(new W4String(list.length, a.copiedInspectionPlan.getArea_names()[i]));
+                if (a.copiedInspectionPlan.getPoints().length > i)
+                    for (var j = 0; j < a.copiedInspectionPlan.getPoints()[i].length; ++j) {
+                        list.push(new W4String(list.length, a.copiedInspectionPlan.getPoints()[i][j], "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + a.copiedInspectionPlan.getPoints()[i][j]));
+                    }
+            }
+
+            ViewStringListActivity.stringList = list;
+            var intent = new Intent(this, new ViewStringListActivity());
+            a.startActivityForResult(intent, MainActivity.requestCodeGetString);
+        });
+
+        a.findViewById("Button_Add_Image_Input").ele.addEventListener('change', a.readFile, false);
+
         var button = a.findViewById("Cancel_Do_InspectionPlanOccurence");
         button.addEventListener("click", function () {
             a.finish();
@@ -123,8 +168,8 @@ class DoInspectionPlanInProgressActivity extends W4Activity {
 
             a.copiedInspectionPlan.setCompleted(true);
             a.copiedInspectionPlan.setDateTime((new W4DateTime()).getMillis());
-            if (a.copiedInspectionPlan.getW4id() == ("")) {
-                var reffPlan = firebase.database().ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_ASSET_INSPECTION_PLANS_OCCURENCE).push();
+            if (a.copiedInspectionPlan.getW4id().equals("")) {
+                var reffPlan = firebase.database().ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_ASSET_INSPECTION_PLANS_OCCURENCE).child(DoInspectionPlanInProgressActivity.currentID);
                 a.copiedInspectionPlan.setW4id(reffPlan.key);
                 W4_Funcs.writeToDB(reffPlan, a.copiedInspectionPlan, "");
             } else {
@@ -132,6 +177,7 @@ class DoInspectionPlanInProgressActivity extends W4Activity {
                 W4_Funcs.writeToDB(reffPlan, a.copiedInspectionPlan, "");
             }
             MainActivity.w4Toast(this, "Successfully submitted Inspection Plan", Toast.LENGTH_LONG);
+            DoInspectionPlanInProgressActivity.shouldDestroyImages = false;
             a.finish();
         });
         var button = a.findViewById("Save_Do_InspectionPlanOccurence");
@@ -163,8 +209,8 @@ class DoInspectionPlanInProgressActivity extends W4Activity {
                 }
             }
 
-            if (a.copiedInspectionPlan.getW4id() == ("")) {
-                var reffPlan = firebase.database().ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_ASSET_INSPECTION_PLANS_OCCURENCE).push();
+            if (a.copiedInspectionPlan.getW4id().equals("")) {
+                var reffPlan = firebase.database().ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_ASSET_INSPECTION_PLANS_OCCURENCE).child(DoInspectionPlanInProgressActivity.currentID);
                 a.copiedInspectionPlan.setW4id(reffPlan.key);
                 W4_Funcs.writeToDB(reffPlan, a.copiedInspectionPlan, "");
                 MainActivity.w4Toast(this, "Successfully added new Inspection Plan in Progress", Toast.LENGTH_LONG);
@@ -173,6 +219,7 @@ class DoInspectionPlanInProgressActivity extends W4Activity {
                 W4_Funcs.writeToDB(reffPlan, a.copiedInspectionPlan, "");
                 MainActivity.w4Toast(this, "Successfully edited Inspection Plan in Progress", Toast.LENGTH_LONG);
             }
+            DoInspectionPlanInProgressActivity.shouldDestroyImages = false;
             a.finish();
         });
         var button = a.findViewById("Delete_Do_Inspection_Plan_Occurence");
@@ -183,18 +230,49 @@ class DoInspectionPlanInProgressActivity extends W4Activity {
         });
     }
 
-
     onActivityResult(requestCode, resultCode, data) {
         var a = this;
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == MainActivity.requestCodeInspectionPlanInProgressDelete) {
-            if (resultCode == AppCompatActivity.RESULT_OK) {
+        if (resultCode == AppCompatActivity.RESULT_OK) {
+            if (requestCode == MainActivity.requestCodeInspectionPlanInProgressDelete) {
+                W4_Funcs.deleteFBStorageFolder(MainActivity.DB_PATH_COMPANIES + "/" + MainActivity.currentUser.getCompanyid() + "/" + MainActivity.DB_PATH_ASSET_INSPECTION_PLANS_OCCURENCE + "/" + a.copiedInspectionPlan.getW4id());
+
                 var reffPlan = firebase.database().ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_ASSET_INSPECTION_PLANS_OCCURENCE).child(a.copiedInspectionPlan.getW4id());
                 W4_Funcs.deleteFromDB(reffPlan, "Deleted inspection plan in progress " + a.copiedInspectionPlan.getName() + "|Location:" + W4_DBLog.getLocationStringForLog(a.copiedInspectionPlan.getLocationID()) + "|Shift:" + W4_DBLog.getShiftStringForLog(a.copiedInspectionPlan.getShiftID()) + "|Person:" + W4_DBLog.getPersonStringForLog(a.copiedInspectionPlan.getPerson_inspector_id()) + "|");
+
                 MainActivity.w4Toast(this, "Successfully deleted Inspection Plan in Progress", Toast.LENGTH_LONG);
                 a.finish();
             }
+            else if (requestCode == MainActivity.requestCodeGetString) {
+                //Use position to get area/point that this image will be attached to
+                DoInspectionPlanInProgressActivity.index1 = data.getIntExtra("index1");
+                a.findViewById("Button_Add_Image_Input").ele.click();
+            }
         }
+    }
+
+    readFile(evt) {
+        for (let f of evt.target.files) {
+            if (f) {
+                MainActivity.w4Toast(this, "Uploading...", Toast.LENGTH_SHORT);
+
+                var reff = firebase.database().ref().push();
+                var Ref = MainActivity.firebaseStorage.ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_ASSET_INSPECTION_PLANS_OCCURENCE).child(DoInspectionPlanInProgressActivity.currentID).child(DoInspectionPlanInProgressActivity.index1 + "|").child(reff.key + "." + W4_Funcs.getExtension(f.name));
+                var path = MainActivity.DB_PATH_COMPANIES + "/" + MainActivity.currentUser.getCompanyid() + "/" + MainActivity.DB_PATH_ASSET_INSPECTION_PLANS_OCCURENCE + "/" + DoInspectionPlanInProgressActivity.currentID + "/" + DoInspectionPlanInProgressActivity.index1 + "|/" + reff.key + "." + W4_Funcs.getExtension(f.name);
+                DoInspectionPlanInProgressActivity.addedImages.push(path);
+                Ref.put(f).then((snapshot) => {
+                    if (DoInspectionPlanInProgressActivity.doInspectionPlanInProgressActivity != null)
+                        InspectionPlanOccurence.loadThumbnails(DoInspectionPlanInProgressActivity.currentID, DoInspectionPlanInProgressActivity.doInspectionPlanInProgressActivity.copiedInspectionPlan, DoInspectionPlanInProgressActivity.doInspectionPlanInProgressActivity);
+                    MainActivity.w4Toast(this, "Upload Successful!", Toast.LENGTH_SHORT);
+                }).catch((error) => {
+                    console.error("File upload failed:|" + error.code + "|" + error.message);
+                    MainActivity.dialogBox(this, "File upload failed!" + error.message);
+                });
+            } else {
+                alert("Failed to load file");
+            }
+        }
+        document.getElementById("Button_Add_Image_Input").value = "";
     }
 
     static getDo_OnlyAreaView(context, activity, areaText, result) {

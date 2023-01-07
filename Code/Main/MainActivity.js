@@ -1,6 +1,6 @@
 class MainActivity extends AppCompatActivity {
-    static version = "1.49149";
-    static version_long = 149149;
+    static version = "1.49150";
+    static version_long = 149150;
 
     static w4_DB_Data = null;
     static w4_DB_Data_Secure = null;
@@ -91,6 +91,8 @@ class MainActivity extends AppCompatActivity {
     static requestCodeReturnTemplateAsset = 42;
     static requestCodeEmail = 43;
     static requestCodePassword = 44;
+    static requestCodeGetString = 45;
+    static requestCodeDelete = 46;
 
 
     static NOTIFICATION_CHANNEL_ID = "Cleanbook_44444";

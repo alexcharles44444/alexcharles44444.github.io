@@ -113,10 +113,10 @@ class HomeActivity extends W4Activity {
         }
 
         this.findViewById("sidebar_logout_button", true).ele.onclick = function () {
-            HomeActivity.logOut();
             var intent = new Intent(AppCompatActivity.getApplicationContext(), null);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             activity.startActivity(intent);
+            HomeActivity.logOut();
         };
 
         return true;

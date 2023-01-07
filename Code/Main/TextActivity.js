@@ -11,7 +11,7 @@ class TextActivity extends W4Activity {
         var editText = a.findViewById("clearableEditText");
         if (hint != null) {
             editText.setHint(hint);
-            if (hint == "Password")
+            if (hint.equals("Password"))
                 editText.ele.type = "password";
         }
         if (text != null) {

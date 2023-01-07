@@ -312,19 +312,19 @@ class W4_Funcs {
         const assignedPeopleIDs = new Set();
         const assignedPeople = [];
         for (const occ of MainActivity.theCompany.getInspectionPlansCompletedList()) {
-          if (occ.getLocationID() === locationID) {
-            assignedPeopleIDs.add(occ.getPerson_inspector_id());
-          }
+            if (occ.getLocationID() === locationID) {
+                assignedPeopleIDs.add(occ.getPerson_inspector_id());
+            }
         }
         for (const personID of assignedPeopleIDs) {
-          const person = Asset.getAssetbyId(MainActivity.theCompany.getPersonList(), personID);
-          if (person !== null) {
-            assignedPeople.push(person);
-          }
+            const person = Asset.getAssetbyId(MainActivity.theCompany.getPersonList(), personID);
+            if (person !== null) {
+                assignedPeople.push(person);
+            }
         }
         return assignedPeople;
-      }
-      
+    }
+
 
     static getAssignedShiftsIDs(personID) {
         var shiftList = MainActivity.theCompany.getShiftList();
@@ -1554,12 +1554,12 @@ class W4_Funcs {
     static getInspectionPlanOccurrencesForPerson(personID, startMillis, endMillis) {
         let inspectionList = [];
         for (let plan of MainActivity.theCompany.getInspectionPlansCompletedList()) {
-          if (plan.getPerson_inspector_id().equals(personID) && plan.getDateTime() >= startMillis && plan.getDateTime() < endMillis) {
-            inspectionList.push(plan);
-          }
+            if (plan.getPerson_inspector_id().equals(personID) && plan.getDateTime() >= startMillis && plan.getDateTime() < endMillis) {
+                inspectionList.push(plan);
+            }
         }
         return inspectionList;
-      }
+    }
 
     static printTextClipboardText = "";
     static startEmail(message, subject, context, receiver) {
@@ -2603,4 +2603,20 @@ class W4_Funcs {
         }
         return size;
     }
+
+    static deleteFBStorageFolder(path) {
+        const ref = MainActivity.firebaseStorage.ref(path);
+        ref.listAll()
+          .then(dir => {
+            dir.items.forEach(fileRef => W4_Funcs.deleteFBStorageFile(ref.fullPath, fileRef.name));
+            dir.prefixes.forEach(folderRef => W4_Funcs.deleteFBStorageFolder(folderRef.fullPath))
+          })
+          .catch(error => console.error(error));
+      }
+      
+      static deleteFBStorageFile(pathToFile, fileName) {
+        const ref = MainActivity.firebaseStorage.ref(pathToFile);
+        const childRef = ref.child(fileName);
+        childRef.delete()
+      }
 }

@@ -37,7 +37,7 @@ class ViewNewEditSDSActivity extends W4Activity {
             title = supplyItem.getName();
         a.getSupportActionBar().setTitle(title);
         a.setContentView(R.layout.activity_view_new_edit_s_d_s);
-        FireBaseListeners.viewNewEditSDSActivity = this;
+        FireBaseListeners.viewNewEditSDSActivity = a;
         a.W4FSOs = [];
         var button = a.findViewById("AddSDSButton");
         if (MainActivity.currentUser.getWritePermissions()[Asset.PERMISSION_ALL_SDS] || MainActivity.currentUser.getWritePermissions()[Asset.PERMISSION_ASSIGNED_SDS]) {
@@ -70,7 +70,7 @@ class ViewNewEditSDSActivity extends W4Activity {
             var button1 = a.findViewById("Delete_SDS");
             button1.addEventListener("click", function () {
                 if (ViewNewEditSDSActivity.currentURI < a.W4FSOs.length) {
-                    var intent = new Intent(this, new ConfirmActivity());
+                    var intent = new Intent(a, new ConfirmActivity());
                     intent.putExtra("description", "Are you sure you want to delete this SDS Sheet?");
                     a.startActivityForResult(intent, MainActivity.requestCodeSDSDelete);
                 }
@@ -91,7 +91,7 @@ class ViewNewEditSDSActivity extends W4Activity {
         ViewNewEditSDSActivity.imageview = a.findViewById("ImageView");
         // ViewNewEditSDSActivity.imageViewPdf = a.findViewById("ImageView");
         // var resetMatrix = ViewNewEditSDSActivity.imageViewPdf.getImageMatrix();
-        // ViewNewEditSDSActivity.imageViewPdf.setOnTouchListener(this);
+        // ViewNewEditSDSActivity.imageViewPdf.setOnTouchListener(a);
         //        ViewNewEditSDSActivity.webview.getSettings().setJavaScriptEnabled(true);
         // ViewNewEditSDSActivity.webview.getSettings().setLoadWithOverviewMode(true);
         // ViewNewEditSDSActivity.webview.getSettings().setUseWideViewPort(true);
@@ -104,33 +104,32 @@ class ViewNewEditSDSActivity extends W4Activity {
 
     w4OnCreate() {
         var a = this;
-        this.findViewById("MissingSDS").setVisibility(View.GONE);
-        this.findViewById("Uploading_Progress").setVisibility(View.GONE);
-        this.findViewById("Deleting_Progress").setVisibility(View.GONE);
-        this.findViewById("Downloading_Progress").setVisibility(View.VISIBLE);
+        a.findViewById("MissingSDS").setVisibility(View.GONE);
+        a.findViewById("Uploading_Progress").setVisibility(View.GONE);
+        a.findViewById("Deleting_Progress").setVisibility(View.GONE);
+        a.findViewById("Downloading_Progress").setVisibility(View.VISIBLE);
         ViewNewEditSDSActivity.fileNav.setVisibility(View.GONE);
         ViewNewEditSDSActivity.webview.setVisibility(View.GONE);
-        // ViewNewEditSDSActivity.imageViewPdf.setVisibility(View.GONE);
-        this.findViewById("Button_Add_PDF").setVisibility(View.GONE);
-        this.findViewById("Button_Add_PDF").setVisibility(View.GONE);
-        this.findViewById("AddSDSButton").setVisibility(View.GONE);
-        this.findViewById("Delete_SDS").setVisibility(View.GONE);
-        this.W4FSOs = [];
+        a.findViewById("Button_Add_PDF").setVisibility(View.GONE);
+        a.findViewById("AddSDSButton").setVisibility(View.GONE);
+        a.findViewById("Delete_SDS").setVisibility(View.GONE);
+        ViewNewEditSDSActivity.imageview.setVisibility(View.GONE);
+        a.W4FSOs = [];
         ViewNewEditSDSActivity.currentURI = -1;
-        var listRef = MainActivity.firebaseStorage.ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_ASSET_SDS).child(this.selectedSDSSupplyItemID);
+        var listRef = MainActivity.firebaseStorage.ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_ASSET_SDS).child(a.selectedSDSSupplyItemID);
         listRef.listAll()
             .then((res) => {
                 if (res.items.length == 0)
                     a.showUIAfterDownloadFinished();
 
                 res.items.forEach((item) => {
-                    this.W4FSOs.push(new W4FirebaseStorageObject());
+                    a.W4FSOs.push(new W4FirebaseStorageObject());
                 });
                 var i = 0;
                 res.items.forEach((item) => {
                     // All the items under listRef.
                     var name = item.name;
-                    var obj = this.W4FSOs[i];
+                    var obj = a.W4FSOs[i];
                     ++i;
                     var ref = listRef.child(name);
                     ref.getDownloadURL()
@@ -155,23 +154,25 @@ class ViewNewEditSDSActivity extends W4Activity {
     }
 
     areAllFilesDownloaded() {
-        for (let obj of this.W4FSOs) {
+        var a = this;
+        for (let obj of a.W4FSOs) {
             if (!obj.downloaded)
                 return false;
         }
-        this.showUIAfterDownloadFinished();
+        a.showUIAfterDownloadFinished();
         return true;
     }
 
     showUIAfterDownloadFinished() {
+        var a = this;
         if (FireBaseListeners.viewNewEditSDSActivity != null) {
             FireBaseListeners.viewNewEditSDSActivity.findViewById("Downloading_Progress").setVisibility(View.GONE);
-            if (this.W4FSOs.length == 0)
+            if (a.W4FSOs.length == 0)
                 FireBaseListeners.viewNewEditSDSActivity.findViewById("MissingSDS").setVisibility(View.VISIBLE);
 
             if (MainActivity.currentUser.getWritePermissions()[Asset.PERMISSION_ALL_SDS] || MainActivity.currentUser.getWritePermissions()[Asset.PERMISSION_ASSIGNED_SDS]) {
                 FireBaseListeners.viewNewEditSDSActivity.findViewById("AddSDSButton").setVisibility(View.VISIBLE);
-                if (this.W4FSOs.length > 0)
+                if (a.W4FSOs.length > 0)
                     FireBaseListeners.viewNewEditSDSActivity.findViewById("Delete_SDS").setVisibility(View.VISIBLE);
             } else {
                 FireBaseListeners.viewNewEditSDSActivity.findViewById("AddSDSButton").setVisibility(View.GONE);
@@ -181,7 +182,8 @@ class ViewNewEditSDSActivity extends W4Activity {
     }
 
     traverseNavigation(i2) {
-        if (this.areAllFilesDownloaded()) {
+        var a = this;
+        if (a.areAllFilesDownloaded()) {
             var i3 = ViewNewEditSDSActivity.currentURI;
             if (i3 < 0)
                 i3 = 0;
@@ -190,10 +192,10 @@ class ViewNewEditSDSActivity extends W4Activity {
                 i = 0;
             var overrideLeftButton = false;
             var overrideRightButton = false;
-            if (i < this.W4FSOs.length) {
+            if (i < a.W4FSOs.length) {
                 ViewNewEditSDSActivity.webview.setVisibility(View.VISIBLE);
-                this.set_iFrame(this.W4FSOs[i]);
-                if (this.W4FSOs.length > 1) {
+                a.set_iFrame(a.W4FSOs[i]);
+                if (a.W4FSOs.length > 1) {
                     ViewNewEditSDSActivity.fileNav.setVisibility(View.VISIBLE);
                     if (i == 0 && !overrideLeftButton) {
                         ViewNewEditSDSActivity.button_file_left.setVisibility(View.INVISIBLE);
@@ -203,7 +205,7 @@ class ViewNewEditSDSActivity extends W4Activity {
                         ViewNewEditSDSActivity.button_file_left.setVisibility(View.VISIBLE);
                         ViewNewEditSDSActivity.button_file_left.ele.disabled = false;
                     }
-                    if (i == this.W4FSOs.length - 1 && !overrideRightButton) {
+                    if (i == a.W4FSOs.length - 1 && !overrideRightButton) {
                         ViewNewEditSDSActivity.button_file_right.setVisibility(View.INVISIBLE);
                         ViewNewEditSDSActivity.button_file_right.ele.disabled = true;
                     }
@@ -224,19 +226,19 @@ class ViewNewEditSDSActivity extends W4Activity {
         //        console.log("On Activity result|" + requestCode + "|" + resultCode + "|" + data.getDataString());
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ViewNewEditSDSActivity.FILETYPE && resultCode == AppCompatActivity.RESULT_OK && data != null && data.getData() != null) {
-            this.fileUri = data.getData();
-            // console.log("Chose pdf: " + this.fileUri.getPath());
+            a.fileUri = data.getData();
+            // console.log("Chose pdf: " + a.fileUri.getPath());
             a.Fileuploader();
         } else if (requestCode == MainActivity.requestCodeSDSDelete && resultCode == AppCompatActivity.RESULT_OK) {
-            if (ViewNewEditSDSActivity.currentURI < this.W4FSOs.length) {
-                this.findViewById("Deleting_Progress").setVisibility(View.VISIBLE);
-                MainActivity.w4Toast(this, "Deleting SDS Sheet...", Toast.LENGTH_SHORT);
-                MainActivity.firebaseStorage.ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_ASSET_SDS).child(this.selectedSDSSupplyItemID).child(this.W4FSOs[ViewNewEditSDSActivity.currentURI].name).delete()
+            if (ViewNewEditSDSActivity.currentURI < a.W4FSOs.length) {
+                a.findViewById("Deleting_Progress").setVisibility(View.VISIBLE);
+                MainActivity.w4Toast(a, "Deleting SDS Sheet...", Toast.LENGTH_SHORT);
+                MainActivity.firebaseStorage.ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_ASSET_SDS).child(a.selectedSDSSupplyItemID).child(a.W4FSOs[ViewNewEditSDSActivity.currentURI].name).delete()
                     .then(() => {
-                        MainActivity.w4Toast(this, "Deletion successful!", Toast.LENGTH_SHORT);
+                        MainActivity.w4Toast(a, "Deletion successful!", Toast.LENGTH_SHORT);
                         a.w4OnCreate();
                     }).catch((error) => {
-                        MainActivity.w4Toast(this, "Deletion failure!", Toast.LENGTH_SHORT);
+                        MainActivity.w4Toast(a, "Deletion failure!", Toast.LENGTH_SHORT);
                     });
             }
         }
@@ -246,26 +248,27 @@ class ViewNewEditSDSActivity extends W4Activity {
     static filesUploading = 0;
     Fileuploader() {
         var a = this;
-        this.findViewById("Uploading_Progress").setVisibility(View.VISIBLE);
-        MainActivity.w4Toast(this, "Uploading...", Toast.LENGTH_SHORT);
-        var reff = firebase.database().ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_ASSET_SUPPLY_ITEMS).child(this.selectedSDSSupplyItemID).push();
-        // console.log("Beginning file upload " + W4_Funcs.getExtension(this.fileUri.name));
-        var Ref = MainActivity.firebaseStorage.ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_ASSET_SDS).child(this.selectedSDSSupplyItemID).child(reff.key + "." + W4_Funcs.getExtension(this.fileUri.name));
-        Ref.put(this.fileUri).then((snapshot) => {
+        a.findViewById("Uploading_Progress").setVisibility(View.VISIBLE);
+        MainActivity.w4Toast(a, "Uploading...", Toast.LENGTH_SHORT);
+        var reff = firebase.database().ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_ASSET_SUPPLY_ITEMS).child(a.selectedSDSSupplyItemID).push();
+        // console.log("Beginning file upload " + W4_Funcs.getExtension(a.fileUri.name));
+        var Ref = MainActivity.firebaseStorage.ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_ASSET_SDS).child(a.selectedSDSSupplyItemID).child(reff.key + "." + W4_Funcs.getExtension(a.fileUri.name));
+        Ref.put(a.fileUri).then((snapshot) => {
             ++ViewNewEditSDSActivity.filesUploaded;
             if (ViewNewEditSDSActivity.filesUploaded == ViewNewEditSDSActivity.filesUploading && MainActivity.loggedIn) {
                 // console.log("File(s) uploaded successfully");
-                MainActivity.w4Toast(this, "Upload Successful!", Toast.LENGTH_SHORT);
+                MainActivity.w4Toast(a, "Upload Successful!", Toast.LENGTH_SHORT);
                 a.w4OnCreate();
             }
         }).catch((error) => {
             console.error("File upload failed:|" + error.code + "|" + error.message);
-            MainActivity.dialogBox(this, "File upload failed!" + error.message);
-            this.findViewById("Uploading_Progress").setVisibility(View.GONE);
+            MainActivity.dialogBox(a, "File upload failed!" + error.message);
+            a.findViewById("Uploading_Progress").setVisibility(View.GONE);
         });
     }
 
     readFile(evt) {
+        
         ViewNewEditSDSActivity.filesUploading = evt.target.files.length;
         ViewNewEditSDSActivity.filesUploaded = 0;
         for (let f of evt.target.files) {
@@ -279,6 +282,8 @@ class ViewNewEditSDSActivity extends W4Activity {
         }
         FireBaseListeners.viewNewEditSDSActivity.findViewById("Button_Add_PDF").setVisibility(View.GONE);
         FireBaseListeners.viewNewEditSDSActivity.findViewById("Button_Add_Image").setVisibility(View.GONE);
+        FireBaseListeners.viewNewEditSDSActivity.findViewById("Button_Add_PDF_Input").ele.value = "";
+        FireBaseListeners.viewNewEditSDSActivity.findViewById("Button_Add_Image_Input").ele.value = "";
     }
 
     set_iFrame(obj) {

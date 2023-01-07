@@ -199,6 +199,13 @@
     <div id="activities" style="margin-left: 260px; margin-top: 60px;">
     </div>
     <script>
+      window.onbeforeunload = function (e) {
+        console.log("Refreshed");
+        if (MainActivity.loggedIn) {
+          InspectionPlanOccurence.cleanImages();
+        }
+      };
+
       const SUPPORT_EMAIL = "info@cleanassistant.net";
       var userAgent = navigator.userAgent.toLowerCase();
       var Android = userAgent.indexOf("android") > -1;
@@ -290,6 +297,7 @@
     <script type="text/javascript" src="Code/InspectionPlan/ViewInspectionPlansListActivity.js"></script>
     <script type="text/javascript" src="Code/InspectionPlanOccurence/DoInspectionPlanInProgressActivity.js"></script>
     <script type="text/javascript" src="Code/InspectionPlanOccurence/InspectionPlanOccurence.js"></script>
+    <script type="text/javascript" src="Code/InspectionPlanOccurence/ViewImagesActivity.js"></script>
     <script type="text/javascript" src="Code/InspectionPlanOccurence/ViewInspectionPlanCompleteActivity.js"></script>
     <script type="text/javascript" src="Code/JavaClasses/InputType.js"></script>
     <script type="text/javascript" src="Code/JavaClasses/Intent.js"></script>
@@ -311,6 +319,7 @@
     <script type="text/javascript" src="Code/Main/TemplateListAdapter.js"></script>
     <script type="text/javascript" src="Code/Main/TextActivity.js"></script>
     <script type="text/javascript" src="Code/Main/ViewNotificationsListActivity.js"></script>
+    <script type="text/javascript" src="Code/Main/ViewStringListActivity.js"></script>
     <script type="text/javascript" src="Code/Main/ViewTemplateListActivity.js"></script>
     <script type="text/javascript" src="Code/Main/ViewTextActivity.js"></script>
     <script type="text/javascript" src="Code/Message/Message.js"></script>
@@ -376,6 +385,7 @@
     <script type="text/javascript" src="Code/W4Classes/GPSObj.js"></script>
     <script type="text/javascript" src="Code/W4Classes/RepeatingDateStruct.js"></script>
     <script type="text/javascript" src="Code/W4Classes/SpinnerSortItem.js"></script>
+    <script type="text/javascript" src="Code/W4Classes/StringListAdapter.js"></script>
     <script type="text/javascript" src="Code/W4Classes/User.js"></script>
     <script type="text/javascript" src="Code/W4Classes/W4AlarmManager.js"></script>
     <script type="text/javascript" src="Code/W4Classes/W4CallbackManager.js"></script>
@@ -383,6 +393,7 @@
     <script type="text/javascript" src="Code/W4Classes/W4DateTime.js"></script>
     <script type="text/javascript" src="Code/W4Classes/W4FirebaseStorageObject.js"></script>
     <script type="text/javascript" src="Code/W4Classes/W4_DBLog.js"></script>
+    <script type="text/javascript" src="Code/W4Classes/W4String.js"></script>
     <!-- <script type="text/javascript" src="../cleanbook_tests.js"></script>   -->
     <script>
       var KEY_ENTER = "Enter";
@@ -555,6 +566,7 @@
         "activity_start_end_date",
         "activity_text",
         "activity_total_hours",
+        "activity_view_images",
         "activity_view_inspection_plan",
         "activity_view_inspection_plan_complete",
         "activity_view_inspection_plans_list",
@@ -571,6 +583,7 @@
         "activity_view_shift_calendar",
         "activity_view_shift_time",
         "activity_view_shifts_list",
+        "activity_view_string_list",
         "activity_view_supply_item",
         "activity_view_supply_item_list",
         "activity_view_supply_item_locations_list",

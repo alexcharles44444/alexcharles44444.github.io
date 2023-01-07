@@ -1,8 +1,20 @@
 class ViewInspectionPlanCompleteActivity extends W4Activity {
 
+    static viewInspectionPlanCompleteActivity = null;
+
+    onDestroy() {
+        super.onDestroy();
+        ViewInspectionPlanCompleteActivity.viewInspectionPlanCompleteActivity = null;
+    }
+
+    onResume() {
+        super.onResume();
+        InspectionPlanOccurence.loadThumbnails(this.completedInspectionPlan.getW4id(), this.completedInspectionPlan, ViewInspectionPlanCompleteActivity.viewInspectionPlanCompleteActivity);
+    }
 
     onCreate() {
         var a = this;
+        ViewInspectionPlanCompleteActivity.viewInspectionPlanCompleteActivity = a;
         super.onCreate();
         if (!MainActivity.loggedIn)
             return;
@@ -14,6 +26,7 @@ class ViewInspectionPlanCompleteActivity extends W4Activity {
             a.finish();
             return;
         }
+        InspectionPlanOccurence.loadThumbnails(a.completedInspectionPlan.getW4id(), a.completedInspectionPlan, ViewInspectionPlanCompleteActivity.viewInspectionPlanCompleteActivity);
         a.findViewById("View_InspectionPlan_Name").setText(a.completedInspectionPlan.getName());
         var shiftText = a.findViewById("Inspection_Plan_Shift_Text");
         var locationList = W4_Funcs.getPermittedLocationList_ForX(Asset.PERMISSION_ALL_INSPECTIONS);
@@ -70,6 +83,8 @@ class ViewInspectionPlanCompleteActivity extends W4Activity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == MainActivity.requestCodeCompletedInspectionPlanDelete) {
             if (resultCode == AppCompatActivity.RESULT_OK) {
+                W4_Funcs.deleteFBStorageFolder(MainActivity.DB_PATH_COMPANIES + "/" + MainActivity.currentUser.getCompanyid() + "/" + MainActivity.DB_PATH_ASSET_INSPECTION_PLANS_OCCURENCE + "/" + this.completedInspectionPlan.getW4id());
+
                 var reffPlan = firebase.database().ref().child(MainActivity.DB_PATH_COMPANIES).child(MainActivity.currentUser.getCompanyid()).child(MainActivity.DB_PATH_ASSET_INSPECTION_PLANS_OCCURENCE).child(this.completedInspectionPlan.getW4id());
                 W4_Funcs.deleteFromDB(reffPlan, "Deleted completed inspection plan " + this.completedInspectionPlan.getName() + "|Location:" + W4_DBLog.getLocationStringForLog(this.completedInspectionPlan.getLocationID()) + "|Shift:" + W4_DBLog.getShiftStringForLog(this.completedInspectionPlan.getShiftID()) + "|Person:" + W4_DBLog.getPersonStringForLog(this.completedInspectionPlan.getPerson_inspector_id()) + "|");
                 MainActivity.w4Toast(this, "Successfully deleted Completed Inspection Plan", Toast.LENGTH_LONG);

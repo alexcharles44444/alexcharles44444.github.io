@@ -5,6 +5,13 @@ class ViewInspectionPlansListActivity extends W4Activity {
         FireBaseListeners.viewInspectionPlanListActivity = null;
     }
 
+    onResume() {
+        super.onResume();
+        if (DoInspectionPlanInProgressActivity.shouldDestroyImages)
+            InspectionPlanOccurence.cleanImages();
+        DoInspectionPlanInProgressActivity.addedImages = [];
+    }
+
 
     onCreate() {
         var a = this;

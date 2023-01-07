@@ -125,7 +125,7 @@ class View {
     }
 
     setAdapter(arrayAdapter) {
-        if (typeof arrayAdapter.aa_list[0] == "string") { //Select
+        if (arrayAdapter.aa_list.length > 0 && typeof arrayAdapter.aa_list[0] == "string") { //Select
             if (arrayAdapter.aa_list.length > 0) {
                 var html = "";
                 for (let name of arrayAdapter.aa_list) {
