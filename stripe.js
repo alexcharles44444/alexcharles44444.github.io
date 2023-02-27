@@ -211,7 +211,8 @@ function startDataListeners() {
       querySnapshot.forEach(async function (doc) {
         const priceSnap = await doc.ref
           .collection("prices")
-          .orderBy("unit_amount")
+          .where("active", "==", true)
+          // .orderBy("unit_amount")
           .get();
         if (!"content" in document.createElement("template")) {
           console.error("Your browser doesn't support HTML template elements.");
