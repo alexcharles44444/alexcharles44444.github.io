@@ -1,6 +1,6 @@
 class MainActivity extends AppCompatActivity {
-    static version = "1.49150";
-    static version_long = 149150;
+    static version = "1.49151";
+    static version_long = 149151;
 
     static w4_DB_Data = null;
     static w4_DB_Data_Secure = null;
@@ -299,15 +299,15 @@ class MainActivity extends AppCompatActivity {
                     .then((userCredential) => {
                         MainActivity.currentPersonID = firebase.auth().getUid();
                         if (MainActivity.signInState == MainActivity.SIGNINSTATE_LOADING) {
-                            if (firebase.auth().currentUser.emailVerified) {
+                            // if (firebase.auth().currentUser.emailVerified) {
                                 MainActivity.mainActivity.completeSignIn2();
-                            } else {
-                                firebase.auth().currentUser.sendEmailVerification();
-                                MainActivity.dialogBox(MainActivity.mainActivity, "⚠ Further Action Required", "An e-mail has been sent to this address. Please click the link in the email to verify your identity before logging in. You may need to check your spam folder.");
-                                MainActivity.mainActivity.findViewById("Login_Email").setTextIsSelectable(true);
-                                MainActivity.signInState = MainActivity.SIGNINSTATE_CANCELLED;
-                                MainActivity.mainActivity.setLoginLoading(false);
-                            }
+                            // } else {
+                            //     firebase.auth().currentUser.sendEmailVerification();
+                            //     MainActivity.dialogBox(MainActivity.mainActivity, "⚠ Further Action Required", "An e-mail has been sent to this address. Please click the link in the email to verify your identity before logging in. You may need to check your spam folder.");
+                            //     MainActivity.mainActivity.findViewById("Login_Email").setTextIsSelectable(true);
+                            //     MainActivity.signInState = MainActivity.SIGNINSTATE_CANCELLED;
+                            //     MainActivity.mainActivity.setLoginLoading(false);
+                            // }
                         }
                     })
                     .catch((error) => {
