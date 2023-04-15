@@ -52,6 +52,10 @@ select:focus {
   outline: solid 2px #33b5e5;
 }
 
+textarea:focus {
+  outline: solid 2px #33b5e5;
+}
+
 input {
   font-family: inherit;
   color: #494949;

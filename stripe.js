@@ -340,7 +340,7 @@ document
       .httpsCallable("ext-firestore-stripe-payments-createPortalLink");
     // .httpsCallable("ext-firestore-stripe-subscriptions-createPortalLink");
     var windowReference = window.open();
-    const { data } = await functionRef({ returnUrl: "https://www.cleanassistant.net/stripe" });
+    const { data } = await functionRef({ returnUrl: "https://www.cleanassistant.app/stripe.html" });
     // window.location.assign(data.url);
     console.log("Recieved url");
     windowReference.location = data.url;
