@@ -25,6 +25,21 @@
                 src="res/arrow_back2.png" width="50" height="50"></div>
         <div id="loader">Loading &hellip;</div>
     </section>
+    <div id="invalid_user" style="display: none; width: 500px; height: 50px; margin: auto;">
+        <h2>It looks like your account is already set up as an employee under another account</h2>
+        <h2>You cannot start a subscription as an employee</h2>
+        <h2>You can fix this by:</h2>
+        <li>Having your manager use the Clean Assistant App</li>
+        <li>and navigate to "People"->Your Name->"Delete"</li>
+        <li>- OR -</li>
+        <li>Contacting Clean Assistant support at:
+            <p>info@cleanassistant.net</p>
+            <p>541-234-3249</p>
+        </li>
+        <button type="button" onclick="firebase.auth().signOut();" style="width: 150px;">
+            Sign out
+        </button>
+    </div>
     <main>
         <button type="button" id="signout" style="width: 150px; margin-top: -60px;">
             Sign out

@@ -95,7 +95,6 @@ firebase.auth().onAuthStateChanged((firebaseUser) => {
     document.getElementById("loader0").style.display = "";
     document.getElementById("start_buttons").style.display = "none";
     document.getElementById("firebaseui-auth-container").style.display = "none";
-    document.querySelector('main').style.display = "block";
     document.querySelector(".products").innerHTML = "";
     document.querySelector("#my-subscription").style.display = "none";
     document.querySelector("#subscribe").style.display = "none";
@@ -118,6 +117,10 @@ firebase.auth().onAuthStateChanged((firebaseUser) => {
         var ref = firebase.database().ref().child("users").child(currentUser);
         ref.set(user);
       }
+      if (!dataSnapshot.exists() || dataSnapshot.val().companyid == currentUser)
+        document.querySelector('main').style.display = "block";
+      else
+        document.getElementById("invalid_user").style.display = "block";
     }).catch((error) => {
       console.error(error);
     });
@@ -129,6 +132,7 @@ firebase.auth().onAuthStateChanged((firebaseUser) => {
     document.getElementById("loader0").style.display = "none";
     document.getElementById("start_buttons").style.display = "";
     document.querySelector('main').style.display = 'none';
+    document.getElementById("invalid_user").style.display = 'none';
     firebaseUI.start('#firebaseui-auth-container', firebaseUiConfig);
   }
 });
