@@ -150,7 +150,7 @@ class AdminToolsActivity extends W4Activity {
             } else {
                 let reffFirestore = firebase.database().ref().child(MainActivity.DB_PATH_FIRESTORE).child(MainActivity.DB_PATH_FIRESTORE_CUSTOMERS).child(id);
                 let end = new W4DateTime();
-                end = W4_Funcs.addDays(end, 14);
+                end = W4_Funcs.addDays(end, 10);
                 W4_Funcs.writeToDB(reffFirestore, new FirestoreCustomer("active", new FirestoreProduct(new FirestoreMetadata("9999999999999")), end.getMillis(), email), "Added Admin Trial Firestore " + id);
                 AdminToolsActivity.adminToolsActivity.updateList();
             }

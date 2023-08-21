@@ -1,24 +1,24 @@
 class FirestoreMetadata {
-    constructor(max_employees) {
-        this.max_employees = max_employees;
+    constructor(max_locations) {
+        this.max_locations = max_locations;
     }
 
     static fromDS(dataSnapshot) {
         if (dataSnapshot == null)
             return null;
-        var max_employees = dataSnapshot["max_employees"];
-        return new FirestoreMetadata(max_employees);
+        var max_locations = dataSnapshot["max_locations"];
+        return new FirestoreMetadata(max_locations);
     }
 
-    getMax_employees() {
-        return this.max_employees;
+    getMax_locations() {
+        return this.max_locations;
     }
 
-    setMax_Employees(max_employees) {
-        this.max_employees = max_employees;
+    setMax_locations(max_locations) {
+        this.max_locations = max_locations;
     }
 
-    function_getMaxEmployeesInt() {
-        return Number(this.max_employees);
+    function_getMaxLocationsInt() {
+        return Number(this.max_locations);
     }
 }

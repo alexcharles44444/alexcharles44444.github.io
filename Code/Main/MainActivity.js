@@ -1,6 +1,6 @@
 class MainActivity extends AppCompatActivity {
-    static version = "1.49151";
-    static version_long = 149151;
+    static version = "1.49154";
+    static version_long = 149154;
 
     static w4_DB_Data = null;
     static w4_DB_Data_Secure = null;
@@ -300,7 +300,7 @@ class MainActivity extends AppCompatActivity {
                         MainActivity.currentPersonID = firebase.auth().getUid();
                         if (MainActivity.signInState == MainActivity.SIGNINSTATE_LOADING) {
                             // if (firebase.auth().currentUser.emailVerified) {
-                                MainActivity.mainActivity.completeSignIn2();
+                            MainActivity.mainActivity.completeSignIn2();
                             // } else {
                             //     firebase.auth().currentUser.sendEmailVerification();
                             //     MainActivity.dialogBox(MainActivity.mainActivity, "⚠ Further Action Required", "An e-mail has been sent to this address. Please click the link in the email to verify your identity before logging in. You may need to check your spam folder.");
@@ -344,13 +344,13 @@ class MainActivity extends AppCompatActivity {
                         MainActivity.firestoreCustomer = FirestoreCustomer.fromDS(dataSnapshot.val());
                         if (MainActivity.firestoreCustomer != null && MainActivity.firestoreCustomer.status != null) { //Set up users profile in "users"
                             if (MainActivity.firestoreCustomer.getAdmin_trial_end() == 0 || (new W4DateTime()).getMillis() < MainActivity.firestoreCustomer.getAdmin_trial_end()) {
-                                if (MainActivity.firestoreCustomer.getProduct().getMetadata().function_getMaxEmployeesInt() >= MainActivity.currentUser.getEmployeeNum())
-                                    MainActivity.mainActivity.completeSignIn3();
-                                else {
-                                    MainActivity.dialogBox(MainActivity.mainActivity, "⚠ Employee Limit Reached", "Your company's subscription only allows " + MainActivity.firestoreCustomer.getProduct().getMetadata().getMax_employees() + " employees. You are number " + MainActivity.currentUser.getEmployeeNum());
-                                    MainActivity.signInState = MainActivity.SIGNINSTATE_CANCELLED;
-                                    MainActivity.mainActivity.setLoginLoading(false);
-                                }
+                                // if (MainActivity.firestoreCustomer.getProduct().getMetadata().function_getMaxEmployeesInt() >= MainActivity.currentUser.getEmployeeNum())
+                                MainActivity.mainActivity.completeSignIn3();
+                                // else {
+                                //     MainActivity.dialogBox(MainActivity.mainActivity, "⚠ Employee Limit Reached", "Your company's subscription only allows " + MainActivity.firestoreCustomer.getProduct().getMetadata().getMax_employees() + " employees. You are number " + MainActivity.currentUser.getEmployeeNum());
+                                //     MainActivity.signInState = MainActivity.SIGNINSTATE_CANCELLED;
+                                //     MainActivity.mainActivity.setLoginLoading(false);
+                                // }
                             } else {
                                 MainActivity.dialogBox(MainActivity.mainActivity, "⚠ Free Trial Over", "Your company's subscription has expired");
                                 MainActivity.signInState = MainActivity.SIGNINSTATE_CANCELLED;

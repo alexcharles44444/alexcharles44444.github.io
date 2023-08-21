@@ -16,8 +16,15 @@ class ViewLocationsListActivity extends W4Activity {
         if (MainActivity.currentUser.getWritePermissions()[Asset.PERMISSION_ALL_LOCATIONS]) {
             a.findViewById("AddLocationButton").setVisibility(View.VISIBLE);
             button.addEventListener("click", function () {
-                var intent = new Intent(this, new NewEditLocationActivity());
-                a.startActivity(intent);
+                if (MainActivity.theCompany.getLocationList().length < MainActivity.firestoreCustomer.getProduct().getMetadata().function_getMaxLocationsInt()) {
+                    var intent = new Intent(this, new NewEditLocationActivity());
+                    a.startActivity(intent);
+                } else {
+                    // MainActivity.dialogManageSubscription = true;
+                    MainActivity.dialogBox(MainActivity.mainActivity, "Exceeded Maximum Subscription", "Your subscription allows up to " + MainActivity.firestoreCustomer.getProduct().getMetadata().function_getMaxLocationsInt() + " locations.");
+                }
+
+
             });
         } else
             a.findViewById("AddLocationButton").setVisibility(View.GONE);

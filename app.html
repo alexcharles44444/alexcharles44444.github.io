@@ -650,6 +650,12 @@
       }
       document.getElementById("firstLoader").style.display = "";
       loadNextActivity();
+
+      var cacheCookie = MainActivity.getCookie("cache_version");
+      if (cacheCookie == null || cacheCookie != MainActivity.version) {
+        MainActivity.setCookie("cache_version", MainActivity.version);
+        window.location.reload(true);
+      }
     </script>
 
 

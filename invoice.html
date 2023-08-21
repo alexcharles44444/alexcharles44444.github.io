@@ -844,7 +844,6 @@
                                                 Create Estimate
                                             </a>
                                         </li>
-
                                     </ul>
                                 </nav>
 
@@ -860,7 +859,7 @@
         </div>
         <div class="mobile-header-overlay"></div>
         <div class="mobile-menu  bg-color-secondary3">
-            <ul class="navToggle burger slide mobile-burger">
+            <ul class="no-print navToggle burger slide mobile-burger">
                 <li class="before"></li>
                 <li class="middle"></li>
                 <li class="after"></li>
@@ -1082,118 +1081,155 @@
         <div class="content slide">
 
             <div class="centered_div">
-                <button class="no-print" style="display: block; margin: auto; width: 300px; height: 50px;"
-                    onclick="window.print();">Print / Save to PDF</button>
-
-                <span class="no-print">Upload Logo</span>
-                <div class="clickable no-print" onclick="addLogoClick();" id="drop-zone"
-                    style="padding: auto; height: 100px; border: 1px dashed grey; text-align: center;">
-                    <div id="add_image_text" style="margin-top: 40px;">Add Image +</div>
-                </div><br>
-                <img id="logo_img" style="display: block; margin: auto; max-width: 500px; max-height: 300px;">
-                <input id="logo_input" style="display: none;" type="file" accept="image/*"><br><br>
-
-                <table>
-                    <tr>
-                        <td>
-                            <span id="doc_text_number">Invoice #</span>
-                        </td>
-                        <td>
-                            <span id="doc_text_date">Invoice Date</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding-right: 20px;">
-                            <input type="text">
-                        </td>
-                        <td>
-                            <input id="invoice_date" type="text">
-                        </td>
-                    </tr>
-                </table><br>
-
-                <img src="res/src_assets_icons_people.png" width="20px" height="20px">
-                <span>From</span><br>
-                <textarea style="width: 100%; height: 100px; margin: 10px; padding: 10px;"
-                    placeholder="Your company or Name&#10;Address"></textarea><br><br>
-                <img src="res/src_assets_icons_supervisors.png" width="20px" height="20px">
-                <span>Bill To</span><br>
-                <textarea style="width: 100%; height: 100px; margin: 10px; padding: 10px;"
-                    placeholder="Your customer' s billing address"></textarea>
-                <br><br>
-                <div style="background-color: grey; width: 105%; height: 1px;"></div>
-                <br>
-                <div id="items_div">
-
-                </div>
-                <br>
-                <button class="no-print" onclick="addItem();" style="height: 50px; width: 100%; text-align: center;">Add
-                    Item +</button>
-                <table style="width: 100%;">
-                    <tr>
-                        <td style="text-align: end;">Subtotal</td>
-                        <td style="text-align: end;" id="cell_subtotal"></td>
-                    </tr>
-                    <tr>
-                        <td style="text-align: end;" id="taxes_cell"></td>
-                        <td style="text-align: end;" id="tax_amounts_cell"></td>
-                    </tr>
-                    <tr>
-                        <td style="text-align: end; font-size: 24px;">Total</td>
-                        <td style="text-align: end; font-size: 24px;" id="cell_total"></td>
-                    </tr>
-                </table>
-                <table>
-                    <tr>
-                        <td>
-                            <span>Terms and Conditions</span>
-                        </td>
-                        <td>
-                            <span>Signature</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <textarea style="width: 450px; height: 112px;"></textarea>
-                        </td>
-                        <td>
-                            <img id="signature_img" style="display: none; max-height: 100px;">
-                            <div class="clickable no-print" onclick="addSignatureClick();" id="drop-zone2"
-                                style="display: block; position: relative; top: -50px; height: 100px; width: 120px; border: 1px dashed grey; text-align: center;">
-                                <div id="add_signature_text" style="margin-top: 40px;">Add Image +</div>
-                            </div>
-                            <input id="signature_input" style="display: none;" type="file" accept="image/*">
-                        </td>
-                    </tr>
-                </table>
-
-                <div id="dialogbox_black_overlay"
-                    style="display: none; position: fixed; width: 100%; height: 100%; left: 50%; top: 50%; transform: translate(-50%, -50%); background-color: black; opacity: .5; z-index: 100;">
-                </div>
-                <div id="taxbox"
-                    style="border-radius: 10px; display: none; position: fixed; width: 80%; padding: 2%; left: 50%; top: 50%; transform: translate(-50%, -50%); background-color: white; color: black; font-size: 20px; z-index: 101;">
-                    <span id="taxbox_text" style="font-size: 18px;">
-                        <span style='font-size: 30px;'>Taxes</span><br><br>
-                        <div id="tax_selection"></div>
-                        <button id="show_tax_div_button" style='padding: 10px;'
-                            onclick="document.getElementById('new_tax_div').style.display = ''; this.style.display='none';">Add
-                            New Tax +</button>
-                        <div id="new_tax_div" style="display: none;">
-                            Name <input id="tax_name" type="text">&nbsp;&nbsp;&nbsp;&nbsp;
-                            Tax Rate % <input id="tax_rate" type="number" value="10.0">&nbsp;&nbsp;&nbsp;&nbsp;
-                            Compound Tax <input style="position: relative; top: 4px; height: 20px; width: 20px;"
-                                id="tax_compound" type="checkbox">&nbsp;&nbsp;&nbsp;&nbsp;
-                            <button style='padding: 10px;' onclick="addNewTax();">Confirm</button>
-                        </div>
-                    </span>
+                <button id="log_out" class="no-print"
+                    style="display: block; position: absolute; top: -50px; right: 50px; padding: 20px; z-index: 200;"
+                    onclick="log_out();">Log Out</button>
+                <div class="no-print loader" id="loader"
+                    style="width: 100px; height: 100px; display: none; margin: auto;"></div>
+                <div class="no-print" id="message_div"></div>
+                <div class="no-print" id="login_div" style="display: none;">
+                    EMAIL
+                    <img src="../res/ic_email.png" width="30" height="30"
+                        style="position: relative; top: 50px; left: -50px;">
+                    <input type="text" id="Login_Email"
+                        style="width: 95%; height: 40px; font-size: 17px; margin-top: 10px; padding-left: 50px;"
+                        autofocus>
+                    <br>
+                    PASSWORD
+                    <img src="../res/ic_lock.png" width="30" height="30"
+                        style="position: relative; top: 50px; left: -100px;">
+                    <input type="password" id="Login_Password"
+                        style="width: 95%; height: 40px; font-size: 17px; margin-top: 10px; padding-left: 50px;">
                     <br><br>
-                    <button id="dialogbox_button" class="buttonHeight"
-                        style="display: block; font-size: 25px; width: 50%; margin: auto;"
-                        onclick="saveTax();">OK</button>
+                    <button id="SignInButton" style="display: block; margin: auto; padding: 20px;"
+                        onclick="log_in();">Login</button>
                 </div>
-                <button class="no-print" style="display: block; margin: auto; width: 300px; height: 50px;"
-                    onclick="window.print();">Print / Save to PDF</button>
+                <div id="invoice_div" style="display: none;">
+                    <button class="no-print" style="display: block; margin: auto; width: 300px; height: 50px;"
+                        onclick="window.print();">Print / Save to PDF</button>
+
+                    <span class="no-print">Upload Logo</span>
+                    <div class="clickable no-print" onclick="addLogoClick();" id="drop-zone"
+                        style="z-index: 2; padding: auto; height: 100px; border: 1px dashed grey; text-align: center;">
+                        <div id="add_image_text" style="margin-top: 40px;">Add Image +</div>
+                    </div>
+                    <img id="logo_img"
+                        style="z-index: 2; display: block; margin: auto; max-width: 500px; max-height: 200px;">
+                    <button class="no-print" onclick="toggleColors();" style="padding: 10px; margin-bottom: 5px;">Change
+                        Colors</button>
+                    <div style="display: none; margin-bottom: 10px;" class="no-print" id="color_chooser"></div>
+                    <div class="color_bar"
+                        style="display: block; left: 0px; position: absolute; height: 25px; width: 100%;"></div>
+                    <div id="doc_text_bar"
+                        style="background-color: white; display: block; position: relative; height: 50px; top: 0px; right: -550px; font-size: 30pt; width: 160px;">
+                        Invoice</div>
+                    <input id="logo_input" style="display: none;" type="file" accept="image/*">
+                    <table>
+                        <tr>
+                            <td>
+                                <span id="doc_text_number">Invoice #</span>
+                            </td>
+                            <td>
+                                <span id="doc_text_date">Invoice Date</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding-right: 20px;">
+                                <input type="text">
+                            </td>
+                            <td>
+                                <input id="invoice_date" type="text">
+                            </td>
+                        </tr>
+                    </table>
+
+                    <img src="res/src_assets_icons_people.png" width="20px" height="20px">
+                    <span>From</span>
+                    <textarea style="width: 100%; height: 100px; margin: 10px; padding: 10px;"
+                        placeholder="Your company or Name&#10;Address"></textarea>
+                    <img src="res/src_assets_icons_supervisors.png" width="20px" height="20px">
+                    <span>Bill To</span>
+                    <textarea style="width: 100%; height: 100px; margin: 10px; padding: 10px;"
+                        placeholder="Your customer' s billing address"></textarea>
+
+                    <div style="background-color: grey; width: 105%; height: 1px;"></div>
+
+                    <div id="items_div">
+
+                    </div>
+
+                    <button class="no-print" onclick="addItem();"
+                        style="height: 50px; width: 100%; text-align: center;">Add
+                        Item +</button>
+                    <table style="width: 100%;">
+                        <tr>
+                            <td style="text-align: end;">Subtotal</td>
+                            <td style="text-align: end;" id="cell_subtotal"></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: end;" id="taxes_cell"></td>
+                            <td style="text-align: end;" id="tax_amounts_cell"></td>
+                        </tr>
+                        <tr class="color_bar">
+                            <td style="text-align: end; font-size: 24px;">Total</td>
+                            <td style="text-align: end; font-size: 24px;" id="cell_total"></td>
+                        </tr>
+                    </table>
+                    <table>
+                        <tr>
+                            <td>
+                                <span>Terms and Conditions</span>
+                            </td>
+                            <td>
+                                <span style="display: none;">Signature</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <textarea style="width: 450px; height: 75px;"
+                                    placeholder="Payment is due within 15 days"></textarea>
+                            </td>
+                            <td>
+                                <img id="signature_img" style="display: none; max-height: 100px;">
+                                <div class="clickable no-print" onclick="addSignatureClick();" id="drop-zone2"
+                                    style="display: none; position: relative; top: -50px; height: 100px; width: 120px; border: 1px dashed grey; text-align: center;">
+                                    <div id="add_signature_text" style="margin-top: 40px;">Add Image +</div>
+                                </div>
+                                <input id="signature_input" style="display: none;" type="file" accept="image/*">
+                            </td>
+                        </tr>
+                    </table>
+
+                    <div id="dialogbox_black_overlay"
+                        style="display: none; position: fixed; width: 100%; height: 100%; left: 50%; top: 50%; transform: translate(-50%, -50%); background-color: black; opacity: .5; z-index: 100;">
+                    </div>
+                    <div id="taxbox"
+                        style="border-radius: 10px; display: none; position: fixed; width: 80%; padding: 2%; left: 50%; top: 50%; transform: translate(-50%, -50%); background-color: white; color: black; font-size: 20px; z-index: 101;">
+                        <span id="taxbox_text" style="font-size: 18px;">
+                            <span style='font-size: 30px;'>Taxes</span><br><br>
+                            <div id="tax_selection"></div>
+                            <button id="show_tax_div_button" style='padding: 10px;'
+                                onclick="document.getElementById('new_tax_div').style.display = ''; this.style.display='none';">Add
+                                New Tax +</button>
+                            <div id="new_tax_div" style="display: none;">
+                                Name <input id="tax_name" type="text">&nbsp;&nbsp;&nbsp;&nbsp;
+                                Tax Rate % <input id="tax_rate" type="number" value="10.0">&nbsp;&nbsp;&nbsp;&nbsp;
+                                Compound Tax <input style="position: relative; top: 4px; height: 20px; width: 20px;"
+                                    id="tax_compound" type="checkbox">&nbsp;&nbsp;&nbsp;&nbsp;
+                                <button style='padding: 10px;' onclick="addNewTax();">Confirm</button>
+                            </div>
+                        </span>
+                        <br><br>
+                        <button id="dialogbox_button" class="buttonHeight"
+                            style="display: block; font-size: 25px; width: 50%; margin: auto;"
+                            onclick="saveTax();">OK</button>
+                    </div>
+                    <button class="no-print" style="display: block; margin: auto; width: 300px; height: 50px;"
+                        onclick="window.print();">Print / Save to PDF</button>
+                </div>
+                <!-- END Invoice Div -->
             </div>
+            <!-- END Centered Div -->
 
             <footer class="page-footer no-print">
                 <div id="container-widget-1667208569624" data-type="Container" class="grid-row
@@ -1497,6 +1533,7 @@
 
 <script src="./lib/firebasejs/8.9.1/firebase-app.js"></script>
 <script src="./lib/firebasejs/8.9.1/firebase-database.js"></script>
+<script src="./lib/firebasejs/8.9.1/firebase-auth.js"></script>
 <script>
     const firebaseConfig = {
         apiKey: "AIzaSyBVm1GrGziSazlDCGTRJLhIpeWdLTLnXSs",
