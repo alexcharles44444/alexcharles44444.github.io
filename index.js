@@ -100,6 +100,31 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Error attaching YouTube iframe listener', err);
     }
 
+    // Load images saved in Realtime Database at content/images and populate slideshow
+    try {
+        const slidesRef = ref(db, 'content/images');
+        onValue(slidesRef, (snapshot) => {
+            const slidesContainer = document.querySelector('.slideshow .slides');
+            if (!slidesContainer) return;
+            if (!snapshot || !snapshot.exists()) return;
+            slidesContainer.innerHTML = '';
+            snapshot.forEach((child) => {
+                const data = child.val() || {};
+                if (data && data.data) {
+                    const img = document.createElement('img');
+                    img.src = data.data;
+                    img.className = 'slide';
+                    img.alt = data.name || '';
+                    slidesContainer.appendChild(img);
+                }
+            });
+            if (typeof initSlideshows === 'function') {
+                try { initSlideshows(); } catch (e) { console.error('Failed to re-init slideshows', e); }
+            }
+        }, (err) => console.error('Failed to read images', err));
+    } catch (err) {
+        console.error('Error attaching images listener', err);
+    }
     const submitBtn = document.querySelector('.newsletter-submit');
     if (!submitBtn) return;
     submitBtn.addEventListener('click', async (e) => {
@@ -212,6 +237,7 @@ function initSlideshows() {
         let timer = null;
 
         // build indicators
+        indicators.innerHTML = "";
         slides.forEach((s, i) => {
             const btn = document.createElement('button');
             btn.type = 'button';

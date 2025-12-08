@@ -30,6 +30,8 @@ let newAlbumRef = null;
 let newAlbumListener = null;
 let youtubeRef = null;
 let youtubeListener = null;
+let imagesRef = null;
+let imagesListener = null;
 
 // Login form handler and auth state listener
 document.addEventListener('DOMContentLoaded', () => {
@@ -326,6 +328,91 @@ document.addEventListener('DOMContentLoaded', () => {
 				} catch (err) {
 					console.error('Failed to attach content/youtubeiframe listener:', err);
 				}
+
+				// Attach listener for content/images and wire up upload/delete UI
+				try {
+					imagesRef = dbRef(db, 'content/images');
+					imagesListener = (snapshot) => {
+						const list = document.getElementById('imagesList');
+						if (!list) return;
+						list.innerHTML = '';
+						if (snapshot && snapshot.exists()) {
+							snapshot.forEach((childSnap) => {
+								const data = childSnap.val() || {};
+								const key = childSnap.key;
+								const row = document.createElement('div');
+								row.style.display = 'flex';
+								row.style.alignItems = 'center';
+								row.style.gap = '8px';
+								const img = document.createElement('img');
+								img.src = data.data || '';
+								img.alt = data.name || '';
+								img.style.width = '120px';
+								img.style.height = 'auto';
+								img.style.objectFit = 'cover';
+								const nameDiv = document.createElement('div');
+								nameDiv.textContent = data.name || '';
+								nameDiv.style.flex = '1';
+								const delBtn = document.createElement('button');
+								delBtn.textContent = 'Delete';
+								delBtn.className = 'btn';
+								delBtn.style.backgroundColor = '#d9534f';
+								delBtn.addEventListener('click', async () => {
+									if (!confirm('Delete this image?')) return;
+									try {
+										await dbRemove(dbRef(db, 'content/images/' + key));
+									} catch (err) {
+										console.error('Failed to delete image:', err);
+										alert('Failed to delete image.');
+									}
+								});
+								row.appendChild(img);
+								row.appendChild(nameDiv);
+								row.appendChild(delBtn);
+								list.appendChild(row);
+							});
+						} else {
+							list.textContent = 'No images.';
+						}
+					};
+					dbOnValue(imagesRef, imagesListener);
+
+					// Upload handler
+					const uploadBtn = document.getElementById('uploadImageBtn');
+					const fileInput = document.getElementById('imageFileInput');
+					if (uploadBtn && fileInput) {
+						uploadBtn.addEventListener('click', async () => {
+							const files = fileInput.files;
+							if (!files || files.length === 0) {
+								alert('Please select one or more images to upload.');
+								return;
+							}
+							for (let i = 0; i < files.length; i++) {
+								const file = files[i];
+								const reader = new FileReader();
+								await new Promise((resolve, reject) => {
+									reader.onload = async (e) => {
+										try {
+											const dataUrl = e.target.result;
+											const newRef = dbPush(imagesRef);
+											await dbSet(newRef, { name: file.name, data: dataUrl, timestamp: Date.now() });
+											resolve();
+										} catch (err) {
+											reject(err);
+										}
+									};
+									reader.onerror = () => reject(new Error('File read error'));
+									reader.readAsDataURL(file);
+								});
+							}
+							fileInput.value = '';
+							const status = document.getElementById('imageUploadStatus');
+							if (status) { status.style.display = 'inline'; setTimeout(() => { status.style.display = 'none'; }, 1500); }
+						});
+					}
+				} catch (err) {
+					console.error('Failed to attach images listener:', err);
+				}
 		} else {
 			// Show login UI
 			if (loginContainer) loginContainer.style.display = 'block';
@@ -362,6 +449,11 @@ document.addEventListener('DOMContentLoaded', () => {
 					dbOff(youtubeRef, 'value', youtubeListener);
 					youtubeRef = null;
 					youtubeListener = null;
+				}
+				if (imagesRef && imagesListener) {
+					dbOff(imagesRef, 'value', imagesListener);
+					imagesRef = null;
+					imagesListener = null;
 				}
 				// Clear table bodies
 				const tbody = document.querySelector('#subscribersTable tbody');

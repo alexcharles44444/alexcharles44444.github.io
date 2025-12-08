@@ -92,6 +92,17 @@
 				<span id="youtubeSaveStatus" style="font-size:13px; color:green; display:none;">Saved.</span>
 			</div>
 		</div>
+
+		<h2>Manage Images</h2>
+		<div style="margin-bottom:16px;">
+			<label for="imageFileInput">Upload images (you can select multiple):</label><br>
+			<input id="imageFileInput" type="file" accept="image/*" multiple style="margin-top:6px;">
+			<div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
+				<button id="uploadImageBtn" class="btn">Upload Image(s)</button>
+				<span id="imageUploadStatus" style="font-size:13px; color:green; display:none;">Uploaded.</span>
+			</div>
+			<div id="imagesList" class="editable" style="margin-top:12px; display:flex; flex-direction:column; gap:8px; max-width:800px;"></div>
+		</div>
 	</div>
 	<script src="admin.js" type="module"></script>
 </body>
