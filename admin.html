@@ -38,7 +38,7 @@
 		</table>
 
 		<h2 style="margin-top:30px;">Pending Testimonials</h2>
-		<table id="testimonialsTable" class="editable" border="1" cellpadding="6" cellspacing="0">
+		<table id="testimonialsTable" class="editable" border="1" cellpadding="6" cellspacing="0" style="margin-bottom: 16px;">
 			<thead>
 				<tr>
 					<th>Name</th>
@@ -51,6 +51,47 @@
 				<!-- Data will be populated here when implemented -->
 			</tbody>
 		</table>
+
+		<h2>Edit About Me</h2>
+		<div style="margin-bottom:16px;">
+			<label for="aboutMeInput">About Me text (shown on homepage):</label><br>
+			<textarea id="aboutMeInput" rows="4" style="width:100%; max-width:800px; padding:8px;" placeholder="Enter the About Me text"></textarea>
+			<div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
+				<button id="saveAboutBtn" class="btn">Save About Me</button>
+				<span id="aboutSaveStatus" style="font-size:13px; color:green; display:none;">Saved.</span>
+			</div>
+		</div>
+		
+		<h2>Edit Upcoming Performances</h2>
+		<div style="margin-bottom:16px;">
+			<label for="performancesInput">Upcoming Performances (plain text):</label><br>
+			<textarea id="performancesInput" rows="6" style="width:100%; max-width:800px; padding:8px;" placeholder="Enter upcoming performances, one per line"></textarea>
+			<div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
+				<button id="savePerformancesBtn" class="btn">Save Performances</button>
+				<span id="performancesSaveStatus" style="font-size:13px; color:green; display:none;">Saved.</span>
+			</div>
+		</div>
+		
+		<h2>Edit New Album</h2>
+		<div style="margin-bottom:16px;">
+			<label for="newAlbumInput">New Album text:</label><br>
+			<textarea id="newAlbumInput" rows="3" style="width:100%; max-width:800px; padding:8px;" placeholder="Enter new album text"></textarea>
+			<div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
+				<button id="saveNewAlbumBtn" class="btn">Save New Album</button>
+				<span id="newAlbumSaveStatus" style="font-size:13px; color:green; display:none;">Saved.</span>
+			</div>
+		</div>
+		
+		<h2>Edit YouTube Iframe URL</h2>
+		<div style="margin-bottom:16px;">
+			<label for="youtubeInput" class="editable">YouTube embed URL (example: https://www.youtube.com/embed/b_we_jma220?si=...):</label><br>
+			<div  class="editable">Found at Youtube Video->Share->Embed->Copy the url after src=" (Do not include any " characters)</div><br>
+			<input id="youtubeInput" type="url" style="width:100%; max-width:800px; padding:8px;" placeholder="https://www.youtube.com/embed/...">
+			<div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
+				<button id="saveYoutubeBtn" class="btn">Save YouTube URL</button>
+				<span id="youtubeSaveStatus" style="font-size:13px; color:green; display:none;">Saved.</span>
+			</div>
+		</div>
 	</div>
 	<script src="admin.js" type="module"></script>
 </body>

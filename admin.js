@@ -22,6 +22,14 @@ let subscribersRef = null;
 let subscribersListener = null;
 let testimonialsRef = null;
 let testimonialsListener = null;
+let contentRef = null;
+let contentListener = null;
+let performancesRef = null;
+let performancesListener = null;
+let newAlbumRef = null;
+let newAlbumListener = null;
+let youtubeRef = null;
+let youtubeListener = null;
 
 // Login form handler and auth state listener
 document.addEventListener('DOMContentLoaded', () => {
@@ -183,6 +191,141 @@ document.addEventListener('DOMContentLoaded', () => {
 			} catch (err) {
 				console.error('Failed to attach testimonials listener:', err);
 			}
+
+				// Attach listener for content/aboutme and wire up save button
+				try {
+					contentRef = dbRef(db, 'content/aboutme');
+					contentListener = (snapshot) => {
+						const textarea = document.getElementById('aboutMeInput');
+						if (!textarea) return;
+						textarea.value = snapshot && snapshot.exists() ? snapshot.val() : '';
+						// hide status when content changes externally
+						const status = document.getElementById('aboutSaveStatus');
+						if (status) status.style.display = 'none';
+					};
+					dbOnValue(contentRef, contentListener);
+
+					// Save button
+					const saveBtn = document.getElementById('saveAboutBtn');
+					if (saveBtn) {
+						saveBtn.addEventListener('click', async () => {
+							const textarea = document.getElementById('aboutMeInput');
+							const status = document.getElementById('aboutSaveStatus');
+							if (!textarea) return;
+							try {
+								if (status) { status.style.display = 'none'; }
+								await dbSet(dbRef(db, 'content/aboutme'), textarea.value || '');
+								if (status) { status.style.display = 'inline'; setTimeout(() => { status.style.display = 'none'; }, 2000); }
+							} catch (err) {
+								console.error('Failed to save About Me:', err);
+								alert('Failed to save About Me.');
+							}
+						});
+					}
+				} catch (err) {
+					console.error('Failed to attach content/aboutme listener:', err);
+				}
+
+				// Attach listener for content/performances and wire up save button
+				try {
+					performancesRef = dbRef(db, 'content/performances');
+					performancesListener = (snapshot) => {
+						const textarea = document.getElementById('performancesInput');
+						if (!textarea) return;
+						textarea.value = snapshot && snapshot.exists() ? snapshot.val() : '';
+						const status = document.getElementById('performancesSaveStatus');
+						if (status) status.style.display = 'none';
+					};
+					dbOnValue(performancesRef, performancesListener);
+
+					const savePerfBtn = document.getElementById('savePerformancesBtn');
+					if (savePerfBtn) {
+						savePerfBtn.addEventListener('click', async () => {
+							const textarea = document.getElementById('performancesInput');
+							const status = document.getElementById('performancesSaveStatus');
+							if (!textarea) return;
+							try {
+								if (status) { status.style.display = 'none'; }
+								await dbSet(dbRef(db, 'content/performances'), textarea.value || '');
+								if (status) { status.style.display = 'inline'; setTimeout(() => { status.style.display = 'none'; }, 2000); }
+							} catch (err) {
+								console.error('Failed to save performances:', err);
+								alert('Failed to save performances.');
+							}
+						});
+					}
+				} catch (err) {
+					console.error('Failed to attach content/performances listener:', err);
+				}
+
+				// Attach listener for content/newalbum and wire up save button
+				try {
+					newAlbumRef = dbRef(db, 'content/newalbum');
+					newAlbumListener = (snapshot) => {
+						const textarea = document.getElementById('newAlbumInput');
+						if (!textarea) return;
+						textarea.value = snapshot && snapshot.exists() ? snapshot.val() : '';
+						const status = document.getElementById('newAlbumSaveStatus');
+						if (status) status.style.display = 'none';
+					};
+					dbOnValue(newAlbumRef, newAlbumListener);
+
+					const saveNewAlbumBtn = document.getElementById('saveNewAlbumBtn');
+					if (saveNewAlbumBtn) {
+						saveNewAlbumBtn.addEventListener('click', async () => {
+							const textarea = document.getElementById('newAlbumInput');
+							const status = document.getElementById('newAlbumSaveStatus');
+							if (!textarea) return;
+							try {
+								if (status) { status.style.display = 'none'; }
+								await dbSet(dbRef(db, 'content/newalbum'), textarea.value || '');
+								if (status) { status.style.display = 'inline'; setTimeout(() => { status.style.display = 'none'; }, 2000); }
+							} catch (err) {
+								console.error('Failed to save new album:', err);
+								alert('Failed to save new album.');
+							}
+						});
+					}
+				} catch (err) {
+					console.error('Failed to attach content/newalbum listener:', err);
+				}
+
+				// Attach listener for content/youtubeiframe and wire up save button
+				try {
+					youtubeRef = dbRef(db, 'content/youtubeiframe');
+					youtubeListener = (snapshot) => {
+						const input = document.getElementById('youtubeInput');
+						if (!input) return;
+						input.value = snapshot && snapshot.exists() ? snapshot.val() : '';
+						const status = document.getElementById('youtubeSaveStatus');
+						if (status) status.style.display = 'none';
+					};
+					dbOnValue(youtubeRef, youtubeListener);
+
+					const saveYoutubeBtn = document.getElementById('saveYoutubeBtn');
+					if (saveYoutubeBtn) {
+						saveYoutubeBtn.addEventListener('click', async () => {
+							const input = document.getElementById('youtubeInput');
+							const status = document.getElementById('youtubeSaveStatus');
+							if (!input) return;
+							const val = (input.value || '').trim();
+							// Basic validation: expect an embed URL
+							if (val && !/^https:\/\/www\.youtube\.com\/embed\//.test(val)) {
+								if (!confirm('The URL does not look like a YouTube embed URL. Save anyway?')) return;
+							}
+							try {
+								if (status) { status.style.display = 'none'; }
+								await dbSet(dbRef(db, 'content/youtubeiframe'), val);
+								if (status) { status.style.display = 'inline'; setTimeout(() => { status.style.display = 'none'; }, 2000); }
+							} catch (err) {
+								console.error('Failed to save YouTube URL:', err);
+								alert('Failed to save YouTube URL.');
+							}
+						});
+					}
+				} catch (err) {
+					console.error('Failed to attach content/youtubeiframe listener:', err);
+				}
 		} else {
 			// Show login UI
 			if (loginContainer) loginContainer.style.display = 'block';
@@ -199,6 +342,26 @@ document.addEventListener('DOMContentLoaded', () => {
 					dbOff(testimonialsRef, 'value', testimonialsListener);
 					testimonialsRef = null;
 					testimonialsListener = null;
+				}
+				if (contentRef && contentListener) {
+					dbOff(contentRef, 'value', contentListener);
+					contentRef = null;
+					contentListener = null;
+				}
+				if (performancesRef && performancesListener) {
+					dbOff(performancesRef, 'value', performancesListener);
+					performancesRef = null;
+					performancesListener = null;
+				}
+				if (newAlbumRef && newAlbumListener) {
+					dbOff(newAlbumRef, 'value', newAlbumListener);
+					newAlbumRef = null;
+					newAlbumListener = null;
+				}
+				if (youtubeRef && youtubeListener) {
+					dbOff(youtubeRef, 'value', youtubeListener);
+					youtubeRef = null;
+					youtubeListener = null;
 				}
 				// Clear table bodies
 				const tbody = document.querySelector('#subscribersTable tbody');

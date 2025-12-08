@@ -30,6 +30,76 @@ document.addEventListener('DOMContentLoaded', () => {
         
     });
 
+    // Load About Me content from Realtime Database at content/aboutme
+    try {
+        const aboutEl = document.getElementById('aboutEditable');
+        const aboutRef = ref(db, 'content/aboutme');
+        onValue(aboutRef, (snapshot) => {
+            if (!aboutEl) return;
+            const val = snapshot && snapshot.exists() ? snapshot.val() : '';
+            if (val) {
+                const escaped = escapeHtml(val);
+                aboutEl.innerHTML = escaped.replace(/\n/g, '<br>');
+            } else {
+                aboutEl.innerHTML = '';
+            }
+        }, (err) => console.error('Failed to read About Me content', err));
+    } catch (err) {
+        console.error('Error attaching About Me listener', err);
+    }
+
+    // Load Performances content from Realtime Database at content/performances
+    try {
+        const perfEl = document.getElementById('perfEditable');
+        const perfRef = ref(db, 'content/performances');
+        onValue(perfRef, (snapshot) => {
+            if (!perfEl) return;
+            const val = snapshot && snapshot.exists() ? snapshot.val() : '';
+            if (val) {
+                const escaped = escapeHtml(val);
+                perfEl.innerHTML = escaped.replace(/\n/g, '<br>');
+            } else {
+                perfEl.innerHTML = '';
+            }
+        }, (err) => console.error('Failed to read Performances content', err));
+    } catch (err) {
+        console.error('Error attaching Performances listener', err);
+    }
+
+    // Load New Album content from Realtime Database at content/newalbum
+    try {
+        const updatesEl = document.getElementById('updatesEditable');
+        const newAlbumRef = ref(db, 'content/newalbum');
+        onValue(newAlbumRef, (snapshot) => {
+            if (!updatesEl) return;
+            const val = snapshot && snapshot.exists() ? snapshot.val() : '';
+            if (val) {
+                const escaped = escapeHtml(val);
+                updatesEl.innerHTML = escaped.replace(/\n/g, '<br>');
+            } else {
+                updatesEl.innerHTML = '';
+            }
+        }, (err) => console.error('Failed to read New Album content', err));
+    } catch (err) {
+        console.error('Error attaching New Album listener', err);
+    }
+
+    // Load YouTube iframe URL from Realtime Database at content/youtubeiframe
+    try {
+        const iframeEl = document.querySelector('iframe.youtubeIframe');
+        const ytRef = ref(db, 'content/youtubeiframe');
+        onValue(ytRef, (snapshot) => {
+            if (!iframeEl) return;
+            const val = snapshot && snapshot.exists() ? snapshot.val() : '';
+            if (val) {
+                // basic safety: only set if it looks like an http(s) url
+                if (/^https?:\/\//.test(val)) iframeEl.src = val;
+            }
+        }, (err) => console.error('Failed to read YouTube iframe URL', err));
+    } catch (err) {
+        console.error('Error attaching YouTube iframe listener', err);
+    }
+
     const submitBtn = document.querySelector('.newsletter-submit');
     if (!submitBtn) return;
     submitBtn.addEventListener('click', async (e) => {
