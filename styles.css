@@ -45,7 +45,7 @@
    gap: 28px;
    position: relative;
    align-items: start;
-   margin-top: 120px;
+   margin-top: 250px;
  }
 
   .stage2 {
@@ -502,4 +502,8 @@
 
 .soundcloudDiv {
   margin-bottom: -75px;
+}
+
+.clickable {
+  cursor: pointer;
 }
