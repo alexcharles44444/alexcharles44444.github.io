@@ -1,4 +1,3 @@
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -25,27 +24,71 @@ const db = getDatabase(app);
 
 // Newsletter subscription handler
 document.addEventListener('DOMContentLoaded', () => {
-    const venmoBtn = document.getElementById("venmo_btn");
-    venmoBtn.addEventListener("click", function() {
-        
-    });
-
-    // Load About Me content from Realtime Database at content/aboutme
+    // Load About Me content from Realtime Database using separate short and extended paths
     try {
         const aboutEl = document.getElementById('aboutEditable');
-        const aboutRef = ref(db, 'content/aboutme');
-        onValue(aboutRef, (snapshot) => {
-            if (!aboutEl) return;
+        if (!aboutEl) return;
+
+        const shortRef = ref(db, 'content/aboutme_short');
+        const longRef = ref(db, 'content/aboutme_long');
+
+        // build DOM containers
+        aboutEl.innerHTML = '';
+        const shortDiv = document.createElement('div');
+        shortDiv.id = 'aboutShortContent';
+        const longDiv = document.createElement('div');
+        longDiv.id = 'aboutLongContent';
+        longDiv.style.display = 'none';
+        longDiv.style.marginTop = '8px';
+
+        const btn = document.createElement('button');
+        btn.className = 'btn';
+        btn.id = 'aboutShowMoreBtn';
+        btn.textContent = 'Show more';
+        btn.style.marginTop = '8px';
+        btn.style.display = 'none';
+
+        btn.addEventListener('click', () => {
+            if (longDiv.style.display === 'none') {
+                longDiv.style.display = 'block';
+                btn.textContent = 'Show less';
+            } else {
+                longDiv.style.display = 'none';
+                btn.textContent = 'Show more';
+            }
+        });
+
+        aboutEl.appendChild(shortDiv);
+        aboutEl.appendChild(longDiv);
+        aboutEl.appendChild(btn);
+
+        // listen for short content
+        onValue(shortRef, (snapshot) => {
             const val = snapshot && snapshot.exists() ? snapshot.val() : '';
             if (val) {
-                const escaped = escapeHtml(val);
-                aboutEl.innerHTML = escaped.replace(/\n/g, '<br>');
+                shortDiv.innerHTML = escapeHtml(val).replace(/\n/g, '<br>');
             } else {
-                aboutEl.innerHTML = '';
+                shortDiv.innerHTML = '';
             }
-        }, (err) => console.error('Failed to read About Me content', err));
+        }, (err) => console.error('Failed to read Short About Me', err));
+
+        // listen for long content
+        onValue(longRef, (snapshot) => {
+            const val = snapshot && snapshot.exists() ? snapshot.val() : '';
+            if (val) {
+                longDiv.innerHTML = escapeHtml(val).replace(/\n/g, '<br>');
+                btn.style.display = 'inline-block';
+                // reset to collapsed state when content changes
+                longDiv.style.display = 'none';
+                btn.textContent = 'Show more';
+            } else {
+                longDiv.innerHTML = '';
+                btn.style.display = 'none';
+            }
+        }, (err) => console.error('Failed to read Extended About Me', err));
+
     } catch (err) {
-        console.error('Error attaching About Me listener', err);
+        console.error('Error attaching About Me listeners', err);
     }
 
     // Load Performances content from Realtime Database at content/performances
@@ -84,6 +127,68 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Error attaching New Album listener', err);
     }
 
+    // Load Lyrics from Realtime Database at content/lyrics
+    try {
+        const lyricsDiv = document.getElementById('lyricsdiv');
+        const lyricsRef = ref(db, 'content/lyrics');
+        onValue(lyricsRef, (snapshot) => {
+            if (!lyricsDiv) return;
+            lyricsDiv.innerHTML = '';
+            if (!snapshot || !snapshot.exists()) {
+                lyricsDiv.textContent = 'No lyrics.';
+                return;
+            }
+            const entries = [];
+            snapshot.forEach((child) => {
+                const data = child.val() || {};
+                entries.push({ key: child.key, title: data.title || '', content: data.content || '', ts: data.ts || 0 });
+            });
+            // newest first by timestamp
+            entries.sort((a, b) => b.ts - a.ts);
+            entries.forEach((e) => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'card lyric-card';
+                const h = document.createElement('h3');
+                h.textContent = e.title || 'Untitled';
+
+                const contentDiv = document.createElement('div');
+                const contentId = 'lyric-' + (e.key || Math.random().toString(36).slice(2, 9));
+                contentDiv.id = contentId;
+                contentDiv.className = 'lyric-content collapsed';
+                contentDiv.innerHTML = escapeHtml(e.content || '').replace(/\n/g, '<br>');
+
+                wrapper.appendChild(h);
+                wrapper.appendChild(contentDiv);
+
+                const toggleBtn = document.createElement('button');
+                toggleBtn.type = 'button';
+                toggleBtn.className = 'lyric-toggle';
+                toggleBtn.textContent = 'Show more';
+                toggleBtn.setAttribute('aria-expanded', 'false');
+                toggleBtn.setAttribute('aria-controls', contentId);
+                toggleBtn.addEventListener('click', () => {
+                    const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+                    // toggle
+                    toggleBtn.setAttribute('aria-expanded', String(!isExpanded));
+                    if (isExpanded) {
+                        // was expanded -> collapse
+                        contentDiv.classList.add('collapsed');
+                        toggleBtn.textContent = 'Show more';
+                    } else {
+                        // was collapsed -> expand
+                        contentDiv.classList.remove('collapsed');
+                        toggleBtn.textContent = 'Show less';
+                    }
+                });
+
+                wrapper.appendChild(toggleBtn);
+                lyricsDiv.appendChild(wrapper);
+            });
+        }, (err) => console.error('Failed to read Lyrics', err));
+    } catch (err) {
+        console.error('Error attaching Lyrics listener', err);
+    }
+
     // Load YouTube iframe URL from Realtime Database at content/youtubeiframe
     try {
         const iframeEl = document.querySelector('iframe.youtubeIframe');
@@ -100,24 +205,85 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Error attaching YouTube iframe listener', err);
     }
 
+    // Load YouTube videos list from Realtime Database at content/youtubeiframes
+    try {
+        const videosRef = ref(db, 'content/youtubeiframes');
+        onValue(videosRef, (snapshot) => {
+            const videosDiv = document.getElementById('videosdiv');
+            if (!videosDiv) return;
+            videosDiv.innerHTML = '';
+            if (!snapshot || !snapshot.exists()) {
+                videosDiv.textContent = 'No videos.';
+                return;
+            }
+            const entries = [];
+            snapshot.forEach((child) => {
+                const data = child.val() || {};
+                entries.push({ url: data.url || '', ts: data.timestamp || 0 });
+            });
+            // newest first by timestamp
+            entries.sort((a, b) => b.ts - a.ts);
+            entries.forEach((e) => {
+                const url = (e.url || '').trim();
+                if (!url) return;
+                if (/^https:\/\/www\.youtube\.com\/embed\//.test(url)) {
+                    const iframe = document.createElement('iframe');
+                    iframe.src = url;
+                    iframe.className = 'youtubeIframe2';
+                    iframe.setAttribute('title', 'YouTube video player');
+                    iframe.setAttribute('frameborder', '0');
+                    iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+                    iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+                    iframe.allowFullscreen = true;
+                    const wrapper = document.createElement('div');
+                    wrapper.style.marginBottom = '24px';
+                    wrapper.appendChild(iframe);
+                    videosDiv.appendChild(wrapper);
+                } else {
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.textContent = url;
+                    a.target = '_blank';
+                    videosDiv.appendChild(a);
+                }
+            });
+        }, (err) => console.error('Failed to read YouTube videos list', err));
+    } catch (err) {
+        console.error('Error attaching YouTube videos list listener', err);
+    }
+
     // Load images saved in Realtime Database at content/images and populate slideshow
     try {
         const slidesRef = ref(db, 'content/images');
         onValue(slidesRef, (snapshot) => {
             const slidesContainer = document.querySelector('.slideshow .slides');
             if (!slidesContainer) return;
-            if (!snapshot || !snapshot.exists()) return;
             slidesContainer.innerHTML = '';
-            snapshot.forEach((child) => {
-                const data = child.val() || {};
-                if (data && data.data) {
-                    const img = document.createElement('img');
-                    img.src = data.data;
-                    img.className = 'slide';
-                    img.alt = data.name || '';
-                    slidesContainer.appendChild(img);
-                }
-            });
+            if (!snapshot || !snapshot.exists()) {
+                // nothing to show
+            } else {
+                const items = [];
+                snapshot.forEach((child) => {
+                    const data = child.val() || {};
+                    items.push({ key: child.key, data });
+                });
+                // sort by order (ascending). If no 'order', fall back to timestamp (ascending)
+                items.sort((a, b) => {
+                    const oa = (typeof a.data.order !== 'undefined') ? a.data.order : (a.data.timestamp || 0);
+                    const ob = (typeof b.data.order !== 'undefined') ? b.data.order : (b.data.timestamp || 0);
+                    return oa - ob;
+                });
+                items.forEach((item) => {
+                    const data = item.data || {};
+                    if (data && data.data) {
+                        const img = document.createElement('img');
+                        img.src = data.data;
+                        img.className = 'slide';
+                        img.alt = data.name || '';
+                        slidesContainer.appendChild(img);
+                    }
+                });
+            }
             if (typeof initSlideshows === 'function') {
                 try { initSlideshows(); } catch (e) { console.error('Failed to re-init slideshows', e); }
             }
@@ -214,6 +380,106 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Failed to post testimonial. Please try again later.');
         }
     });
+
+    // Tab switching: show/hide pages and mark active tab
+    (function setupTabs() {
+        const tabButtons = Array.from(document.querySelectorAll('.tab-button'));
+        const pages = Array.from(document.querySelectorAll('.page'));
+        const keyToId = {
+            'home': 'homepage',
+            'videos': 'videospage',
+            'lyrics': 'lyricspage',
+            'store': 'storepage'
+        };
+
+        const idToKey = Object.fromEntries(Object.entries(keyToId).map(([k, v]) => [v, k]));
+
+        function showPageById(id) {
+            pages.forEach(p => {
+                if (p.id === id) {
+                    p.style.display = '';
+                } else {
+                    p.style.display = 'none';
+                }
+            });
+        }
+
+        function setActiveButton(activeBtn) {
+            tabButtons.forEach(btn => {
+                btn.classList.toggle('active', btn === activeBtn);
+                btn.setAttribute('aria-pressed', btn === activeBtn ? 'true' : 'false');
+            });
+        }
+
+        // Read the desired tab from the URL (#tab or ?tab=)
+        function getKeyFromUrl() {
+            let key = '';
+            if (location.hash && location.hash.length > 1) {
+                key = location.hash.slice(1).toLowerCase();
+            } else {
+                const params = new URLSearchParams(location.search);
+                if (params.has('tab')) key = String(params.get('tab') || '').toLowerCase();
+            }
+            if (!key || !keyToId[key]) return 'home';
+            return key;
+        }
+
+        function setUrlKey(key, replace = false) {
+            const newHash = '#' + key;
+            const url = location.pathname + location.search + newHash;
+            if (replace) history.replaceState({ tab: key }, '', url);
+            else history.pushState({ tab: key }, '', url);
+        }
+
+        function showKey(key, replace = false) {
+            const targetId = keyToId[key] || keyToId['home'];
+            const targetEl = document.getElementById(targetId);
+            if (targetEl) {
+                showPageById(targetId);
+            } else {
+                showPageById('homepage');
+            }
+            const btn = tabButtons.find(b => b.textContent.trim().toLowerCase() === key);
+            setActiveButton(btn || null);
+            // Update URL so users can share / bookmark
+            setUrlKey(key, replace);
+        }
+
+        tabButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const key = btn.textContent.trim().toLowerCase();
+                showKey(key);
+            });
+        });
+
+        // Handle back/forward navigation and manual hash changes
+        window.addEventListener('popstate', () => {
+            const keyFromState = (history.state && history.state.tab) ? history.state.tab : null;
+            const key = keyFromState || getKeyFromUrl();
+            const btn = tabButtons.find(b => b.textContent.trim().toLowerCase() === key);
+            const tid = keyToId[key] || keyToId['home'];
+            const targetEl = document.getElementById(tid);
+            if (targetEl) showPageById(tid);
+            setActiveButton(btn || null);
+        });
+
+        window.addEventListener('hashchange', () => {
+            const key = getKeyFromUrl();
+            const btn = tabButtons.find(b => b.textContent.trim().toLowerCase() === key);
+            const tid = keyToId[key] || keyToId['home'];
+            const targetEl = document.getElementById(tid);
+            if (targetEl) showPageById(tid);
+            setActiveButton(btn || null);
+        });
+
+        // initialize: pick tab from URL if present, else default to home
+        const initialKey = getKeyFromUrl();
+        const initialBtn = tabButtons.find(b => b.textContent.trim().toLowerCase() === initialKey)
+            || tabButtons.find(b => b.textContent.trim().toLowerCase() === 'home')
+            || tabButtons[0];
+        const keyToShow = initialBtn ? initialBtn.textContent.trim().toLowerCase() : initialKey;
+        showKey(keyToShow, true);
+    })();
 });
 
 

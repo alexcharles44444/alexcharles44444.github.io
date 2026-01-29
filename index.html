@@ -20,19 +20,70 @@
     <svg width="28" height="28" viewBox="0 -5 24 24" fill="none" aria-hidden>
       <path d="M3 12h18" stroke="black" stroke-width="1.6" stroke-linecap="round" />
     </svg>
-    <br><a href="mailto:dadideasmusic@gmail.com">dadideasmusic@gmail.com</a>
+    <br>Jeremy Stecker <a href="mailto:dadideasmusic@gmail.com">dadideasmusic@gmail.com</a><br><br>
+    <a href="https://www.instagram.com/dadideasmusic/" target="_blank" aria-label="Instagram">
+      <img width="50" height="50" src="images/Instagram_icon.png">
+    </a>
+    <nav class="top-tabs" aria-label="Primary">
+      <div class="tabs">
+        <button class="tab-button" type="button">Home</button>
+        <button class="tab-button" type="button">Videos</button>
+        <button class="tab-button" type="button">Lyrics</button>
+        <button class="tab-button" type="button">Store</button>
+      </div>
+    </nav>
 
   </div>
-  <div class="page">
+  <div class="page" id="videospage" style="display: none;">
+    <div class="stage2">
+      <div id="videosdiv">
+      </div>
+    </div>
+  </div>
+
+  <!-- Placeholder pages for tabs without content yet -->
+  <div class="page" id="lyricspage" style="display: none;">
+    <div class="stage2">
+      <div class="card editable" id="lyricsdiv">
+        test
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="storepage" style="display: none;">
+    <div class="stage">
+      <div class="left">
+        <div class="card">
+          <h2>Store</h2>
+          <p>Store page is coming soon.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="homepage">
     <div class="stage" id="stage">
       <div class="left">
 
         <!-- About me-->
-        <div class="card" id="about">
+        <div style="margin-top: 130px;" class="card" id="about">
           <h2>About Me</h2>
           <div class="editable" id="aboutEditable" aria-label="About Me">
-            I play guitar, write short pieces, and perform locally in the Eugene Oregon area.
           </div>
+        </div>
+
+        <iframe class="youtubeIframe" src="" title="YouTube video player" frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+        <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay"
+          src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2239182914&color=%23ff6a5a&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
+        <div
+          style="margin-bottom: -75px; font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;">
+          <a href="https://soundcloud.com/jeremy-stecker-520055352" title="Dad Ideas" target="_blank"
+            style="color: #cccccc; text-decoration: none;">Dad Ideas</a> · <a
+            href="https://soundcloud.com/jeremy-stecker-520055352/9b341117-9c3a-4b99-991d-f1cafed8d113"
+            title="Secret Skilling" target="_blank" style="color: #cccccc; text-decoration: none;">Secret Skilling</a>
         </div>
 
         <!--Testimonials-->
@@ -97,14 +148,8 @@
         <div class="card" id="updates">
           <h2>New Album</h2>
           <div class="editable" id="updatesEditable" aria-label="updates">
-            My newest album should be releasing sometime mid January 2026.
           </div>
         </div>
-
-        <iframe class="youtubeIframe" src="https://www.youtube.com/embed/b_we_jma220?si=ik1IaFe4HYCNvc23"
-          title="YouTube video player" frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
         <div class="card" id="pictures">
           <!-- <h2>Pictures</h2> -->
@@ -129,11 +174,58 @@
 
       <!-- Right column -->
       <div class="right">
-        <div class="card patreon-card">
+        <div style="margin-top: 130px;" class="card patreon-card">
           <h2>Support me on</h2>
-          <a href="https://venmo.com/u/Jeremy-Stecker"><img id="venmo_btn" src="images/venmo.png" width="102" height="46"></a>
+          <a href="https://venmo.com/u/Jeremy-Stecker"><img id="venmo_btn" src="images/venmo.png" width="102"
+              height="46"></a>
           <a class="btn" href="https://www.patreon.com/dadideasmusic/join" id="patreonBtn" role="button">Patreon</a>
         </div>
+
+        <!--Bands in Town-->
+        <script charset="utf-8" src="https://widgetv3.bandsintown.com/main.min.js"></script>
+        <a class="bit-widget-initializer" data-artist-name="id_15628680" data-events-to-display=""
+          data-background-color="rgba(255,255,255,1)" data-separator-color="rgba(221,221,221,1)"
+          data-text-color="rgba(66,66,66,1)" data-font="Helvetica" data-auto-style="true"
+          data-button-label-capitalization="uppercase" data-header-capitalization="uppercase"
+          data-location-capitalization="uppercase" data-venue-capitalization="uppercase" data-display-local-dates="true"
+          data-local-dates-position="tab" data-display-past-dates="true" data-display-details="false"
+          data-display-lineup="false" data-display-start-time="false" data-social-share-icon="false"
+          data-display-limit="all" data-date-format="MMM. D, YYYY" data-date-orientation="horizontal"
+          data-date-border-color="#4A4A4A" data-date-border-width="1px" data-date-capitalization="capitalize"
+          data-date-border-radius="10px" data-event-ticket-cta-size="medium" data-event-custom-ticket-text=""
+          data-event-ticket-text="TICKETS" data-event-ticket-icon="false"
+          data-event-ticket-cta-text-color="rgba(255,255,255,1)" data-event-ticket-cta-bg-color="rgba(74,74,74,1)"
+          data-event-ticket-cta-border-color="rgba(74,74,74,1)" data-event-ticket-cta-border-width="0px"
+          data-event-ticket-cta-border-radius="2px" data-sold-out-button-text-color="rgba(255,255,255,1)"
+          data-sold-out-button-background-color="rgba(74,74,74,1)" data-sold-out-button-border-color="rgba(74,74,74,1)"
+          data-sold-out-button-clickable="true" data-event-rsvp-position="left" data-event-rsvp-cta-size="medium"
+          data-event-rsvp-only-show-icon="false" data-event-rsvp-text="RSVP" data-event-rsvp-icon="false"
+          data-event-rsvp-cta-text-color="rgba(74,74,74,1)" data-event-rsvp-cta-bg-color="rgba(255,255,255,1)"
+          data-event-rsvp-cta-border-color="rgba(74,74,74,1)" data-event-rsvp-cta-border-width="1px"
+          data-event-rsvp-cta-border-radius="2px" data-follow-section-position="top"
+          data-follow-section-alignment="center"
+          data-follow-section-header-text="Get updates on new shows, new music, and more"
+          data-follow-section-cta-size="medium" data-follow-section-cta-text="FOLLOW"
+          data-follow-section-cta-icon="false" data-follow-section-cta-text-color="rgba(255,255,255,1)"
+          data-follow-section-cta-bg-color="rgba(74,74,74,1)" data-follow-section-cta-border-color="rgba(74,74,74,1)"
+          data-follow-section-cta-border-width="0px" data-follow-section-cta-border-radius="2px"
+          data-play-my-city-position="bottom" data-play-my-city-alignment="center"
+          data-play-my-city-header-text="Don’t see a show near you?" data-play-my-city-cta-size="medium"
+          data-play-my-city-cta-text="REQUEST A SHOW" data-play-my-city-cta-icon="false"
+          data-play-my-city-cta-text-color="rgba(255,255,255,1)" data-play-my-city-cta-bg-color="rgba(74,74,74,1)"
+          data-play-my-city-cta-border-color="rgba(74,74,74,1)" data-play-my-city-cta-border-width="0px"
+          data-play-my-city-cta-border-radius="2px" data-optin-font="" data-optin-text-color="" data-optin-bg-color=""
+          data-optin-cta-text-color="" data-optin-cta-bg-color="" data-optin-cta-border-width=""
+          data-optin-cta-border-radius="" data-optin-cta-border-color="" data-language="en" data-layout-breakpoint="900"
+          data-app-id="7acd57cad519a4401edc936e55246781" data-affil-code="" data-bit-logo-position="bottomRight"
+          data-bit-logo-color="rgba(66,66,66,1)"></a>
+        <!--END Bands in town-->
+
+        <!--Seated-->
+        <div id="seated-55fdf2c0" data-artist-id="09ec431b-dcf2-4c77-b029-a28fea10ac37" data-css-version="3"></div>
+        <script src="https://widget.seated.com/app.js"></script>
+        <!--END Seated-->
+
       </div>
     </div>
   </div>

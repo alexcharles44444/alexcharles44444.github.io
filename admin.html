@@ -1,12 +1,38 @@
-
 <!doctype html>
 <html lang="en">
+
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width,initial-scale=1" />
 	<title>Admin Login</title>
 	<link rel="stylesheet" href="styles.css">
+	<style>
+		/* Admin tabs */
+		.admin-tabs {
+			display: flex;
+			gap: 8px;
+			align-items: center;
+		}
+
+		.admin-tabs .tab {
+			padding: 8px 12px;
+			border: 1px solid #ccc;
+			background: #f7f7f7;
+			cursor: pointer;
+			border-radius: 4px;
+		}
+
+		.admin-tabs .tab.active {
+			background: #e9ecef;
+			font-weight: 600;
+		}
+
+		.tab-panel {
+			margin-top: 8px;
+		}
+	</style>
 </head>
+
 <body>
 	<div class="login-container">
 		<h2>Admin Login</h2>
@@ -22,88 +48,294 @@
 
 	<!-- Admin dashboard (hidden until auth state indicates a logged-in user) -->
 	<div id="adminDashboard" style="display:none; padding:20px;">
-		<button id="logoutBtn" class="btn" style="margin-bottom:10px;">Logout</button>
-		
-		<h2>Subscribers</h2>
-		<table id="subscribersTable" class="editable" border="1" cellpadding="6" cellspacing="0">
-			<thead>
-				<tr>
-					<th>Phone</th>
-					<th>Email</th>
-				</tr>
-			</thead>
-			<tbody>
-				<!-- Data will be populated here when implemented -->
-			</tbody>
-		</table>
-
-		<h2 style="margin-top:30px;">Pending Testimonials</h2>
-		<table id="testimonialsTable" class="editable" border="1" cellpadding="6" cellspacing="0" style="margin-bottom: 16px;">
-			<thead>
-				<tr>
-					<th>Name</th>
-					<th>Date</th>
-					<th>Comment</th>
-					<th>Action</th>
-				</tr>
-			</thead>
-			<tbody>
-				<!-- Data will be populated here when implemented -->
-			</tbody>
-		</table>
-
-		<h2>Edit About Me</h2>
-		<div style="margin-bottom:16px;">
-			<label for="aboutMeInput">About Me text (shown on homepage):</label><br>
-			<textarea id="aboutMeInput" rows="4" style="width:100%; max-width:800px; padding:8px;" placeholder="Enter the About Me text"></textarea>
-			<div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
-				<button id="saveAboutBtn" class="btn">Save About Me</button>
-				<span id="aboutSaveStatus" style="font-size:13px; color:green; display:none;">Saved.</span>
+		<div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:12px;">
+			<div class="admin-tabs" role="tablist" aria-label="Admin Sections">
+				<button id="tabPublicBtn" class="tab active" type="button" role="tab"
+					aria-selected="true">Public</button>
+				<button id="tabEpkBtn" class="tab" type="button" role="tab" aria-selected="false">EPK</button>
 			</div>
-		</div>
-		
-		<h2>Edit Upcoming Performances</h2>
-		<div style="margin-bottom:16px;">
-			<label for="performancesInput">Upcoming Performances (plain text):</label><br>
-			<textarea id="performancesInput" rows="6" style="width:100%; max-width:800px; padding:8px;" placeholder="Enter upcoming performances, one per line"></textarea>
-			<div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
-				<button id="savePerformancesBtn" class="btn">Save Performances</button>
-				<span id="performancesSaveStatus" style="font-size:13px; color:green; display:none;">Saved.</span>
-			</div>
-		</div>
-		
-		<h2>Edit New Album</h2>
-		<div style="margin-bottom:16px;">
-			<label for="newAlbumInput">New Album text:</label><br>
-			<textarea id="newAlbumInput" rows="3" style="width:100%; max-width:800px; padding:8px;" placeholder="Enter new album text"></textarea>
-			<div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
-				<button id="saveNewAlbumBtn" class="btn">Save New Album</button>
-				<span id="newAlbumSaveStatus" style="font-size:13px; color:green; display:none;">Saved.</span>
-			</div>
-		</div>
-		
-		<h2>Edit YouTube Iframe URL</h2>
-		<div style="margin-bottom:16px;">
-			<label for="youtubeInput" class="editable">YouTube embed URL (example: https://www.youtube.com/embed/b_we_jma220?si=...):</label><br>
-			<div  class="editable">Found at Youtube Video->Share->Embed->Copy the url after src=" (Do not include any " characters)</div><br>
-			<input id="youtubeInput" type="url" style="width:100%; max-width:800px; padding:8px;" placeholder="https://www.youtube.com/embed/...">
-			<div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
-				<button id="saveYoutubeBtn" class="btn">Save YouTube URL</button>
-				<span id="youtubeSaveStatus" style="font-size:13px; color:green; display:none;">Saved.</span>
-			</div>
+			<button id="logoutBtn" class="btn">Logout</button>
 		</div>
 
-		<h2>Manage Images</h2>
-		<div style="margin-bottom:16px;">
-			<label for="imageFileInput">Upload images (you can select multiple):</label><br>
-			<input id="imageFileInput" type="file" accept="image/*" multiple style="margin-top:6px;">
-			<div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
-				<button id="uploadImageBtn" class="btn">Upload Image(s)</button>
-				<span id="imageUploadStatus" style="font-size:13px; color:green; display:none;">Uploaded.</span>
+		<div id="publicPanel" class="tab-panel">
+			<h2>Subscribers</h2>
+			<table id="subscribersTable" class="editable" border="1" cellpadding="6" cellspacing="0">
+				<thead>
+					<tr>
+						<th>Phone</th>
+						<th>Email</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- Data will be populated here when implemented -->
+				</tbody>
+			</table>
+
+			<h2 style="margin-top:30px;">Pending Testimonials</h2>
+			<table id="testimonialsTable" class="editable" border="1" cellpadding="6" cellspacing="0"
+				style="margin-bottom: 16px;">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Date</th>
+						<th>Comment</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- Data will be populated here when implemented -->
+				</tbody>
+			</table>
+
+			<div style="margin-bottom:16px;">
+				<label for="aboutShortInput">Short About Me (shown on homepage):</label><br>
+				<textarea id="aboutShortInput" rows="2" style="width:100%; max-width:800px; padding:8px;"
+					placeholder="Short About Me — shown by default on homepage"></textarea>
+				<div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
+					<button id="saveAboutShortBtn" class="btn">Save Short About</button>
+					<span id="aboutShortSaveStatus" style="font-size:13px; color:green; display:none;">Saved.</span>
+				</div>
+
+				<label for="aboutLongInput" style="margin-top:12px; display:block;">Extended About Me (visible when
+					visitor presses "Show more"):</label><br>
+				<textarea id="aboutLongInput" rows="6" style="width:100%; max-width:800px; padding:8px;"
+					placeholder="Extended About Me — shown after visitor clicks Show more"></textarea>
+				<div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
+					<button id="saveAboutLongBtn" class="btn">Save Extended About</button>
+					<span id="aboutLongSaveStatus" style="font-size:13px; color:green; display:none;">Saved.</span>
+				</div>
 			</div>
-			<div id="imagesList" class="editable" style="margin-top:12px; display:flex; flex-direction:column; gap:8px; max-width:800px;"></div>
+
+			<h2>Edit Upcoming Performances</h2>
+			<div style="margin-bottom:16px;">
+				<label for="performancesInput">Upcoming Performances:</label><br>
+				<textarea id="performancesInput" rows="6" style="width:100%; max-width:800px; padding:8px;"
+					placeholder="Enter upcoming performances, one per line"></textarea>
+				<div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
+					<button id="savePerformancesBtn" class="btn">Save Performances</button>
+					<span id="performancesSaveStatus" style="font-size:13px; color:green; display:none;">Saved.</span>
+				</div>
+			</div>
+
+			<h2>Edit New Album</h2>
+			<div style="margin-bottom:16px;">
+				<label for="newAlbumInput">New Album text:</label><br>
+				<textarea id="newAlbumInput" rows="3" style="width:100%; max-width:800px; padding:8px;"
+					placeholder="Enter new album text"></textarea>
+				<div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
+					<button id="saveNewAlbumBtn" class="btn">Save New Album</button>
+					<span id="newAlbumSaveStatus" style="font-size:13px; color:green; display:none;">Saved.</span>
+				</div>
+			</div>
+
+			<h2>Manage YouTube video (Homepage)</h2>
+			<div style="margin-bottom:16px;">
+				<label for="youtubeInput" class="editable">YouTube embed URL (example:
+					https://www.youtube.com/embed/b_we_jma220?si=...):</label><br>
+				<div class="editable">Found at Youtube Video->Share->Embed->Copy the url after src=" (Do not include any
+					" characters)</div><br>
+				<input id="youtubeInput" type="url" style="width:100%; max-width:800px; padding:8px;"
+					placeholder="https://www.youtube.com/embed/...">
+				<div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
+					<button id="saveYoutubeBtn" class="btn">Save YouTube URL</button>
+					<span id="youtubeSaveStatus" style="font-size:13px; color:green; display:none;">Saved.</span>
+				</div>
+			</div>
+
+			<h2>Manage YouTube videos (list on Videos page)</h2>
+			<div style="margin-bottom:16px;">
+				<label for="youtubeListInput" class="editable">YouTube embed URL (add to list):</label><br>
+				<input id="youtubeListInput" type="url" style="width:100%; max-width:800px; padding:8px;"
+					placeholder="https://www.youtube.com/embed/...">
+				<div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
+					<button id="addYoutubeListBtn" class="btn">Add Video</button>
+					<span id="youtubeListStatus" style="font-size:13px; color:green; display:none;">Added.</span>
+				</div>
+				<div id="youtubeList" class="editable"
+					style="margin-top:12px; display:flex; flex-direction:column; gap:8px; max-width:800px;"></div>
+			</div>
+
+			<h2>Manage Lyrics</h2>
+			<div style="margin-bottom:16px;">
+				<label for="lyricTitleInput">Lyric title:</label><br>
+				<input id="lyricTitleInput" type="text" style="width:100%; max-width:800px; padding:8px;"
+					placeholder="Title / slug"><br>
+				<label for="lyricContentInput" style="margin-top:8px;">Lyric content:</label><br>
+				<textarea id="lyricContentInput" rows="6" style="width:100%; max-width:800px; padding:8px;"
+					placeholder="Enter lyric text"></textarea>
+				<div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
+					<button id="addLyricBtn" class="btn">Add Lyric</button>
+					<span id="lyricSaveStatus" style="font-size:13px; color:green; display:none;">Added.</span>
+				</div>
+				<div id="lyricsList" class="editable"
+					style="margin-top:12px; display:flex; flex-direction:column; gap:8px; max-width:800px;"></div>
+			</div>
+
+			<h2>Manage Images</h2>
+			<div style="margin-bottom:16px;">
+				<label for="imageFileInput">Upload images (you can select multiple):</label><br>
+				<input id="imageFileInput" type="file" accept="image/*" multiple style="margin-top:6px;">
+				<div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
+					<button id="uploadImageBtn" class="btn">Upload Image(s)</button>
+					<span id="imageUploadStatus" style="font-size:13px; color:green; display:none;">Uploaded.</span>
+				</div>
+				<div id="imagesList" class="editable"
+					style="margin-top:12px; display:flex; flex-direction:column; gap:8px; max-width:800px;"></div>
+			</div>
 		</div>
+
+		<div id="epkPanel" class="tab-panel" style="display:none;">
+			<h2>Electronic Press Kit (EPK)</h2>
+
+			<div style="margin-top:8px;">
+				<a href="epk.html" target="_blank" class="btn">Open EPK page</a>
+			</div>
+
+			<h2 style="margin-top:20px;">Edit EPK Bio</h2>
+			<div style="margin-bottom:16px;">
+				<label for="epkBioInput">EPK Bio (displayed on EPK page):</label><br>
+				<span>This is a short promotional bio with just your hook, accolades, and newest project</span><br>
+				<textarea id="epkBioInput" rows="6" style="width:100%; max-width:800px; padding:8px;"
+					placeholder="Enter the EPK bio"></textarea>
+				<div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
+					<button id="saveEpkBioBtn" class="btn">Save EPK Bio</button>
+					<span id="epkBioSaveStatus" style="font-size:13px; color:green; display:none;">Saved.</span>
+				</div>
+			</div>
+
+			<div style="margin-bottom:16px;">
+				<label for="epkContactInput">EPK Contact Info (Contact info for everyone on your team: Manager, agent, label, publicist, licensing agent, lawyer, tour manager, everyone):</label><br>
+				<textarea id="epkContactInput" rows="3" style="width:100%; max-width:800px; padding:8px;"
+					placeholder="Enter contact information"></textarea>
+				<div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
+					<button id="saveEpkContactBtn" class="btn">Save Contact Info</button>
+					<span id="epkContactSaveStatus" style="font-size:13px; color:green; display:none;">Saved.</span>
+				</div>
+			</div>
+			
+			<div style="margin-bottom:16px;">
+				<h3>EPK Cover Image</h3>
+				<label for="epkCoverFileInput">Upload promo image (should be your most recent promo photo, will set the tone and vibe of the project):</label><br>
+				<input id="epkCoverFileInput" type="file" accept="image/*" style="margin-top:6px;"><br>
+				<div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
+					<button id="uploadEpkCoverBtn" class="btn">Upload Cover Image</button>
+					<span id="epkCoverUploadStatus" style="font-size:13px; color:green; display:none;">Uploaded.</span>
+				</div>
+				<div id="epkCoverPreview" style="margin-top:12px; max-width:360px;"></div>
+				<hr style="margin:12px 0;">
+				<label for="imageFileInput">Upload slideshow images (you can select multiple):</label><br>
+				<input id="epkImageFileInput" type="file" accept="image/*" multiple style="margin-top:6px;">
+				<div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
+					<button id="uploadEPKImageBtn" class="btn">Upload slideshow Image(s)</button>
+					<span id="epkImageUploadStatus" style="font-size:13px; color:green; display:none;">Uploaded.</span>
+				</div>
+				<div id="epkImagesList" class="editable"
+					style="margin-top:12px; display:flex; flex-direction:column; gap:8px; max-width:800px;"></div>
+			</div>
+
+			<h2>Manage EPK YouTube videos</h2>
+			<div style="margin-bottom:16px;">
+				<label for="epkYoutubeListInput" class="editable">YouTube embed URL (add to list):</label><br>
+				<span>This should be videos of live performances so talent buyers can see what your live show will be</span><br>
+				<input id="epkYoutubeListInput" type="url" style="width:100%; max-width:800px; padding:8px;"
+					placeholder="https://www.youtube.com/embed/...">
+				<div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
+					<button id="epkAddYoutubeListBtn" class="btn">Add Video</button>
+					<span id="epkYoutubeListStatus" style="font-size:13px; color:green; display:none;">Added.</span>
+				</div>
+				<div id="epkYoutubeList" class="editable"
+					style="margin-top:12px; display:flex; flex-direction:column; gap:8px; max-width:800px;"></div>
+			</div>
+
+			<div style="margin-bottom:16px;">
+				<label for="epkTourInput">EPK Tour History (displayed on EPK page):</label><br>
+				<span>If there is no tour history, list your past venues. Note sold-out shows.</span><br>
+				<textarea id="epkTourInput" rows="6" style="width:100%; max-width:800px; padding:8px;"
+					placeholder="Enter tour history"></textarea>
+				<div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
+					<button id="saveEpkTourBtn" class="btn">Save EPK Tour History</button>
+					<span id="epkTourSaveStatus" style="font-size:13px; color:green; display:none;">Saved.</span>
+				</div>
+			</div>
+
+			<div style="margin-bottom:16px;">
+				<label for="epkAccoladesInput">EPK Accolades (displayed on EPK page):</label><br>
+				<span>These can be impressive social or streaming stats, radio play, sync placements, chart rankings, award wins/nominations, tv appearances, tour or local show history with big shows that have sold out</span><br>
+				<textarea id="epkAccoladesInput" rows="6" style="width:100%; max-width:800px; padding:8px;"
+				placeholder="Enter accolades"></textarea>
+				<div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
+					<button id="saveEpkAccoladesBtn" class="btn">Save EPK Accolades</button>
+					<span id="epkAccoladesSaveStatus" style="font-size:13px; color:green; display:none;">Saved.</span>
+				</div>
+			</div>
+			
+			<div style="margin-bottom:16px;">
+				<label for="epkPressClippingsInput">EPK Press Clippings (displayed on EPK page):</label><br>
+				<span>You can pull the best quotes from your recent press and link to the articles, or if you have a ton of great press, you can just put the images of the outlets (that link to the article)</span><br>
+				<textarea id="epkPressClippingsInput" rows="6" style="width:100%; max-width:800px; padding:8px;"
+					placeholder="Enter press clippings"></textarea>
+				<div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
+					<button id="saveEpkPressClippingsBtn" class="btn">Save EPK Press Clippings</button>
+					<span id="epkPressClippingsSaveStatus" style="font-size:13px; color:green; display:none;">Saved.</span>
+				</div>
+			</div>
+
+			<h2>Edit EPK Asset Text</h2>
+			<div style="margin-bottom:16px;">
+				<label for="epkAssetTextInput">(Your stage/plot input list and recent press release)</label><br>
+				<textarea id="epkAssetTextInput" rows="6" style="width:100%; max-width:800px; padding:8px;"
+					placeholder="Enter asset text"></textarea>
+				<div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
+					<button id="saveEpkAssetTextBtn" class="btn">Save Asset Text</button>
+					<span id="epkAssetTextSaveStatus" style="font-size:13px; color:green; display:none;">Saved.</span>
+				</div>
+			</div>
+
+			<h2>Manage EPK Asset Images</h2>
+			<span>(High-res photos, logos, poster designs)</span>
+			<div style="margin-bottom:16px;">
+				<label for="epkAssetImageFileInput">Upload asset images (you can select multiple):</label><br>
+				<input id="epkAssetImageFileInput" type="file" accept="image/*" multiple style="margin-top:6px;">
+				<div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
+					<button id="uploadEPKAssetImageBtn" class="btn">Upload Asset Image(s)</button>
+					<span id="epkAssetImageUploadStatus" style="font-size:13px; color:green; display:none;">Uploaded.</span>
+				</div>
+				<div id="epkAssetImagesList" class="editable"
+					style="margin-top:12px; display:flex; flex-direction:column; gap:8px; max-width:800px;"></div>
+			</div>
+		</div>
+
+		<script>
+			document.addEventListener('DOMContentLoaded', function () {
+				const publicBtn = document.getElementById('tabPublicBtn');
+				const epkBtn = document.getElementById('tabEpkBtn');
+				const publicPanel = document.getElementById('publicPanel');
+				const epkPanel = document.getElementById('epkPanel');
+
+				function showTab(tab) {
+					if (tab === 'public') {
+						publicPanel.style.display = 'block';
+						epkPanel.style.display = 'none';
+						publicBtn.classList.add('active');
+						epkBtn.classList.remove('active');
+						publicBtn.setAttribute('aria-selected', 'true');
+						epkBtn.setAttribute('aria-selected', 'false');
+					} else {
+						publicPanel.style.display = 'none';
+						epkPanel.style.display = 'block';
+						publicBtn.classList.remove('active');
+						epkBtn.classList.add('active');
+						publicBtn.setAttribute('aria-selected', 'false');
+						epkBtn.setAttribute('aria-selected', 'true');
+					}
+				}
+
+				publicBtn.addEventListener('click', () => showTab('public'));
+				epkBtn.addEventListener('click', () => showTab('epk'));
+			});
+		</script>
 	</div>
 	<script src="admin.js" type="module"></script>
 </body>
+
 </html>
