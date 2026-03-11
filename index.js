@@ -297,19 +297,22 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         const emailInput = document.querySelector('input[type="email"].newsletter-input');
         const phoneInput = document.querySelector('input[type="tel"].newsletter-input');
+        const addressInput = document.getElementById('mailingAddress');
         const email = emailInput ? emailInput.value.trim() : '';
         const phone = phoneInput ? phoneInput.value.trim() : '';
-        if (!email && !phone) {
-            alert('Please enter an email or phone number.');
+        const address = addressInput ? addressInput.value.trim() : '';
+        if (!email && !phone && !address) {
+            alert('Please enter an email or phone number or mailing address.');
             return;
         }
         try {
             const subscribersRef = ref(db, 'subscribers');
             const newSubRef = push(subscribersRef);
-            await set(newSubRef, { email, phone });
+            await set(newSubRef, { email, phone, address });
             alert('Thank you for subscribing!');
             if (emailInput) emailInput.value = '';
             if (phoneInput) phoneInput.value = '';
+            if (addressInput) addressInput.value = '';
         } catch (err) {
             alert('Subscription failed. Please try again later.');
             console.error(err);

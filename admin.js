@@ -115,10 +115,13 @@ document.addEventListener('DOMContentLoaded', () => {
 							const tr = document.createElement('tr');
 							const phoneTd = document.createElement('td');
 							const emailTd = document.createElement('td');
+							const addressTd = document.createElement('td');
 							phoneTd.textContent = data.phone || '';
 							emailTd.textContent = data.email || '';
+							addressTd.textContent = data.address || '';
 							tr.appendChild(phoneTd);
 							tr.appendChild(emailTd);
+							tr.appendChild(addressTd);
 							tbody.appendChild(tr);
 							subscribersFound = true;
 						});
