@@ -59,6 +59,36 @@ let epkAssetImagesListener = null;
 let epkImagesRef = null;
 let epkImagesListener = null; 
 
+// Helper function to convert YouTube URLs to embed format
+function convertToYouTubeEmbed(url) {
+	const trimmed = url.trim();
+	
+	// Check if it's already an embed URL
+	if (/^https:\/\/www\.youtube\.com\/embed\//.test(trimmed)) {
+		return trimmed;
+	}
+	
+	// Check for youtu.be format: https://youtu.be/VIDEO_ID
+	const youtuMatch = trimmed.match(/youtu\.be\/([a-zA-Z0-9_-]+)/);
+	if (youtuMatch) {
+		return `https://www.youtube.com/embed/${youtuMatch[1]}`;
+	}
+	
+	// Check for youtube.com/watch format: https://www.youtube.com/watch?v=VIDEO_ID
+	const watchMatch = trimmed.match(/[?&]v=([a-zA-Z0-9_-]+)/);
+	if (watchMatch) {
+		return `https://www.youtube.com/embed/${watchMatch[1]}`;
+	}
+	
+	// If it's just a video ID, convert it
+	if (/^[a-zA-Z0-9_-]{11}$/.test(trimmed)) {
+		return `https://www.youtube.com/embed/${trimmed}`;
+	}
+	
+	// Return as-is if we can't convert
+	return trimmed;
+}
+
 // Login form handler and auth state listener
 document.addEventListener('DOMContentLoaded', () => {
 	const loginContainer = document.querySelector('.login-container');
@@ -371,13 +401,18 @@ document.addEventListener('DOMContentLoaded', () => {
 							const status = document.getElementById('youtubeSaveStatus');
 							if (!input) return;
 							const val = (input.value || '').trim();
-							// Basic validation: expect an embed URL
-							if (val && !/^https:\/\/www\.youtube\.com\/embed\//.test(val)) {
+							
+							// Convert URL to embed format if needed
+							const embedUrl = convertToYouTubeEmbed(val);
+							
+							// Validate the converted URL
+							if (embedUrl && !/^https:\/\/www\.youtube\.com\/embed\//.test(embedUrl)) {
 								if (!confirm('The URL does not look like a YouTube embed URL. Save anyway?')) return;
 							}
 							try {
 								if (status) { status.style.display = 'none'; }
-								await dbSet(dbRef(db, 'content/youtubeiframe'), val);
+								await dbSet(dbRef(db, 'content/youtubeiframe'), embedUrl);
+								input.value = embedUrl; // Update input to show converted URL
 								if (status) { status.style.display = 'inline'; setTimeout(() => { status.style.display = 'none'; }, 2000); }
 							} catch (err) {
 								console.error('Failed to save YouTube URL:', err);
@@ -452,15 +487,20 @@ document.addEventListener('DOMContentLoaded', () => {
 						addBtn.addEventListener('click', async () => {
 							const val = (listInput.value || '').trim();
 							if (!val) {
-								alert('Enter a YouTube embed URL to add.');
+								alert('Enter a YouTube URL to add.');
 								return;
 							}
-							if (val && !/^https:\/\/www\.youtube\.com\/embed\//.test(val)) {
+							
+							// Convert URL to embed format if needed
+							const embedUrl = convertToYouTubeEmbed(val);
+							
+							// Validate the converted URL
+							if (embedUrl && !/^https:\/\/www\.youtube\.com\/embed\//.test(embedUrl)) {
 								if (!confirm('The URL does not look like a YouTube embed URL. Add anyway?')) return;
 							}
 							try {
 								const newRef = dbPush(youtubeListRef);
-								await dbSet(newRef, { url: val, timestamp: Date.now() });
+								await dbSet(newRef, { url: embedUrl, timestamp: Date.now() });
 								listInput.value = '';
 								if (listStatus) { listStatus.style.display = 'inline'; setTimeout(() => { listStatus.style.display = 'none'; }, 1500); }
 							} catch (err) {
@@ -1139,15 +1179,20 @@ document.addEventListener('DOMContentLoaded', () => {
 						addBtn.addEventListener('click', async () => {
 							const val = (listInput.value || '').trim();
 							if (!val) {
-								alert('Enter a YouTube embed URL to add.');
+								alert('Enter a YouTube URL to add.');
 								return;
 							}
-							if (val && !/^https:\/\/www\.youtube\.com\/embed\//.test(val)) {
+							
+							// Convert URL to embed format if needed
+							const embedUrl = convertToYouTubeEmbed(val);
+							
+							// Validate the converted URL
+							if (embedUrl && !/^https:\/\/www\.youtube\.com\/embed\//.test(embedUrl)) {
 								if (!confirm('The URL does not look like a YouTube embed URL. Add anyway?')) return;
 							}
 							try {
 								const newRef = dbPush(epkYoutubeListRef);
-								await dbSet(newRef, { url: val, timestamp: Date.now() });
+								await dbSet(newRef, { url: embedUrl, timestamp: Date.now() });
 								listInput.value = '';
 								if (listStatus) { listStatus.style.display = 'inline'; setTimeout(() => { listStatus.style.display = 'none'; }, 1500); }
 							} catch (err) {
