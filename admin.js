@@ -68,6 +68,12 @@ function convertToYouTubeEmbed(url) {
 		return trimmed;
 	}
 	
+	// Check for youtube.com/shorts format: https://youtube.com/shorts/VIDEO_ID
+	const shortsMatch = trimmed.match(/youtube\.com\/shorts\/([a-zA-Z0-9_-]+)/);
+	if (shortsMatch) {
+		return `https://www.youtube.com/embed/${shortsMatch[1]}`;
+	}
+	
 	// Check for youtu.be format: https://youtu.be/VIDEO_ID
 	const youtuMatch = trimmed.match(/youtu\.be\/([a-zA-Z0-9_-]+)/);
 	if (youtuMatch) {
@@ -146,12 +152,15 @@ document.addEventListener('DOMContentLoaded', () => {
 							const phoneTd = document.createElement('td');
 							const emailTd = document.createElement('td');
 							const addressTd = document.createElement('td');
+							const buttonStickerTd = document.createElement('td');
 							phoneTd.textContent = data.phone || '';
 							emailTd.textContent = data.email || '';
 							addressTd.textContent = data.address || '';
+							buttonStickerTd.textContent = data.buttonStickerRequest ? 'Yes' : 'No';
 							tr.appendChild(phoneTd);
 							tr.appendChild(emailTd);
 							tr.appendChild(addressTd);
+							tr.appendChild(buttonStickerTd);
 							tbody.appendChild(tr);
 							subscribersFound = true;
 						});
@@ -160,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
 					if (!subscribersFound) {
 						const tr = document.createElement('tr');
 						const td = document.createElement('td');
-						td.setAttribute('colspan', '2');
+						td.setAttribute('colspan', '4');
 						td.textContent = 'No subscribers.';
 						tr.appendChild(td);
 						tbody.appendChild(tr);

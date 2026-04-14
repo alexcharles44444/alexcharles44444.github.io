@@ -301,6 +301,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const email = emailInput ? emailInput.value.trim() : '';
         const phone = phoneInput ? phoneInput.value.trim() : '';
         const address = addressInput ? addressInput.value.trim() : '';
+        const buttonStickerRequest = document.getElementById('buttonStickerRequest').checked;
         if (!email && !phone && !address) {
             alert('Please enter an email or phone number or mailing address.');
             return;
@@ -308,7 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const subscribersRef = ref(db, 'subscribers');
             const newSubRef = push(subscribersRef);
-            await set(newSubRef, { email, phone, address });
+            await set(newSubRef, { email, phone, address, buttonStickerRequest });
             alert('Thank you for subscribing!');
             if (emailInput) emailInput.value = '';
             if (phoneInput) phoneInput.value = '';
